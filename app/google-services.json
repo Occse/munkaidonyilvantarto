@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "356526365927",
+    "project_id": "munkaidonyilvantartoalkalmazas",
+    "storage_bucket": "munkaidonyilvantartoalkalmazas.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:356526365927:android:83e720b6ef0e3d2e729642",
+        "android_client_info": {
+          "package_name": "com.niev.munkaidonyilvantartoalkalmazas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "356526365927-hv8qm9akl93i7vv0ub5p6rbj1d1d232s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.niev.munkaidonyilvantartoalkalmazas",
+            "certificate_hash": "0f6464f15890d0e5a73b66aea54180658d3dcb8d"
+          }
+        },
+        {
+          "client_id": "356526365927-uof73i9ipdg4vj75cmnak59sjja11sro.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF0Xoc8cnz3qdc5Kxf0HrgoVo42dFtibQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "356526365927-uof73i9ipdg4vj75cmnak59sjja11sro.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Munkaidő nyilvántartó alkalmazás</string>
+    <string name="password">Jelszó</string>
+    <string name="password_again">Jelszó újra</string>
+    <string name="user_name">Felhasználónév</string>
+    <string name="log_in">Bejelentkezés</string>
+    <string name="register">Regisztráció</string>
+    <string name="registration">Regisztráció</string>
+    <string name="cancel">Mégse</string>
+    <string name="email_address">E-mail cím</string>
+    <string name="loginGoogle">Bejelentkezés Google fiókkal</string>
+    <string name="worker">Dolgozó</string>
+    <string name="employer">Munkáltató</string>
+    <string name="default_web_client_id">1</string>
+</resources>
