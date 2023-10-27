@@ -71,6 +71,7 @@
         android:ems="10"
         android:hint="@string/password_again"
         android:inputType="textPassword" />
+
     <RadioGroup
         android:id="@+id/accountTypeGroup"
         android:layout_width="match_parent"
@@ -82,28 +83,37 @@
         android:layout_marginTop="@dimen/register_margin_top"
         android:layout_marginRight="@dimen/default_margin_side"
         android:ems="10"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/worker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/worker"/>
+            android:text="@string/worker" />
 
         <RadioButton
             android:id="@+id/employer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/employer"/>
+            android:text="@string/employer" />
     </RadioGroup>
 
-
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/agreement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/accountTypeGroup"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="@dimen/default_margin_side"
+        android:layout_marginTop="@dimen/register_margin_top"
+        android:layout_marginRight="@dimen/default_margin_side"
+        android:text="@string/agreement" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/accountTypeGroup"
+        android:layout_below="@+id/agreement"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="@dimen/register_margin_top"

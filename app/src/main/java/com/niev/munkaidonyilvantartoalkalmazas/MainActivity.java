@@ -22,7 +22,11 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private SharedPreferences preferences;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore mFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +93,27 @@ public class MainActivity extends AppCompatActivity {
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 Log.d(LOG_TAG, "Google sign in success!" + account.getId());
+                String email = account.getEmail();
+                mFirestore = FirebaseFirestore.getInstance();
+                DocumentReference docRef = mFirestore.collection("UserPreferences").document(email);
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (!document.exists()) {
+                                HashMap<String, String> userData = new HashMap<>();
+                                userData.put("username", "");
+                                userData.put("password", "");
+                                userData.put("email", email);
+                                userData.put("accountType", "Dolgozó");
+                                mFirestore.collection("UserPreferences").document(email).set(userData);
+                            }
+                        } else {
+                            Log.d(LOG_TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException apiException) {
                 Log.w(LOG_TAG, "Google sign in failed!", apiException);
