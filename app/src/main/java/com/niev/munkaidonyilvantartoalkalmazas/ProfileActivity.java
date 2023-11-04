@@ -1,5 +1,7 @@
 package com.niev.munkaidonyilvantartoalkalmazas;
 
+import static android.widget.Toast.makeText;
+
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,9 +26,11 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -32,8 +38,8 @@ public class ProfileActivity extends AppCompatActivity {
     private static final String LOG_TAG = ProfileActivity.class.getName();
     private final Calendar myCalendar = Calendar.getInstance();
     EditText userNameEditText;
-    EditText userEmailEditText;
-    EditText userIdNumber;
+    TextView userEmailEditText;
+    EditText userId;
     EditText userTAJNumber;
     EditText userAdoKartya;
     EditText userLakcim;
@@ -60,17 +66,13 @@ public class ProfileActivity extends AppCompatActivity {
         }
         userNameEditText = findViewById(R.id.userNameEditText);
         userEmailEditText = findViewById(R.id.userEmailEditText);
-        userIdNumber = findViewById(R.id.userIdNumber);
+        userId = findViewById(R.id.userId);
         userTAJNumber = findViewById(R.id.userTAJNumber);
         userAdoKartya = findViewById(R.id.userAdoKartya);
         userLakcim = findViewById(R.id.userLakcim);
         userDegree = findViewById(R.id.userDegree);
-        //create a list of items for the spinner.
         String[] degrees = new String[]{"Nincs képesítés", "6 osztály", "8. osztály", "Középiskola/Gimnázium", "Érettségi", "Diploma"};
-        //create an adapter to describe how the items are displayed, adapters are used in several places in android.
-        //There are multiple variations of this, but this is the basic variant.
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, degrees);
-        //set the spinners adapter to the previously created one.
         userDegree.setAdapter(adapter);
 
         birthDateEditText = findViewById(R.id.userBirthDate);
@@ -88,6 +90,13 @@ public class ProfileActivity extends AppCompatActivity {
                         Log.d(LOG_TAG, "DocumentSnapshot data: " + document.getData());
                         userNameEditText.setText(String.valueOf(document.get("userName")));
                         userEmailEditText.setText(String.valueOf(document.get("email")));
+                        userId.setText(String.valueOf(document.get("userId") == null ? "" : (document.get("userId"))));
+                        userTAJNumber.setText(String.valueOf(document.get("userTAJ") == null ? "" : (document.get("userTAJ"))));
+                        userAdoKartya.setText(String.valueOf(document.get("userAdo") == null ? "" : (document.get("userAdo"))));
+                        userLakcim.setText(String.valueOf(document.get("userLakcim") == null ? "" : (document.get("userLakcim"))));
+                        int index = adapter.getPosition(document.get("userDegree") == null ? "Nincs képzés" : (String) document.get("userDegree"));
+                        userDegree.setSelection(index);
+                        birthDateEditText.setText(String.valueOf(document.get("userBirthDate") == null ? "" : (document.get("userBirthDate"))));
                         for (int i = 0; i < accountTypeGroup.getChildCount(); i++) {
                             if (((RadioButton) accountTypeGroup.getChildAt(i)).getText().toString().equals(String.valueOf(document.get("accountType")))) {
                                 if (String.valueOf(document.get("accountType")).equals("Dolgozó")) {
@@ -135,6 +144,76 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void save(View view) {
+        boolean correctFormat = true;
+        String userNameText = userNameEditText.getText().toString();
+        String userIdText = userId.getText().toString();
+        String userTAJText = userTAJNumber.getText().toString();
+        String userAdoText = userAdoKartya.getText().toString();
+        String userLakcimText = userLakcim.getText().toString();
+        String userDegreeText = userDegree.getSelectedItem().toString();
+        String birthDateText = birthDateEditText.getText().toString();
+        int accountTypeId = accountTypeGroup.getCheckedRadioButtonId();
+        View radioButton = accountTypeGroup.findViewById(accountTypeId);
+        int id = accountTypeGroup.indexOfChild(radioButton);
+        String accountTypeText = ((RadioButton) accountTypeGroup.getChildAt(id)).getText().toString();
+        if (userIdText.length() > 0) {
+            int chars = 0;
+            int digits = 0;
+            for (int i = 0; i < userIdText.length(); i++) {
+                if (userIdText.charAt(i) >= 48 && userIdText.charAt(i) <= 57) {
+                    digits++;
+                } else {
+                    chars++;
+                }
+            }
+            correctFormat = digits == 6 && chars == 2;
+        }
+        if (userTAJText.length() > 0 && correctFormat) {
+            int digits = 0;
+            for (int i = 0; i < userTAJText.length(); i++) {
+                if (userTAJText.charAt(i) >= 48 && userTAJText.charAt(i) <= 57) {
+                    digits++;
+                }
+            }
+            correctFormat = digits == 9;
+        }
+        if (userAdoText.length() > 0 && correctFormat) {
+            int digits = 0;
+            for (int i = 0; i < userAdoText.length(); i++) {
+                if (userAdoText.charAt(i) >= 48 && userAdoText.charAt(i) <= 57) {
+                    digits++;
+                }
+            }
+            correctFormat = digits == 10;
+        }
+        if (userLakcimText.length() > 0 && correctFormat) {
+            int chars = 0;
+            int digits = 0;
+            for (int i = 0; i < userLakcimText.length(); i++) {
+                if (userLakcimText.charAt(i) >= 48 && userLakcimText.charAt(i) <= 57) {
+                    digits++;
+                } else {
+                    chars++;
+                }
+            }
+            correctFormat = digits == 6 && chars == 2;
+        }
+        if (!correctFormat) {
+            makeText(this, "Wrong ID format.", Toast.LENGTH_LONG).show();
+            Log.e(LOG_TAG, "ID misformat.");
+            return;
+        }
+        mFirestore = FirebaseFirestore.getInstance();
+        HashMap<String, String> userData = new HashMap<>();
+        userData.put("userName", userNameText);
+        userData.put("userId", userIdText);
+        userData.put("userTAJ", userTAJText);
+        userData.put("userAdo", userAdoText);
+        userData.put("userLakcim", userLakcimText);
+        userData.put("userDegree", userDegreeText);
+        userData.put("userBirthDate", birthDateText);
+        userData.put("accountType", accountTypeText);
+        mFirestore.collection("UserPreferences").document(email).set(userData, SetOptions.merge());
         finish();
     }
 }

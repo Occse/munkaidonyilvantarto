@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.niev.munkaidonyilvantartoalkalmazas.ProfileActivity">
 
     <RelativeLayout
@@ -21,6 +21,22 @@
             android:textAlignment="center"
             android:textSize="24sp" />
 
+        <TextView
+            android:id="@+id/userNamePlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/registrationTextView"
+            android:layout_alignBottom="@+id/userNameEditText"
+            android:gravity="center_vertical"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="@dimen/default_margin_side"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="@dimen/default_margin_side"
+            android:ems="10"
+            android:textSize="@dimen/profilePlaceholder"
+            android:hint="@string/user_name"/>
+
         <EditText
             android:id="@+id/userNameEditText"
             android:layout_width="match_parent"
@@ -28,55 +44,117 @@
             android:layout_below="@id/registrationTextView"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/profileMargin"
             android:layout_marginTop="@dimen/register_margin_top"
             android:layout_marginRight="10dp"
             android:ems="10"
             android:hint="@string/user_name"
             android:inputType="textPersonName" />
 
-        <EditText
-            android:id="@+id/userEmailEditText"
+        <TextView
+            android:id="@+id/userEmailPlaceholder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/userNameEditText"
+            android:layout_alignBottom="@+id/userEmailEditText"
+            android:gravity="center_vertical"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginLeft="@dimen/default_margin_side"
             android:layout_marginTop="@dimen/register_margin_top"
             android:layout_marginRight="@dimen/default_margin_side"
             android:ems="10"
-            android:hint="@string/email_address"
-            android:inputType="textEmailAddress" />
+            android:textSize="@dimen/profilePlaceholder"
+            android:hint="@string/email_address" />
+        <TextView
+            android:id="@+id/userEmailEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/userNameEditText"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="@dimen/profileMargin"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="@dimen/default_margin_side"
+            android:ems="10"
+            android:textSize="20sp"
+            android:hint="@string/email_address" />
 
+        <TextView
+            android:id="@+id/userIdPlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/userEmailEditText"
+            android:layout_alignBottom="@+id/userId"
+            android:gravity="center_vertical"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="@dimen/default_margin_side"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="@dimen/default_margin_side"
+            android:ems="10"
+            android:textSize="@dimen/profilePlaceholder"
+            android:hint="@string/userId"/>
         <EditText
-            android:id="@+id/userIdNumber"
+            android:id="@+id/userId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/userEmailEditText"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/profileMargin"
             android:layout_marginTop="@dimen/register_margin_top"
             android:layout_marginRight="10dp"
             android:ems="10"
             android:hint="@string/userIdNumber"
-            android:inputType="text" />
+            android:inputType="text"
+            android:maxLength="8" />
 
+        <TextView
+            android:id="@+id/userTAJPlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/userId"
+            android:layout_alignBottom="@+id/userTAJNumber"
+            android:gravity="center_vertical"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="@dimen/default_margin_side"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="@dimen/default_margin_side"
+            android:ems="10"
+            android:textSize="@dimen/profilePlaceholder"
+            android:hint="@string/userTAJNumber"/>
         <EditText
             android:id="@+id/userTAJNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/userIdNumber"
+            android:layout_below="@id/userId"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/profileMargin"
             android:layout_marginTop="@dimen/register_margin_top"
             android:layout_marginRight="10dp"
             android:ems="10"
             android:hint="@string/userTAJNumber"
-            android:inputType="number" />
+            android:inputType="number"
+            android:maxLength="9" />
 
+        <TextView
+            android:id="@+id/userAdoKartyaPlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/userTAJNumber"
+            android:layout_alignBottom="@+id/userAdoKartya"
+            android:gravity="center_vertical"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="@dimen/default_margin_side"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="@dimen/default_margin_side"
+            android:ems="10"
+            android:textSize="@dimen/profilePlaceholder"
+            android:hint="@string/useradokartya"/>
         <EditText
             android:id="@+id/userAdoKartya"
             android:layout_width="match_parent"
@@ -84,13 +162,30 @@
             android:layout_below="@id/userTAJNumber"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/profileMargin"
             android:layout_marginTop="@dimen/register_margin_top"
             android:layout_marginRight="10dp"
             android:ems="10"
             android:hint="@string/useradokartya"
-            android:inputType="number" />
+            android:maxLength="10"
+            android:inputType="number"
+             />
 
+        <TextView
+            android:id="@+id/userLakcimPlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/userAdoKartya"
+            android:layout_alignBottom="@+id/userLakcim"
+            android:gravity="center_vertical"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="@dimen/default_margin_side"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="@dimen/default_margin_side"
+            android:ems="10"
+            android:hint="@string/userLakcimPlaceholder"
+            android:textSize="@dimen/profilePlaceholder" />
         <EditText
             android:id="@+id/userLakcim"
             android:layout_width="match_parent"
@@ -98,13 +193,29 @@
             android:layout_below="@id/userAdoKartya"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/profileMargin"
             android:layout_marginTop="@dimen/register_margin_top"
             android:layout_marginRight="10dp"
             android:ems="10"
             android:hint="@string/userlakcim"
-            android:inputType="number" />
+            android:maxLength="8"
+            android:inputType="text" />
 
+        <TextView
+            android:id="@+id/userDegreePlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/userLakcim"
+            android:layout_alignBottom="@+id/userDegree"
+            android:gravity="center_vertical"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="@dimen/default_margin_side"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="@dimen/default_margin_side"
+            android:ems="10"
+            android:textSize="@dimen/profilePlaceholder"
+            android:hint="@string/userdegree"/>
         <Spinner
             android:id="@+id/userDegree"
             android:layout_width="match_parent"
@@ -112,7 +223,7 @@
             android:layout_below="@id/userLakcim"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/profileMargin"
             android:layout_marginTop="@dimen/register_margin_top"
             android:layout_marginRight="10dp"
             android:ems="10"
@@ -120,6 +231,22 @@
             android:inputType="number"
             android:spinnerMode="dropdown" />
 
+        <TextView
+            android:id="@+id/userBirthDatePlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/userDegree"
+            android:layout_alignBottom="@+id/userBirthDate"
+            android:gravity="center_vertical"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="@dimen/default_margin_side"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="@dimen/default_margin_side"
+            android:ems="10"
+            android:textSize="@dimen/profilePlaceholder"
+            android:hint="@string/BirthDate"
+            />
         <EditText
             android:id="@+id/userBirthDate"
             android:layout_width="match_parent"
@@ -127,7 +254,7 @@
             android:layout_below="@id/userDegree"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/profileMargin"
             android:layout_marginTop="@dimen/register_margin_top"
             android:layout_marginRight="10dp"
             android:clickable="false"
@@ -138,14 +265,30 @@
             android:hint="@string/BirthDate"
             android:inputType="date" />
 
+        <TextView
+            android:id="@+id/accountTypeGroupPlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/userBirthDate"
+            android:layout_alignBottom="@+id/accountTypeGroup"
+            android:gravity="center_vertical"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="@dimen/default_margin_side"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="@dimen/default_margin_side"
+            android:ems="10"
+            android:textSize="@dimen/profilePlaceholder"
+            android:hint="@string/accountType"/>
         <RadioGroup
             android:id="@+id/accountTypeGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/userBirthDate"
+            android:gravity="center_horizontal"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginLeft="@dimen/default_margin_side"
+            android:layout_marginLeft="@dimen/profileMargin"
             android:layout_marginTop="@dimen/register_margin_top"
             android:layout_marginRight="@dimen/default_margin_side"
             android:ems="10"

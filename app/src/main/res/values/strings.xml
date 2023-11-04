@@ -22,4 +22,7 @@
     <string name="useradokartya">Adószám</string>
     <string name="userlakcim">Lakcím</string>
     <string name="userdegree">Végzettség</string>
+    <string name="accountType">Foglalkozás</string>
+    <string name="userId">Igazolványszám</string>
+    <string name="userLakcimPlaceholder">Lakcímkártya szám</string>
 </resources>
