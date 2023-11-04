@@ -2,7 +2,7 @@
     <string name="app_name">Munkaidő nyilvántartó alkalmazás</string>
     <string name="password">Jelszó</string>
     <string name="password_again">Jelszó újra</string>
-    <string name="user_name">Felhasználónév</string>
+    <string name="user_name">Név</string>
     <string name="log_in">Bejelentkezés</string>
     <string name="register">Regisztráció</string>
     <string name="registration">Regisztráció</string>
@@ -13,4 +13,13 @@
     <string name="employer">Munkáltató</string>
     <string name="default_web_client_id">1</string>
     <string name="agreement">Regisztrációval hozzájárulok személyes adataim kezeléséhez.</string>
+    <string name="log_out">Kijelentkezés</string>
+    <string name="edit_profile">Profil szerkesztése</string>
+    <string name="save">Mentés</string>
+    <string name="userIdNumber">Személyigazolványszám</string>
+    <string name="userTAJNumber">TAJ szám</string>
+    <string name="BirthDate">Születési dátum</string>
+    <string name="useradokartya">Adószám</string>
+    <string name="userlakcim">Lakcím</string>
+    <string name="userdegree">Végzettség</string>
 </resources>

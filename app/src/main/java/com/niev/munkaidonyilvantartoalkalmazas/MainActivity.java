@@ -57,10 +57,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
-        String userName = userEmailET.getText().toString();
+        String userEmail = userEmailET.getText().toString();
         String password = passwordET.getText().toString();
 
-        mAuth.signInWithEmailAndPassword(userName, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(userEmail, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                             DocumentSnapshot document = task.getResult();
                             if (!document.exists()) {
                                 HashMap<String, String> userData = new HashMap<>();
-                                userData.put("username", "");
+                                userData.put("userName", account.getFamilyName() + " " + account.getGivenName());
                                 userData.put("password", "");
                                 userData.put("email", email);
                                 userData.put("accountType", "Dolgozó");

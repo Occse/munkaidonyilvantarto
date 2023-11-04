@@ -98,7 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
         Log.i(LOG_TAG, "Registered as: " + userName + ", e-mail: " + email + ", accountType: " + accountType);
         mFirestore = FirebaseFirestore.getInstance();
         HashMap<String, String> userData = new HashMap<>();
-        userData.put("username", userName);
+        userData.put("userName", userName);
         userData.put("password", password);
         userData.put("email", email);
         userData.put("accountType", accountType);
