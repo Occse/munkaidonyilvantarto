@@ -35,31 +35,31 @@ Az alkalmazás főbb funkcióit a fentiekben tagoltam.
 
 ## Tervezett ütemezés
 
-2023. szeptember:
+2023\. szeptember:
 Felhasználói regisztráció és bejelentkezés implementálása.
 Felhasználói profilok létrehozása és szerkesztése.
 Adatbázis és adatmodell tervezése.
 
-2023. október:
+2023\. október:
 Naptárintegráció bevezetése.
 Időbeosztás létrehozása és kezelése.
 
-2023. november:
+2023\. november:
 Munkáltatói funkciók megvalósítása.
 Dolgozók hozzáadása/törlése.
 
-2023. december:
+2023\. december:
 Üzenetküldés megvalósítása.
 A dolgozó és munkáltató közti üzenetek, kérelmek küldése/fogadása.
 
-2024. január:
+2024\. január:
 Dolgozók hozzárendelése a céghez.
 
-2024. február:
+2024\. február:
 Statisztikák létrehozása a munkáltató számára.
 
-2024. március:
+2024\. március:
 Szakdolgozat írás, apróbb hibák javítása
 
-2024. április:
+2024\. április:
 Szakdolgozat írás, apróbb hibák javítása
