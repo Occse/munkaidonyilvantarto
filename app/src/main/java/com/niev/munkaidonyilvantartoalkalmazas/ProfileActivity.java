@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -46,6 +47,9 @@ public class ProfileActivity extends AppCompatActivity {
     Spinner userDegree;
     EditText birthDateEditText;
     RadioGroup accountTypeGroup;
+    EditText companyName;
+    TextView companyNamePlaceholder;
+    LinearLayout functionButtons;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private FirebaseFirestore mFirestore;
@@ -71,6 +75,9 @@ public class ProfileActivity extends AppCompatActivity {
         userAdoKartya = findViewById(R.id.userAdoKartya);
         userLakcim = findViewById(R.id.userLakcim);
         userDegree = findViewById(R.id.userDegree);
+        companyName = findViewById(R.id.companyName);
+        companyNamePlaceholder = findViewById(R.id.companyNamePlaceholder);
+        functionButtons = findViewById(R.id.functionButtons);
         String[] degrees = new String[]{"Nincs képesítés", "6 osztály", "8. osztály", "Középiskola/Gimnázium", "Érettségi", "Diploma"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, degrees);
         userDegree.setAdapter(adapter);
@@ -101,11 +108,28 @@ public class ProfileActivity extends AppCompatActivity {
                             if (((RadioButton) accountTypeGroup.getChildAt(i)).getText().toString().equals(String.valueOf(document.get("accountType")))) {
                                 if (String.valueOf(document.get("accountType")).equals("Dolgozó")) {
                                     accountTypeGroup.check(R.id.worker);
+                                    companyName.setVisibility(View.GONE);
+                                    companyNamePlaceholder.setVisibility(View.GONE);
                                 } else {
                                     accountTypeGroup.check(R.id.employer);
+                                    companyName.setText(String.valueOf(document.get("companyName")));
+                                    companyName.setVisibility(View.VISIBLE);
+                                    companyNamePlaceholder.setVisibility(View.VISIBLE);
                                 }
                             }
                         }
+                        accountTypeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                                if (checkedId == R.id.employer) {
+                                    companyName.setVisibility(View.VISIBLE);
+                                    companyNamePlaceholder.setVisibility(View.VISIBLE);
+                                } else {
+                                    companyName.setVisibility(View.GONE);
+                                    companyNamePlaceholder.setVisibility(View.GONE);
+                                }
+                            }
+                        });
                         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -121,8 +145,6 @@ public class ProfileActivity extends AppCompatActivity {
                                 new DatePickerDialog(ProfileActivity.this, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
                             }
                         });
-                        //
-                        //
                     } else {
                         Log.d(LOG_TAG, "No such document");
                     }
@@ -152,6 +174,7 @@ public class ProfileActivity extends AppCompatActivity {
         String userLakcimText = userLakcim.getText().toString();
         String userDegreeText = userDegree.getSelectedItem().toString();
         String birthDateText = birthDateEditText.getText().toString();
+        String companyNameText = companyName.getText().toString();
         int accountTypeId = accountTypeGroup.getCheckedRadioButtonId();
         View radioButton = accountTypeGroup.findViewById(accountTypeId);
         int id = accountTypeGroup.indexOfChild(radioButton);
@@ -213,6 +236,7 @@ public class ProfileActivity extends AppCompatActivity {
         userData.put("userDegree", userDegreeText);
         userData.put("userBirthDate", birthDateText);
         userData.put("accountType", accountTypeText);
+        userData.put("companyName", companyNameText);
         mFirestore.collection("UserPreferences").document(email).set(userData, SetOptions.merge());
         finish();
     }

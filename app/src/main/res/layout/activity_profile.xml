@@ -307,10 +307,41 @@
                 android:text="@string/employer" />
         </RadioGroup>
 
+        <TextView
+            android:id="@+id/companyNamePlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/accountTypeGroup"
+            android:layout_alignBottom="@+id/companyName"
+            android:gravity="center_vertical"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="@dimen/default_margin_side"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="@dimen/default_margin_side"
+            android:ems="10"
+            android:textSize="@dimen/profilePlaceholder"
+            android:hint="@string/company_name" />
+
+        <EditText
+            android:id="@+id/companyName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/accountTypeGroup"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="@dimen/profileMargin"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="10dp"
+            android:ems="10"
+            android:hint="@string/company_name"
+            android:inputType="textPersonName" />
+
         <LinearLayout
+            android:id="@+id/functionButtons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/accountTypeGroup"
+            android:layout_below="@+id/companyName"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="@dimen/register_margin_top"
