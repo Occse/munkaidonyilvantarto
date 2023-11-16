@@ -1,9 +1,12 @@
 package com.niev.munkaidonyilvantartoalkalmazas;
 
+import static android.widget.Toast.makeText;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +36,7 @@ public class AddWorkerActivity extends AppCompatActivity {
     private String email;
     private String name;
     private String workerEmail;
+    private String company;
     private int members;
     private String companyName;
 
@@ -106,6 +110,7 @@ public class AddWorkerActivity extends AppCompatActivity {
                                         workerData.put("userLakcim", String.valueOf(workerDoc.get("userLakcim")));
                                         workerData.put("userDegree", String.valueOf(workerDoc.get("userDegree")));
                                         workerData.put("userBirthDate", String.valueOf(workerDoc.get("userBirthDate")));
+                                        company = String.valueOf(workerDoc.get("companyName"));
                                         Log.d(LOG_TAG, "email: " + workerEmail);
 
                                         //getting user from email
@@ -139,11 +144,15 @@ public class AddWorkerActivity extends AppCompatActivity {
                                                     DocumentSnapshot document = task.getResult();
                                                     if (document.exists()) {
                                                         Log.d(LOG_TAG, "DocumentSnapshot data: " + document.getData());
-                                                        if (!document.toString().contains("userId=" + workerData.get("userId"))) {
+                                                        if (!document.toString().contains("userId=" + workerData.get("userId")) && !company.equals(companyName) && company.equals("Munkanélküli") ) {
                                                             mFirestore.collection("Companies").document(companyName).set(companyData, SetOptions.merge());
                                                             HashMap<String, String> userData = new HashMap<>();
                                                             userData.put("companyName", companyName);
                                                             mFirestore.collection("UserPreferences").document(workerEmail).set(userData, SetOptions.merge());
+                                                            finish();
+                                                        }
+                                                        else{
+                                                            makeText(AddWorkerActivity.this, "Worker is already in a company", Toast.LENGTH_LONG).show();
                                                         }
                                                     } else {
                                                         Log.d(LOG_TAG, "No such document");
@@ -169,7 +178,5 @@ public class AddWorkerActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 }
