@@ -76,7 +76,7 @@ public class MainUserActivity extends AppCompatActivity {
                 }
 
                 if (snapshot != null && snapshot.exists()) {
-                    companyNameText.setText("cég: " + String.valueOf(snapshot.getData().get("companyName")));
+                    companyNameText.setText("cég: " + snapshot.getData().get("companyName"));
                     Log.d(LOG_TAG, "Current data: " + snapshot.getData());
                     isEmployer = String.valueOf(snapshot.getData().get("accountType")).equals("Munkáltató");
                     String welcomeString = snapshot.getData().get("userName") == null ? "Felhasználó" : String.valueOf(snapshot.getData().get("userName"));
@@ -116,7 +116,7 @@ public class MainUserActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.manageWorkers) {
-            Log.d(LOG_TAG, "manageWorkers clicked!");
+            Log.d(LOG_TAG, "ManageWorkers clicked!");
             manageWorkers();
             return true;
         } else if (item.getItemId() == R.id.logout) {

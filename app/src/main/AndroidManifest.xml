@@ -17,6 +17,9 @@
         android:theme="@style/Theme.MunkaidoNyilvantartoAlkalmazas"
         tools:targetApi="31">
         <activity
+            android:name=".AddWorkerActivity"
+            android:exported="false" />
+        <activity
             android:name=".ManageWorkersActivity"
             android:exported="false" />
         <activity

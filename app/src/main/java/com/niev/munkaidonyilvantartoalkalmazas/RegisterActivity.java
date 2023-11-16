@@ -103,7 +103,6 @@ public class RegisterActivity extends AppCompatActivity {
         userData.put("email", email);
         userData.put("accountType", accountType);
         mFirestore.collection("UserPreferences").document(email).set(userData);
-//        mFirestore.collection("UserPreferences").document(email).update("accountType", accountType);
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {

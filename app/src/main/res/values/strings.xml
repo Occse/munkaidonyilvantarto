@@ -28,4 +28,7 @@
     <string name="company_name">Cég</string>
     <string name="manageWorkers">Dolgozók kezelése</string>
     <string name="unemployed">Munkanélküli</string>
+    <string name="addWorker">Dolgozó hozzáadása</string>
+    <string name="add_worker">Hozzáadás</string>
+    <string name="addWorkerPlaceholder">Dolgozó hozzáadása</string>
 </resources>

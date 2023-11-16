@@ -255,6 +255,7 @@ public class ProfileActivity extends AppCompatActivity {
         HashMap<String, String> userIds = new HashMap<>();
         userIds.put("userName", userNameText);
         userIds.put("userId", userIdText);
+        userIds.put("email", email);
         DocumentReference docRef = mFirestore.collection("userCardIDs").document(userIdText);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -264,7 +265,7 @@ public class ProfileActivity extends AppCompatActivity {
                     if (document.exists() && userIdText.equals(lastID)) {
                         mFirestore.collection("userCardIDs").document(userIdText).set(userIds, SetOptions.merge());
                         Log.d(LOG_TAG, "Document exists");
-                    } else if (!document.exists() && !userIdText.equals(lastID)) {
+                    } else if (!document.exists()) {
                         mFirestore.collection("userCardIDs").document(lastID).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -284,6 +285,7 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         HashMap<String, String> userData = new HashMap<>();
         userData.put("userName", userNameText);
