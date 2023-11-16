@@ -20,6 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -50,11 +52,14 @@ public class ProfileActivity extends AppCompatActivity {
     EditText companyName;
     TextView companyNamePlaceholder;
     LinearLayout functionButtons;
+    TextView companyNameText;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private FirebaseFirestore mFirestore;
     private CollectionReference mCollection;
     private String email;
+    private String lastOptionText;
+    private String lastID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +83,7 @@ public class ProfileActivity extends AppCompatActivity {
         companyName = findViewById(R.id.companyName);
         companyNamePlaceholder = findViewById(R.id.companyNamePlaceholder);
         functionButtons = findViewById(R.id.functionButtons);
+        companyNameText = findViewById(R.id.companyNameText);
         String[] degrees = new String[]{"Nincs képesítés", "6 osztály", "8. osztály", "Középiskola/Gimnázium", "Érettségi", "Diploma"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, degrees);
         userDegree.setAdapter(adapter);
@@ -98,6 +104,7 @@ public class ProfileActivity extends AppCompatActivity {
                         userNameEditText.setText(String.valueOf(document.get("userName")));
                         userEmailEditText.setText(String.valueOf(document.get("email")));
                         userId.setText(String.valueOf(document.get("userId") == null ? "" : (document.get("userId"))));
+                        lastID = String.valueOf(document.get("userId"));
                         userTAJNumber.setText(String.valueOf(document.get("userTAJ") == null ? "" : (document.get("userTAJ"))));
                         userAdoKartya.setText(String.valueOf(document.get("userAdo") == null ? "" : (document.get("userAdo"))));
                         userLakcim.setText(String.valueOf(document.get("userLakcim") == null ? "" : (document.get("userLakcim"))));
@@ -107,14 +114,19 @@ public class ProfileActivity extends AppCompatActivity {
                         for (int i = 0; i < accountTypeGroup.getChildCount(); i++) {
                             if (((RadioButton) accountTypeGroup.getChildAt(i)).getText().toString().equals(String.valueOf(document.get("accountType")))) {
                                 if (String.valueOf(document.get("accountType")).equals("Dolgozó")) {
+                                    companyNameText.setText(document.get("companyName") != null ? String.valueOf(document.get("companyName")) : "Munkanélküli");
                                     accountTypeGroup.check(R.id.worker);
-                                    companyName.setVisibility(View.GONE);
-                                    companyNamePlaceholder.setVisibility(View.GONE);
+                                    companyName.setVisibility(View.INVISIBLE);
+                                    companyNameText.setVisibility(View.VISIBLE);
+                                    lastOptionText = String.valueOf(companyName.getText());
+                                    companyName.setText(lastOptionText);
                                 } else {
                                     accountTypeGroup.check(R.id.employer);
                                     companyName.setText(String.valueOf(document.get("companyName")));
                                     companyName.setVisibility(View.VISIBLE);
-                                    companyNamePlaceholder.setVisibility(View.VISIBLE);
+                                    companyNameText.setVisibility(View.INVISIBLE);
+                                    lastOptionText = String.valueOf(companyNameText.getText());
+                                    companyNameText.setText(lastOptionText);
                                 }
                             }
                         }
@@ -123,10 +135,18 @@ public class ProfileActivity extends AppCompatActivity {
                             public void onCheckedChanged(RadioGroup group, int checkedId) {
                                 if (checkedId == R.id.employer) {
                                     companyName.setVisibility(View.VISIBLE);
-                                    companyNamePlaceholder.setVisibility(View.VISIBLE);
+                                    companyNameText.setVisibility(View.INVISIBLE);
+                                    lastOptionText = String.valueOf(companyName.getText());
+                                    companyName.setText(lastOptionText);
                                 } else {
-                                    companyName.setVisibility(View.GONE);
-                                    companyNamePlaceholder.setVisibility(View.GONE);
+                                    if (lastOptionText.equals("")) {
+                                        companyNameText.setText(R.string.unemployed);
+                                    } else {
+                                        lastOptionText = String.valueOf(companyNameText.getText());
+                                        companyNameText.setText(lastOptionText);
+                                    }
+                                    companyName.setVisibility(View.INVISIBLE);
+                                    companyNameText.setVisibility(View.VISIBLE);
                                 }
                             }
                         });
@@ -174,11 +194,16 @@ public class ProfileActivity extends AppCompatActivity {
         String userLakcimText = userLakcim.getText().toString();
         String userDegreeText = userDegree.getSelectedItem().toString();
         String birthDateText = birthDateEditText.getText().toString();
-        String companyNameText = companyName.getText().toString();
+        String companyNameText;
         int accountTypeId = accountTypeGroup.getCheckedRadioButtonId();
         View radioButton = accountTypeGroup.findViewById(accountTypeId);
         int id = accountTypeGroup.indexOfChild(radioButton);
         String accountTypeText = ((RadioButton) accountTypeGroup.getChildAt(id)).getText().toString();
+        if (accountTypeText.equals("Munkáltató")) {
+            companyNameText = companyName.getText().toString();
+        } else {
+            companyNameText = "Munkanélküli";
+        }
         if (userIdText.length() > 0) {
             int chars = 0;
             int digits = 0;
@@ -227,6 +252,39 @@ public class ProfileActivity extends AppCompatActivity {
             return;
         }
         mFirestore = FirebaseFirestore.getInstance();
+        HashMap<String, String> userIds = new HashMap<>();
+        userIds.put("userName", userNameText);
+        userIds.put("userId", userIdText);
+        DocumentReference docRef = mFirestore.collection("userCardIDs").document(userIdText);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists() && userIdText.equals(lastID)) {
+                        mFirestore.collection("userCardIDs").document(userIdText).set(userIds, SetOptions.merge());
+                        Log.d(LOG_TAG, "Document exists");
+                    } else if (!document.exists() && !userIdText.equals(lastID)) {
+                        mFirestore.collection("userCardIDs").document(lastID).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(LOG_TAG, "DocumentSnapshot successfully deleted!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(LOG_TAG, "Error deleting document", e);
+                                    }
+                                });
+                        mFirestore.collection("userCardIDs").document(userIdText).set(userIds);
+                    }
+                } else {
+                    Log.d(LOG_TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
         HashMap<String, String> userData = new HashMap<>();
         userData.put("userName", userNameText);
         userData.put("userId", userIdText);
@@ -238,6 +296,14 @@ public class ProfileActivity extends AppCompatActivity {
         userData.put("accountType", accountTypeText);
         userData.put("companyName", companyNameText);
         mFirestore.collection("UserPreferences").document(email).set(userData, SetOptions.merge());
+        if (!companyNameText.equals("Munkanélküli")) {
+            userData.remove("accountType");
+            userData.remove("companyName");
+            HashMap<String, String> companyData = new HashMap<>();
+            companyData.put("Employer", userNameText);
+            companyData.put("EmployerData", String.valueOf(userData));
+            mFirestore.collection("Companies").document(companyNameText).set(companyData, SetOptions.merge());
+        }
         finish();
     }
 }

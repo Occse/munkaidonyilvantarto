@@ -25,5 +25,7 @@
     <string name="accountType">Foglalkozás</string>
     <string name="userId">Igazolványszám</string>
     <string name="userLakcimPlaceholder">Lakcímkártya szám</string>
-    <string name="company_name">Cég neve</string>
+    <string name="company_name">Cég</string>
+    <string name="manageWorkers">Dolgozók kezelése</string>
+    <string name="unemployed">Munkanélküli</string>
 </resources>
