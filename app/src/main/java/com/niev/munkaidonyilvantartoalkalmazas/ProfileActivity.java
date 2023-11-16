@@ -53,10 +53,8 @@ public class ProfileActivity extends AppCompatActivity {
     TextView companyNamePlaceholder;
     LinearLayout functionButtons;
     TextView companyNameText;
-    private FirebaseAuth mAuth;
     private FirebaseUser user;
     private FirebaseFirestore mFirestore;
-    private CollectionReference mCollection;
     private String email;
     private String lastOptionText;
     private String lastID;
@@ -91,7 +89,6 @@ public class ProfileActivity extends AppCompatActivity {
         birthDateEditText = findViewById(R.id.userBirthDate);
         accountTypeGroup = findViewById(R.id.accountTypeGroup);
 
-        mAuth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("UserPreferences").document(email);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

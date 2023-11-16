@@ -40,7 +40,6 @@ public class RegisterActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
-    private CollectionReference mCollection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

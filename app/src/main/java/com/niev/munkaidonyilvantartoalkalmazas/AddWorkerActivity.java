@@ -30,11 +30,9 @@ import java.util.Objects;
 public class AddWorkerActivity extends AppCompatActivity {
     private static final String LOG_TAG = AddWorkerActivity.class.getName();
     EditText workerID;
-    private FirebaseAuth mAuth;
     private FirebaseUser user;
     private FirebaseFirestore mFirestore;
     private String email;
-    private String name;
     private String workerEmail;
     private String company;
     private int members;
@@ -53,7 +51,6 @@ public class AddWorkerActivity extends AppCompatActivity {
             finish();
         }
         workerID = findViewById(R.id.workerID);
-        mAuth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("UserPreferences").document(email);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -63,7 +60,6 @@ public class AddWorkerActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(LOG_TAG, "DocumentSnapshot data: " + document.getData());
-                        name = String.valueOf(document.get("userName"));
                         companyName = String.valueOf(document.get("companyName"));
                     } else {
                         Log.d(LOG_TAG, "No such document");
