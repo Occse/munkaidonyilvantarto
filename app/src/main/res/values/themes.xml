@@ -12,8 +12,9 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimary</item>
     </style>
-    <style name="ItemDetailText" parent="TextAppearance.AppCompat.Subhead"/>
-    <style name="ItemTitle" parent="TextAppearance.AppCompat.Headline"/>
-    <style name="ItemDetailTitle" parent="TextAppearance.AppCompat.Headline"/>
+
+    <style name="WorkerDetails" parent="TextAppearance.AppCompat.Subhead"/>
+    <style name="WorkerName" parent="TextAppearance.AppCompat.Headline"/>
+    <style name="WorkerDetail" parent="TextAppearance.AppCompat.Headline"/>
     <style name="Theme.MunkaidoNyilvantartoAlkalmazas" parent="Base.Theme.MunkaidoNyilvantartoAlkalmazas" />
 </resources>
