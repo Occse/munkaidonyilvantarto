@@ -52,6 +52,38 @@
             android:inputType="text"
             android:maxLength="8" />
 
+
+        <TextView
+            android:id="@+id/userWorkerPlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/workerID"
+            android:layout_alignBottom="@+id/userMunkakor"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="@dimen/default_margin_side"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="@dimen/default_margin_side"
+            android:ems="10"
+            android:gravity="center_vertical"
+            android:hint="@string/userMunkakor"
+            android:textSize="@dimen/profilePlaceholder" />
+
+        <EditText
+            android:id="@+id/userMunkakor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/workerID"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="@dimen/profileMargin"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="10dp"
+            android:ems="10"
+            android:hint="@string/userMunkakor"
+            android:inputType="text"
+            android:maxLength="8" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

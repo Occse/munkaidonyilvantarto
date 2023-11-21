@@ -3,6 +3,7 @@ package com.niev.munkaidonyilvantartoalkalmazas;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -135,6 +136,7 @@ public class MainUserActivity extends AppCompatActivity {
 
     private void manageWorkers() {
         Intent manageWorkersIntent = new Intent(this, ManageWorkersActivity.class);
+        manageWorkersIntent.putExtra("companyName", companyNameText.getText().toString().split(" ")[1]);
         startActivity(manageWorkersIntent);
     }
 

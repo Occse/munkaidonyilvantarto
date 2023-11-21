@@ -15,21 +15,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.AggregateQuery;
-import com.google.firebase.firestore.AggregateQuerySnapshot;
-import com.google.firebase.firestore.AggregateSource;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
-import java.util.Objects;
+import java.util.Map;
 
 public class AddWorkerActivity extends AppCompatActivity {
     private static final String LOG_TAG = AddWorkerActivity.class.getName();
     EditText workerID;
+    EditText workerMunkakor;
     private FirebaseUser user;
     private FirebaseFirestore mFirestore;
     private String email;
@@ -51,6 +48,7 @@ public class AddWorkerActivity extends AppCompatActivity {
             finish();
         }
         workerID = findViewById(R.id.workerID);
+        workerMunkakor = findViewById(R.id.userMunkakor);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("UserPreferences").document(email);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -77,6 +75,7 @@ public class AddWorkerActivity extends AppCompatActivity {
 
     public void addWorker(View view) {
         String workerIDText = String.valueOf(workerID.getText());
+        String workerMunkakorText = String.valueOf(workerMunkakor.getText());
         HashMap<String, String> workerData = new HashMap<>();
         mFirestore = FirebaseFirestore.getInstance();
         // getting user from cardID
@@ -103,9 +102,11 @@ public class AddWorkerActivity extends AppCompatActivity {
                                         workerData.put("userId", String.valueOf(workerDoc.get("userId")));
                                         workerData.put("userTAJ", String.valueOf(workerDoc.get("userTAJ")));
                                         workerData.put("userAdo", String.valueOf(workerDoc.get("userAdo")));
+                                        workerData.put("email", String.valueOf(workerDoc.get("email")));
                                         workerData.put("userLakcim", String.valueOf(workerDoc.get("userLakcim")));
                                         workerData.put("userDegree", String.valueOf(workerDoc.get("userDegree")));
                                         workerData.put("userBirthDate", String.valueOf(workerDoc.get("userBirthDate")));
+                                        workerData.put("userMunkakor", workerMunkakorText);
                                         company = String.valueOf(workerDoc.get("companyName"));
                                         Log.d(LOG_TAG, "email: " + workerEmail);
 
@@ -113,48 +114,46 @@ public class AddWorkerActivity extends AppCompatActivity {
 
                                         Log.d(LOG_TAG, "worker: " + workerData);
                                         //counting workers
-                                        Query query = mFirestore.collection("Companies").document(companyName).getParent();
-                                        AggregateQuery countQuery = query.count();
-                                        countQuery.get(AggregateSource.SERVER).addOnCompleteListener(new OnCompleteListener<AggregateQuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<AggregateQuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    // Count fetched successfully
-                                                    AggregateQuerySnapshot snapshot = task.getResult();
-                                                    Log.d(LOG_TAG, "Count: " + snapshot.getCount());
-                                                    members = (int) snapshot.getCount() / 2;
-                                                } else {
-                                                    Log.d(LOG_TAG, "Count failed: ", task.getException());
-                                                }
-                                            }
-                                        });
-
-                                        //adding workers
-                                        HashMap<String, String> companyData = new HashMap<>();
-                                        companyData.put("Worker" + members, workerData.get("userName"));
-                                        companyData.put("Worker" + members + "Data", String.valueOf(workerData));
-                                        mFirestore.collection("Companies").document(companyName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        DocumentReference docRef = mFirestore.collection("Companies").document(companyName);
+                                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                 if (task.isSuccessful()) {
                                                     DocumentSnapshot document = task.getResult();
                                                     if (document.exists()) {
-                                                        Log.d(LOG_TAG, "DocumentSnapshot data: " + document.getData());
-                                                        if (!document.toString().contains("userId=" + workerData.get("userId")) && !company.equals(companyName) && company.equals("Munkanélküli") ) {
-                                                            mFirestore.collection("Companies").document(companyName).set(companyData, SetOptions.merge());
-                                                            HashMap<String, String> userData = new HashMap<>();
-                                                            userData.put("companyName", companyName);
-                                                            mFirestore.collection("UserPreferences").document(workerEmail).set(userData, SetOptions.merge());
-                                                            finish();
-                                                        }
-                                                        else{
-                                                            makeText(AddWorkerActivity.this, "Worker is already in a company", Toast.LENGTH_LONG).show();
-                                                        }
-                                                    } else {
-                                                        Log.d(LOG_TAG, "No such document");
+                                                        Map<String, Object> map = document.getData();
+                                                        Log.d(LOG_TAG, "number of fields: " + map.size());
+                                                        members = map.size() / 2;
+                                                        Log.d(LOG_TAG, "Count: " + members);
+                                                        //adding workers
+                                                        HashMap<String, Object> companyWorkerData = new HashMap<>();
+                                                        companyWorkerData.put("Worker" + members + "Data", workerData);
+                                                        Log.d(LOG_TAG, "workermemberdata: " + companyWorkerData);
+                                                        mFirestore.collection("Companies").document(companyName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    DocumentSnapshot document = task.getResult();
+                                                                    if (document.exists()) {
+                                                                        Log.d(LOG_TAG, "DocumentSnapshot data: " + document.getData());
+                                                                        if (!document.toString().contains("userId=" + workerData.get("userId")) && !company.equals(companyName) && company.equals("Munkanélküli")) {
+                                                                            mFirestore.collection("Companies").document(companyName).set(companyWorkerData, SetOptions.merge());
+                                                                            HashMap<String, String> userData = new HashMap<>();
+                                                                            userData.put("companyName", companyName);
+                                                                            mFirestore.collection("UserPreferences").document(workerEmail).set(userData, SetOptions.merge());
+                                                                            finish();
+                                                                        } else {
+                                                                            makeText(AddWorkerActivity.this, "Worker is already in a company", Toast.LENGTH_LONG).show();
+                                                                        }
+                                                                    } else {
+                                                                        Log.d(LOG_TAG, "No such document");
+                                                                    }
+                                                                } else {
+                                                                    Log.d(LOG_TAG, "get failed with ", task.getException());
+                                                                }
+                                                            }
+                                                        });
                                                     }
-                                                } else {
-                                                    Log.d(LOG_TAG, "get failed with ", task.getException());
                                                 }
                                             }
                                         });

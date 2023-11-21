@@ -298,9 +298,8 @@ public class ProfileActivity extends AppCompatActivity {
         if (!companyNameText.equals("Munkanélküli")) {
             userData.remove("accountType");
             userData.remove("companyName");
-            HashMap<String, String> companyData = new HashMap<>();
-            companyData.put("Employer", userNameText);
-            companyData.put("EmployerData", String.valueOf(userData));
+            HashMap<String, Object> companyData = new HashMap<>();
+            companyData.put("EmployerData", userData);
             mFirestore.collection("Companies").document(companyNameText).set(companyData, SetOptions.merge());
         }
         finish();

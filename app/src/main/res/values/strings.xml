@@ -31,4 +31,9 @@
     <string name="addWorker">Dolgozó hozzáadása</string>
     <string name="add_worker">Hozzáadás</string>
     <string name="addWorkerPlaceholder">Dolgozó hozzáadása</string>
+    <string name="workerName">Dolgozó neve</string>
+    <string name="kickWorker">Dolgozó eltávolítása</string>
+    <string name="workerEmail">Dolgozó email címe</string>
+    <string name="workerImageDesc">TODO</string>
+    <string name="userMunkakor">Munkakör</string>
 </resources>
