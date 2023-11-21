@@ -8,5 +8,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="profileMargin">135dp</dimen>
     <dimen name="profilePlaceholder">14sp</dimen>
-    <dimen name="workerMargin">157dp</dimen>
+    <dimen name="workerMargin">200dp</dimen>
 </resources>
