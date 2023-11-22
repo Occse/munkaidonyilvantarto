@@ -36,10 +36,10 @@ public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.viewHolder
 
         holder.bindToManagment(currentItem);
 
-        if (holder.getAdapterPosition() > lastPosition) {
+        if (holder.getBindingAdapterPosition() > lastPosition) {
             Animation animation = AnimationUtils.loadAnimation(nContext, R.anim.slide_in_row);
             holder.itemView.startAnimation(animation);
-            lastPosition = holder.getAdapterPosition();
+            lastPosition = holder.getBindingAdapterPosition();
         }
     }
 
