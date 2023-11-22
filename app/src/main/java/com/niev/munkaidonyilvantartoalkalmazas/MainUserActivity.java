@@ -3,7 +3,6 @@ package com.niev.munkaidonyilvantartoalkalmazas;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +22,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+
+import java.util.Objects;
 
 
 public class MainUserActivity extends AppCompatActivity {
@@ -58,7 +59,6 @@ public class MainUserActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         isEmployer = String.valueOf(document.get("accountType")).equals("Munkáltató");
-                        onPrepareOptionsMenu(menuList);
                     } else {
                         Log.d(LOG_TAG, "No such document");
                     }
@@ -68,6 +68,7 @@ public class MainUserActivity extends AppCompatActivity {
             }
         });
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot,
                                 @Nullable FirebaseFirestoreException e) {
@@ -77,7 +78,7 @@ public class MainUserActivity extends AppCompatActivity {
                 }
 
                 if (snapshot != null && snapshot.exists()) {
-                    companyNameText.setText("cég: " + snapshot.getData().get("companyName"));
+                    companyNameText.setText("cég: " + Objects.requireNonNull(snapshot.getData()).get("companyName"));
                     Log.d(LOG_TAG, "Current data: " + snapshot.getData());
                     isEmployer = String.valueOf(snapshot.getData().get("accountType")).equals("Munkáltató");
                     String welcomeString = snapshot.getData().get("userName") == null ? "Felhasználó" : String.valueOf(snapshot.getData().get("userName"));
@@ -97,21 +98,19 @@ public class MainUserActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menuList = menu;
-        supportInvalidateOptionsMenu();
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.mainuseractivity_list_menu, menu);
         // Force showing icons for menu items
         if (menu instanceof MenuBuilder)
             ((MenuBuilder) menu).setOptionalIconsVisible(true);
+        supportInvalidateOptionsMenu();
         return true;
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(@NonNull Menu menu) {
-        MenuItem item = menu.findItem(R.id.manageWorkers);
-        item.setVisible(isEmployer);
-        super.onPrepareOptionsMenu(menu);
-        return false;
+    public void supportInvalidateOptionsMenu() {
+        this.menuList.findItem(R.id.manageWorkers).setVisible(isEmployer);
+        super.supportInvalidateOptionsMenu();
     }
 
     @Override

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -49,17 +48,17 @@ public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.viewHolder
         return mWorkerDataData.size();
     }
 
-    class viewHolderWorker extends RecyclerView.ViewHolder {
-        private TextView mUserName;
+    static class viewHolderWorker extends RecyclerView.ViewHolder {
+        private final TextView mUserName;
         private TextView mWorkerImage;
-        private TextView mEmail;
-        private TextView mUserAdo;
-        private TextView mUserDegree;
-        private TextView mUserBirthDate;
-        private TextView mUserId;
-        private TextView mUserLakcim;
-        private TextView mUserTAJ;
-        private TextView mUserMunkakor;
+        private final TextView mEmail;
+        private final TextView mUserAdo;
+        private final TextView mUserDegree;
+        private final TextView mUserBirthDate;
+        private final TextView mUserId;
+        private final TextView mUserLakcim;
+        private final TextView mUserTAJ;
+        private final TextView mUserMunkakor;
 
         viewHolderWorker(@NonNull View itemView) {
             super(itemView);

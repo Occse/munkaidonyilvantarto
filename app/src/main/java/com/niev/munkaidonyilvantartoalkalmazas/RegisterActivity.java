@@ -20,7 +20,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -89,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
             Log.e(LOG_TAG, "The two passwords didn't match.");
             return;
         }
-        if (!agreementConfirmed){
+        if (!agreementConfirmed) {
             makeText(this, "Nem fogadtad el az adatkezelési nyilatkozatot!", Toast.LENGTH_LONG).show();
             Log.e(LOG_TAG, "Agreement wasn't confirmed.");
             return;
