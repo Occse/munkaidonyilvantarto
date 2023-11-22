@@ -123,7 +123,7 @@ public class AddWorkerActivity extends AppCompatActivity {
                                                     if (document.exists()) {
                                                         Map<String, Object> map = document.getData();
                                                         Log.d(LOG_TAG, "number of fields: " + map.size());
-                                                        members = map.size() / 2;
+                                                        members = map.size() - 1;
                                                         Log.d(LOG_TAG, "Count: " + members);
                                                         //adding workers
                                                         HashMap<String, Object> companyWorkerData = new HashMap<>();
