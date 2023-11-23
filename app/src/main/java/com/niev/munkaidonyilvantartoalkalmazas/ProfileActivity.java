@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -16,13 +15,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -37,7 +31,7 @@ import java.util.Locale;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = ProfileActivity.class.getName();
+    private static final String TAG = ProfileActivity.class.getName();
     private final Calendar myCalendar = Calendar.getInstance();
     EditText userNameEditText;
     TextView userEmailEditText;
@@ -64,10 +58,10 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            Log.d(LOG_TAG, "auth success");
+            Log.d(TAG, "auth success");
             email = user.getEmail();
         } else {
-            Log.d(LOG_TAG, "auth failed");
+            Log.d(TAG, "auth failed");
             finish();
         }
         userNameEditText = findViewById(R.id.userNameEditText);
@@ -90,83 +84,69 @@ public class ProfileActivity extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("UserPreferences").document(email);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(LOG_TAG, "DocumentSnapshot data: " + document.getData());
-                        userNameEditText.setText(String.valueOf(document.get("userName")));
-                        userEmailEditText.setText(String.valueOf(document.get("email")));
-                        userId.setText(String.valueOf(document.get("userId") == null ? "" : (document.get("userId"))));
-                        lastID = String.valueOf(document.get("userId"));
-                        userTAJNumber.setText(String.valueOf(document.get("userTAJ") == null ? "" : (document.get("userTAJ"))));
-                        userAdoKartya.setText(String.valueOf(document.get("userAdo") == null ? "" : (document.get("userAdo"))));
-                        userLakcim.setText(String.valueOf(document.get("userLakcim") == null ? "" : (document.get("userLakcim"))));
-                        int index = adapter.getPosition(document.get("userDegree") == null ? "Nincs képzés" : (String) document.get("userDegree"));
-                        userDegree.setSelection(index);
-                        birthDateEditText.setText(String.valueOf(document.get("userBirthDate") == null ? "" : (document.get("userBirthDate"))));
-                        for (int i = 0; i < accountTypeGroup.getChildCount(); i++) {
-                            if (((RadioButton) accountTypeGroup.getChildAt(i)).getText().toString().equals(String.valueOf(document.get("accountType")))) {
-                                if (String.valueOf(document.get("accountType")).equals("Dolgozó")) {
-                                    companyNameText.setText(document.get("companyName") != null ? String.valueOf(document.get("companyName")) : "Munkanélküli");
-                                    accountTypeGroup.check(R.id.worker);
-                                    companyName.setVisibility(View.INVISIBLE);
-                                    companyNameText.setVisibility(View.VISIBLE);
-                                    lastOptionText = String.valueOf(companyName.getText());
-                                    companyName.setText(lastOptionText);
-                                } else {
-                                    accountTypeGroup.check(R.id.employer);
-                                    companyName.setText(String.valueOf(document.get("companyName")));
-                                    companyName.setVisibility(View.VISIBLE);
-                                    companyNameText.setVisibility(View.INVISIBLE);
-                                    lastOptionText = String.valueOf(companyNameText.getText());
-                                    companyNameText.setText(lastOptionText);
-                                }
+        docRef.get().addOnCompleteListener(userPreferencesTask -> {
+            if (userPreferencesTask.isSuccessful()) {
+                DocumentSnapshot document = userPreferencesTask.getResult();
+                if (document.exists()) {
+                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                    userNameEditText.setText(String.valueOf(document.get("userName")));
+                    userEmailEditText.setText(String.valueOf(document.get("email")));
+                    userId.setText(String.valueOf(document.get("userId") == null ? "" : (document.get("userId"))));
+                    lastID = String.valueOf(document.get("userId"));
+                    userTAJNumber.setText(String.valueOf(document.get("userTAJ") == null ? "" : (document.get("userTAJ"))));
+                    userAdoKartya.setText(String.valueOf(document.get("userAdo") == null ? "" : (document.get("userAdo"))));
+                    userLakcim.setText(String.valueOf(document.get("userLakcim") == null ? "" : (document.get("userLakcim"))));
+                    int index = adapter.getPosition(document.get("userDegree") == null ? "Nincs képzés" : (String) document.get("userDegree"));
+                    userDegree.setSelection(index);
+                    birthDateEditText.setText(String.valueOf(document.get("userBirthDate") == null ? "" : (document.get("userBirthDate"))));
+                    for (int i = 0; i < accountTypeGroup.getChildCount(); i++) {
+                        if (((RadioButton) accountTypeGroup.getChildAt(i)).getText().toString().equals(String.valueOf(document.get("accountType")))) {
+                            if (String.valueOf(document.get("accountType")).equals("Dolgozó")) {
+                                companyNameText.setText(document.get("companyName") != null ? String.valueOf(document.get("companyName")) : "Munkanélküli");
+                                accountTypeGroup.check(R.id.worker);
+                                companyName.setVisibility(View.INVISIBLE);
+                                companyNameText.setVisibility(View.VISIBLE);
+                                lastOptionText = String.valueOf(companyName.getText());
+                                companyName.setText(lastOptionText);
+                            } else {
+                                accountTypeGroup.check(R.id.employer);
+                                companyName.setText(String.valueOf(document.get("companyName")));
+                                companyName.setVisibility(View.VISIBLE);
+                                companyNameText.setVisibility(View.INVISIBLE);
+                                lastOptionText = String.valueOf(companyNameText.getText());
+                                companyNameText.setText(lastOptionText);
                             }
                         }
-                        accountTypeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                                if (checkedId == R.id.employer) {
-                                    companyName.setVisibility(View.VISIBLE);
-                                    companyNameText.setVisibility(View.INVISIBLE);
-                                    lastOptionText = String.valueOf(companyName.getText());
-                                    companyName.setText(lastOptionText);
-                                } else {
-                                    if (lastOptionText.equals("")) {
-                                        companyNameText.setText(R.string.unemployed);
-                                    } else {
-                                        lastOptionText = String.valueOf(companyNameText.getText());
-                                        companyNameText.setText(lastOptionText);
-                                    }
-                                    companyName.setVisibility(View.INVISIBLE);
-                                    companyNameText.setVisibility(View.VISIBLE);
-                                }
-                            }
-                        });
-                        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int month, int day) {
-                                myCalendar.set(Calendar.YEAR, year);
-                                myCalendar.set(Calendar.MONTH, month);
-                                myCalendar.set(Calendar.DAY_OF_MONTH, day);
-                                updateLabel();
-                            }
-                        };
-                        birthDateEditText.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                new DatePickerDialog(ProfileActivity.this, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-                            }
-                        });
-                    } else {
-                        Log.d(LOG_TAG, "No such document");
                     }
+                    accountTypeGroup.setOnCheckedChangeListener((group, checkedId) -> {
+                        if (checkedId == R.id.employer) {
+                            companyName.setVisibility(View.VISIBLE);
+                            companyNameText.setVisibility(View.INVISIBLE);
+                            lastOptionText = String.valueOf(companyName.getText());
+                            companyName.setText(lastOptionText);
+                        } else {
+                            if (lastOptionText.equals("")) {
+                                companyNameText.setText(R.string.unemployed);
+                            } else {
+                                lastOptionText = String.valueOf(companyNameText.getText());
+                                companyNameText.setText(lastOptionText);
+                            }
+                            companyName.setVisibility(View.INVISIBLE);
+                            companyNameText.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    DatePickerDialog.OnDateSetListener date = (view, year, month, day) -> {
+                        myCalendar.set(Calendar.YEAR, year);
+                        myCalendar.set(Calendar.MONTH, month);
+                        myCalendar.set(Calendar.DAY_OF_MONTH, day);
+                        updateLabel();
+                    };
+                    birthDateEditText.setOnClickListener(view -> new DatePickerDialog(ProfileActivity.this, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show());
                 } else {
-                    Log.d(LOG_TAG, "get failed with ", task.getException());
+                    Log.d(TAG, "No such document");
                 }
+            } else {
+                Log.d(TAG, "get failed with ", userPreferencesTask.getException());
             }
         });
     }
@@ -244,7 +224,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
         if (!correctFormat) {
             makeText(this, "Wrong ID format.", Toast.LENGTH_LONG).show();
-            Log.e(LOG_TAG, "ID misformat.");
+            Log.e(TAG, "ID misformat.");
             return;
         }
         mFirestore = FirebaseFirestore.getInstance();
@@ -253,32 +233,19 @@ public class ProfileActivity extends AppCompatActivity {
         userIds.put("userId", userIdText);
         userIds.put("email", email);
         DocumentReference docRef = mFirestore.collection("userCardIDs").document(userIdText);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists() && userIdText.equals(lastID)) {
-                        mFirestore.collection("userCardIDs").document(userIdText).set(userIds, SetOptions.merge());
-                        Log.d(LOG_TAG, "Document exists");
-                    } else if (!document.exists()) {
-                        mFirestore.collection("userCardIDs").document(lastID).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.d(LOG_TAG, "DocumentSnapshot successfully deleted!");
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.w(LOG_TAG, "Error deleting document", e);
-                                    }
-                                });
-                        mFirestore.collection("userCardIDs").document(userIdText).set(userIds);
-                    }
-                } else {
-                    Log.d(LOG_TAG, "get failed with ", task.getException());
+        docRef.get().addOnCompleteListener(userCarsIdTask -> {
+            if (userCarsIdTask.isSuccessful()) {
+                DocumentSnapshot document = userCarsIdTask.getResult();
+                if (document.exists() && userIdText.equals(lastID)) {
+                    mFirestore.collection("userCardIDs").document(userIdText).set(userIds, SetOptions.merge());
+                    Log.d(TAG, "Document exists");
+                } else if (!document.exists()) {
+                    mFirestore.collection("userCardIDs").document(lastID).delete().addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!"))
+                            .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
+                    mFirestore.collection("userCardIDs").document(userIdText).set(userIds);
                 }
+            } else {
+                Log.d(TAG, "get failed with ", userCarsIdTask.getException());
             }
         });
 

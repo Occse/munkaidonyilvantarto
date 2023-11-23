@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -16,10 +15,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
@@ -30,7 +27,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String LOG_TAG = MainActivity.class.getName();
+    private static final String TAG = MainActivity.class.getName();
     private static final String PREF_KEY = Objects.requireNonNull(MainActivity.class.getPackage()).toString();
     private static final int RC_SIGN_IN = 5437;
     private static final int SECRET_KEY = 99;
@@ -59,19 +56,17 @@ public class MainActivity extends AppCompatActivity {
     public void login(View view) {
         String userEmail = userEmailET.getText().toString();
         String password = passwordET.getText().toString();
-
-        mAuth.signInWithEmailAndPassword(userEmail, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Log.d(LOG_TAG, "login successful");
+        if (!userEmail.equals("") && !password.equals("")) {
+            mAuth.signInWithEmailAndPassword(userEmail, password).addOnCompleteListener(this, loginTask -> {
+                if (loginTask.isSuccessful()) {
+                    Log.d(TAG, "login successful");
                     showMainUser();
                 } else {
-                    Log.d(LOG_TAG, "login failed");
-                    Toast.makeText(MainActivity.this, "Couldn't log in: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "login failed");
+                    Toast.makeText(MainActivity.this, "Couldn't log in: " + Objects.requireNonNull(loginTask.getException()).getMessage(), Toast.LENGTH_LONG).show();
                 }
-            }
-        });
+            });
+        }
     }
 
     private void showMainUser() {
@@ -92,31 +87,28 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d(LOG_TAG, "Google sign in success!" + account.getId());
+                Log.d(TAG, "Google sign in success!" + account.getId());
                 String email = account.getEmail();
                 mFirestore = FirebaseFirestore.getInstance();
                 DocumentReference docRef = mFirestore.collection("UserPreferences").document(email);
-                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (!document.exists()) {
-                                HashMap<String, String> userData = new HashMap<>();
-                                userData.put("userName", account.getFamilyName() + " " + account.getGivenName());
-                                userData.put("password", "");
-                                userData.put("email", email);
-                                userData.put("accountType", "Dolgozó");
-                                mFirestore.collection("UserPreferences").document(email).set(userData);
-                            }
-                        } else {
-                            Log.d(LOG_TAG, "get failed with ", task.getException());
+                docRef.get().addOnCompleteListener(userPreferencesTask -> {
+                    if (userPreferencesTask.isSuccessful()) {
+                        DocumentSnapshot document = userPreferencesTask.getResult();
+                        if (!document.exists()) {
+                            HashMap<String, String> userData = new HashMap<>();
+                            userData.put("userName", account.getFamilyName() + " " + account.getGivenName());
+                            userData.put("password", "");
+                            userData.put("email", email);
+                            userData.put("accountType", "Dolgozó");
+                            mFirestore.collection("UserPreferences").document(email).set(userData);
                         }
+                    } else {
+                        Log.d(TAG, "get failed with ", userPreferencesTask.getException());
                     }
                 });
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException apiException) {
-                Log.w(LOG_TAG, "Google sign in failed!", apiException);
+                Log.w(TAG, "Google sign in failed!", apiException);
             }
 
         }
@@ -125,17 +117,14 @@ public class MainActivity extends AppCompatActivity {
     public void firebaseAuthWithGoogle(String idToken) {
         AuthCredential authCredential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(authCredential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(LOG_TAG, "signInWithCredential:success");
-                            showMainUser();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(LOG_TAG, "signInWithCredential:failure", task.getException());
-                        }
+                .addOnCompleteListener(this, signInWithGoogleTask -> {
+                    if (signInWithGoogleTask.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithCredential:success");
+                        showMainUser();
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithCredential:failure", signInWithGoogleTask.getException());
                     }
                 });
     }

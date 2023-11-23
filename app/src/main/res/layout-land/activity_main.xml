@@ -1,46 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.niev.munkaidonyilvantartoalkalmazas.MainActivity">
 
-    <EditText
-        android:id="@+id/editTextPassword"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        tools:layout_editor_absoluteX="16dp" />
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/editTextUserName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:hint="@string/email_address"
-        android:inputType="text" />
+        <EditText
+            android:id="@+id/editTextUserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:ems="10"
+            android:hint="@string/email_address"
+            android:inputType="text" />
 
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:onClick="login"
-        android:text="@string/log_in"
-        app:layout_constraintVertical_bias="0.078" />
+        <EditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editTextUserName"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:ems="10"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
 
-    <Button
-        android:id="@+id/registerButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:onClick="register"
-        android:text="@string/registration" />
-</LinearLayout>
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editTextPassword"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:onClick="login"
+            android:text="@string/log_in" />
 
+        <Button
+            android:id="@+id/loginWithGoogle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/loginButton"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:onClick="loginWithGoogle"
+            android:text="@string/loginGoogle" />
+
+        <Button
+            android:id="@+id/registerButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/loginWithGoogle"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:onClick="register"
+            android:text="@string/registration" />
+    </RelativeLayout>
+</ScrollView>

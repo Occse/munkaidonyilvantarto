@@ -7,14 +7,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -26,11 +23,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ManageWorkersActivity extends AppCompatActivity {
-    private static final String LOG_TAG = ManageWorkersActivity.class.getName();
-    private Menu menuList;
+    private static final String TAG = ManageWorkersActivity.class.getName();
     private RecyclerView mRecyclerView;
     private ArrayList<WorkerData> workers;
-    private ManageWorkersActivity manageWorkersActivity;
     private FirebaseFirestore mFirestore;
     private WorkerAdapter mAdapter;
     private DocumentReference mItems;
@@ -46,10 +41,10 @@ public class ManageWorkersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_workers);
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            Log.d(LOG_TAG, "auth success");
+            Log.d(TAG, "auth success");
             email = user.getEmail();
         } else {
-            Log.d(LOG_TAG, "auth failed");
+            Log.d(TAG, "auth failed");
             finish();
         }
         mFirestore = FirebaseFirestore.getInstance();
@@ -66,56 +61,47 @@ public class ManageWorkersActivity extends AppCompatActivity {
     private void loadWorkerData() {
         workers.clear();
 
-        mItems.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        if (true) {
-                            //counting workers
-                            DocumentReference docRef = mFirestore.collection("Companies").document(companyName);
-                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        DocumentSnapshot document = task.getResult();
-                                        if (document.exists()) {
-                                            Map<String, Object> map = document.getData();
-                                            Log.d(LOG_TAG, "number of fields: " + map.size());
-                                            fullCount = map.size();
-                                            members = map.size() - 1;
-                                            Log.d(LOG_TAG, "Count: " + members);
-                                            Log.d(LOG_TAG, String.valueOf(document.get("Worker0Data")));
-                                            for (int i = 0; i < fullCount; i++) {
-                                                Log.d(LOG_TAG, String.valueOf(i));
-                                                if (document.get("Worker" + i + "Data") == null) {
-                                                    continue;
-                                                }
-                                                Log.d(LOG_TAG, String.valueOf(document.get("Worker" + i + "Data")));
-                                                HashMap<String, String> currentData = (HashMap<String, String>) document.get("Worker" + i + "Data");
-                                                Log.d(LOG_TAG, "currentData: " + document.get("Worker" + i + "Data"));
-                                                Log.d(LOG_TAG, "typeof: " + currentData.getClass());
-                                                WorkerData workerData = new WorkerData(currentData);
-                                                Log.d(LOG_TAG, "workerData: " + workerData.getUserName());
-                                                workers.add(workerData);
-                                                // Notify the adapter of the change
-                                                mAdapter.notifyDataSetChanged();
-                                            }
-                                        } else {
-                                            Log.d(LOG_TAG, "Count failed: ", task.getException());
-                                        }
+        mItems.get().addOnCompleteListener(companiesTask -> {
+            if (companiesTask.isSuccessful()) {
+                DocumentSnapshot document = companiesTask.getResult();
+                if (document.exists()) {
+                    //counting workers
+                    DocumentReference docRef = mFirestore.collection("Companies").document(companyName);
+                    docRef.get().addOnCompleteListener(countWorkersTask -> {
+                        if (countWorkersTask.isSuccessful()) {
+                            DocumentSnapshot document1 = countWorkersTask.getResult();
+                            if (document1.exists()) {
+                                Map<String, Object> map = document1.getData();
+                                Log.d(TAG, "number of fields: " + map.size());
+                                fullCount = map.size();
+                                members = map.size() - 1;
+                                Log.d(TAG, "Count: " + members);
+                                Log.d(TAG, String.valueOf(document1.get("Worker0Data")));
+                                for (int i = 0; i < fullCount; i++) {
+                                    Log.d(TAG, String.valueOf(i));
+                                    if (document1.get("Worker" + i + "Data") == null) {
+                                        continue;
                                     }
+                                    Log.d(TAG, String.valueOf(document1.get("Worker" + i + "Data")));
+                                    HashMap<String, String> currentData = (HashMap<String, String>) document1.get("Worker" + i + "Data");
+                                    Log.d(TAG, "currentData: " + document1.get("Worker" + i + "Data"));
+                                    Log.d(TAG, "typeof: " + currentData.getClass());
+                                    WorkerData workerData = new WorkerData(currentData);
+                                    Log.d(TAG, "workerData: " + workerData.getUserName());
+                                    workers.add(workerData);
+                                    // Notify the adapter of the change
+                                    mAdapter.notifyDataSetChanged();
                                 }
-                            });
+                            } else {
+                                Log.d(TAG, "Count failed: ", countWorkersTask.getException());
+                            }
                         }
-                    } else {
-                        Log.d(LOG_TAG, "No such document");
-                    }
-
+                    });
                 } else {
-                    Log.d(LOG_TAG, "get failed with ", task.getException());
+                    Log.d(TAG, "No such document");
                 }
+            } else {
+                Log.d(TAG, "get failed with ", companiesTask.getException());
             }
         });
     }
@@ -123,7 +109,6 @@ public class ManageWorkersActivity extends AppCompatActivity {
     @SuppressLint("RestrictedApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.menuList = menu;
         supportInvalidateOptionsMenu();
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.manageworkers_list_menu, menu);
@@ -136,7 +121,7 @@ public class ManageWorkersActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.addWorker) {
-            Log.d(LOG_TAG, "AddWorker clicked!");
+            Log.d(TAG, "AddWorker clicked!");
             addWorker();
             return true;
         } else {

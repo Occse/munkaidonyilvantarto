@@ -12,13 +12,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -26,7 +22,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity {
-    private static final String LOG_TAG = RegisterActivity.class.getName();
+    private static final String TAG = RegisterActivity.class.getName();
     private static final String PREF_KEY = Objects.requireNonNull(MainActivity.class.getPackage()).toString();
 
     private static final int SECRET_KEY = 99;
@@ -85,15 +81,15 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (!password.equals(passwordConfirm)) {
             makeText(this, "The two passwords didn't match.", Toast.LENGTH_LONG).show();
-            Log.e(LOG_TAG, "The two passwords didn't match.");
+            Log.e(TAG, "The two passwords didn't match.");
             return;
         }
         if (!agreementConfirmed) {
             makeText(this, "Nem fogadtad el az adatkezelési nyilatkozatot!", Toast.LENGTH_LONG).show();
-            Log.e(LOG_TAG, "Agreement wasn't confirmed.");
+            Log.e(TAG, "Agreement wasn't confirmed.");
             return;
         }
-        Log.i(LOG_TAG, "Registered as: " + userName + ", e-mail: " + email + ", accountType: " + accountType);
+        Log.i(TAG, "Registered as: " + userName + ", e-mail: " + email + ", accountType: " + accountType);
         mFirestore = FirebaseFirestore.getInstance();
         HashMap<String, String> userData = new HashMap<>();
         userData.put("userName", userName);
@@ -101,17 +97,14 @@ public class RegisterActivity extends AppCompatActivity {
         userData.put("email", email);
         userData.put("accountType", accountType);
         mFirestore.collection("UserPreferences").document(email).set(userData);
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Log.d(LOG_TAG, "successful reg");
-                    finish();
-                    showMainUser();
-                } else {
-                    Log.d(LOG_TAG, "reg failed");
-                    makeText(RegisterActivity.this, "Couldn't register user: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
-                }
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, userPreferencesTask -> {
+            if (userPreferencesTask.isSuccessful()) {
+                Log.d(TAG, "successful reg");
+                finish();
+                showMainUser();
+            } else {
+                Log.d(TAG, "reg failed");
+                makeText(RegisterActivity.this, "Couldn't register user: " + Objects.requireNonNull(userPreferencesTask.getException()).getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
