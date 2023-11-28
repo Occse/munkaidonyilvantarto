@@ -36,4 +36,10 @@
     <string name="workerEmail">Dolgozó email címe</string>
     <string name="workerImageDesc">TODO</string>
     <string name="userMunkakor">Munkakör</string>
+    <string name="addWorkHours">Dolgozott óra megadása</string>
+    <string name="addWorkHour">Hozzáadás</string>
+    <string name="workTimeStart">Munka kezdete</string>
+    <string name="workTimeEnd">Munka vége</string>
+    <string name="lunchTimeStart">Ebédidő kezdete</string>
+    <string name="lunchTimeEnd">Ebédidő vége</string>
 </resources>

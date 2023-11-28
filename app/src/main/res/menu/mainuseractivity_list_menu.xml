@@ -9,6 +9,12 @@
         app:showAsAction="never"
         />
     <item
+        android:id="@+id/addWorkHours"
+        android:title="@string/addWorkHours"
+        android:icon="@drawable/ic_add_hours"
+        app:showAsAction="never"
+        />
+    <item
         android:id="@+id/profile"
         android:title="@string/edit_profile"
         android:icon="@drawable/ic_edit_profile"

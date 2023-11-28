@@ -96,6 +96,9 @@ public class RegisterActivity extends AppCompatActivity {
         userData.put("password", password);
         userData.put("email", email);
         userData.put("accountType", accountType);
+        if (accountType.equals("Dolgozó")) {
+            userData.put("companyName", "Munkanélküli");
+        }
         mFirestore.collection("UserPreferences").document(email).set(userData);
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, userPreferencesTask -> {
             if (userPreferencesTask.isSuccessful()) {
