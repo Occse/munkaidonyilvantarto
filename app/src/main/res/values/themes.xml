@@ -17,6 +17,7 @@
     <style name="WorkerName" parent="TextAppearance.AppCompat.Headline"/>
     <style name="WorkerDetail" parent="TextAppearance.AppCompat.Headline"/>
     <style name="Theme.MunkaidoNyilvantartoAlkalmazas" parent="Base.Theme.MunkaidoNyilvantartoAlkalmazas" >
+        <item name="android:windowBackground">@color/gray</item>
         <item name="android:windowMinWidthMajor">75%</item>
         <item name="android:windowMinWidthMinor">75%</item>
     </style>
