@@ -4,13 +4,14 @@ import static android.widget.Toast.makeText;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -148,21 +150,6 @@ public class ManageWorkersActivity extends AppCompatActivity {
         dialog.setCanceledOnTouchOutside(false);
         workerID = dialog.findViewById(R.id.workerID);
         workerMunkakor = dialog.findViewById(R.id.userMunkakor);
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        DocumentReference docRef = db.collection("UserPreferences").document(email);
-//        docRef.get().addOnCompleteListener(userPreferencesTask -> {
-//            if (userPreferencesTask.isSuccessful()) {
-//                DocumentSnapshot document = userPreferencesTask.getResult();
-//                if (document.exists()) {
-//                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-//                    companyName = String.valueOf(document.get("companyName"));
-//                } else {
-//                    Log.d(TAG, "No such document");
-//                }
-//            } else {
-//                Log.d(TAG, "get failed with ", userPreferencesTask.getException());
-//            }
-//        });
 
         Button cancelButton = dialog.findViewById(R.id.cancelAddWorker);
         cancelButton.setOnClickListener(view -> dialog.dismiss());
@@ -219,8 +206,9 @@ public class ManageWorkersActivity extends AppCompatActivity {
                                             Log.d(TAG, "number of fields: " + map.size());
                                             members = map.size() - 1;
                                             Log.d(TAG, "Count: " + members);
-                                            //adding workers
+                                            //adding worker
                                             HashMap<String, Object> companyWorkerData = new HashMap<>();
+                                            workerData.put("id", String.valueOf(members));
                                             companyWorkerData.put("Worker" + members + "Data", workerData);
                                             Log.d(TAG, "workermemberdata: " + companyWorkerData);
                                             mFirestore.collection("Companies").document(companyName).get().addOnCompleteListener(companyAddTask -> {
@@ -233,7 +221,10 @@ public class ManageWorkersActivity extends AppCompatActivity {
                                                             HashMap<String, String> userData = new HashMap<>();
                                                             userData.put("companyName", companyName);
                                                             mFirestore.collection("UserPreferences").document(workerEmail).set(userData, SetOptions.merge());
+                                                            Intent intent = getIntent();
                                                             finish();
+                                                            startActivity(intent);
+                                                            overridePendingTransition(0, 0);
                                                         } else {
                                                             makeText(ManageWorkersActivity.this, "Worker is already in a company", Toast.LENGTH_LONG).show();
                                                         }
@@ -259,6 +250,55 @@ public class ManageWorkersActivity extends AppCompatActivity {
                 }
             } else {
                 Log.d(TAG, "get failed with ", userCardIdTask.getException());
+            }
+        });
+    }
+
+    public void kickWorkerDialog(WorkerData currentWorker) {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_alert);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.roundedcorners);
+        dialog.setCanceledOnTouchOutside(false);
+
+        TextView alertTitle = dialog.findViewById(R.id.alertTextView);
+        alertTitle.setText(alertTitle.getText() + " \n" + currentWorker.getUserName() + "?");
+
+        Button cancelButton = dialog.findViewById(R.id.cancelkickWorker);
+        cancelButton.setOnClickListener(view -> dialog.dismiss());
+
+        Button okButton = dialog.findViewById(R.id.kickWorkerButton);
+        okButton.setOnClickListener(view -> {
+            kickWorker(currentWorker);
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
+    public void kickWorker(WorkerData currentWorker) {
+        DocumentReference docRef = mFirestore.collection("Companies").document(companyName);
+        docRef.get().addOnCompleteListener(userPreferencesTask -> {
+            if (userPreferencesTask.isSuccessful()) {
+                DocumentSnapshot document = userPreferencesTask.getResult();
+                if (document != null && document.exists()) {
+                    Map<String, Object> companyWorkers = document.getData();
+                    Map<String, String> workers = (Map<String, String>) companyWorkers.get("Worker" + currentWorker.getId() + "Data");
+                    HashMap<String, String> workerData = new HashMap<>();
+                    workerData.put("companyName", "Munkanélküli");
+                    mFirestore.collection("UserPreferences").document(workers.get("email")).set(workerData, SetOptions.merge());
+                    Log.d(TAG, "kickWorker: " + workers.get("email"));
+                    HashMap<String, Object> deletable = new HashMap<>();
+                    deletable.put("Worker" + currentWorker.getId() + "Data", FieldValue.delete());
+                    docRef.update(deletable).addOnCompleteListener(task -> {
+                        Log.d("Activity", "Document successfully deleted!");
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
+                    });
+                } else {
+                    Log.d(TAG, "Current data: null");
+                }
             }
         });
     }

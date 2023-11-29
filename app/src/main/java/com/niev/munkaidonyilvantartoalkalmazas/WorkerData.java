@@ -3,6 +3,7 @@ package com.niev.munkaidonyilvantartoalkalmazas;
 import java.util.HashMap;
 
 public class WorkerData {
+    private String id;
     private String userName;
     private String email;
     private String userAdo;
@@ -17,6 +18,7 @@ public class WorkerData {
     }
 
     public WorkerData(HashMap<String, String> map) {
+        this.id = map.get("id");
         this.userName = map.get("userName");
         this.email = map.get("email");
         this.userAdo = map.get("userAdo");
@@ -28,7 +30,8 @@ public class WorkerData {
         this.userMunkakor = map.get("userMunkakor");
     }
 
-    public WorkerData(String userName, String workerImage, String email, String userAdo, String userDegree, String userBirthDate, String userId, String userLakcim, String userTAJ, String userMunkakor) {
+    public WorkerData(String id, String userName, String workerImage, String email, String userAdo, String userDegree, String userBirthDate, String userId, String userLakcim, String userTAJ, String userMunkakor) {
+        this.id = id;
         this.userName = userName;
         this.email = email;
         this.userAdo = userAdo;
@@ -112,5 +115,7 @@ public class WorkerData {
         this.userTAJ = userTAJ;
     }
 
-
+    public String getId() {
+        return id;
+    }
 }

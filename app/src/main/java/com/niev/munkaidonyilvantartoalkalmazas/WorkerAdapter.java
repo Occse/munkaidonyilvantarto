@@ -48,7 +48,7 @@ public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.viewHolder
         return mWorkerDataData.size();
     }
 
-    static class viewHolderWorker extends RecyclerView.ViewHolder {
+    class viewHolderWorker extends RecyclerView.ViewHolder {
         private final TextView mUserName;
         private final TextView mEmail;
         private final TextView mUserAdo;
@@ -59,29 +59,31 @@ public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.viewHolder
         private final TextView mUserTAJ;
         private final TextView mUserMunkakor;
 
-        viewHolderWorker(@NonNull View itemView) {
-            super(itemView);
-            mUserName = itemView.findViewById(R.id.workerName);
-            mEmail = itemView.findViewById(R.id.workerEmail);
-            mUserId = itemView.findViewById(R.id.userId);
-            mUserLakcim = itemView.findViewById(R.id.userLakcimNumber);
-            mUserAdo = itemView.findViewById(R.id.userAdoKartya);
-            mUserTAJ = itemView.findViewById(R.id.userTAJNumber);
-            mUserDegree = itemView.findViewById(R.id.userDegree);
-            mUserBirthDate = itemView.findViewById(R.id.userBirthDate);
-            mUserMunkakor = itemView.findViewById(R.id.userMunkakor);
+        viewHolderWorker(@NonNull View workerView) {
+            super(workerView);
+            mUserName = workerView.findViewById(R.id.workerName);
+            mEmail = workerView.findViewById(R.id.workerEmail);
+            mUserId = workerView.findViewById(R.id.userId);
+            mUserLakcim = workerView.findViewById(R.id.userLakcimNumber);
+            mUserAdo = workerView.findViewById(R.id.userAdoKartya);
+            mUserTAJ = workerView.findViewById(R.id.userTAJNumber);
+            mUserDegree = workerView.findViewById(R.id.userDegree);
+            mUserBirthDate = workerView.findViewById(R.id.userBirthDate);
+            mUserMunkakor = workerView.findViewById(R.id.userMunkakor);
         }
 
-        public void bindToManagment(WorkerData currentItem) {
-            mUserName.setText(currentItem.getUserName());
-            mEmail.setText(currentItem.getEmail());
-            mUserId.setText(currentItem.getUserId());
-            mUserLakcim.setText(currentItem.getUserLakcim());
-            mUserAdo.setText(currentItem.getUserAdo());
-            mUserTAJ.setText(currentItem.getUserTAJ());
-            mUserDegree.setText(currentItem.getUserDegree());
-            mUserBirthDate.setText(currentItem.getUserBirthDate());
-            mUserMunkakor.setText(currentItem.getUserMunkakor());
+        public void bindToManagment(WorkerData currentWorker) {
+            mUserName.setText(currentWorker.getUserName());
+            mEmail.setText(currentWorker.getEmail());
+            mUserId.setText(currentWorker.getUserId());
+            mUserLakcim.setText(currentWorker.getUserLakcim());
+            mUserAdo.setText(currentWorker.getUserAdo());
+            mUserTAJ.setText(currentWorker.getUserTAJ());
+            mUserDegree.setText(currentWorker.getUserDegree());
+            mUserBirthDate.setText(currentWorker.getUserBirthDate());
+            mUserMunkakor.setText(currentWorker.getUserMunkakor());
+            itemView.findViewById(R.id.kickWorker)
+                    .setOnClickListener(view -> ((ManageWorkersActivity) nContext).kickWorkerDialog(currentWorker));
         }
     }
 }

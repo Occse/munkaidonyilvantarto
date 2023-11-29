@@ -33,6 +33,7 @@
     <string name="addWorkerPlaceholder">Dolgozó hozzáadása</string>
     <string name="workerName">Dolgozó neve</string>
     <string name="kickWorker">Dolgozó eltávolítása</string>
+    <string name="kickWorkerAccept">Eltávolítás</string>
     <string name="workerEmail">Dolgozó email címe</string>
     <string name="workerImageDesc">TODO</string>
     <string name="userMunkakor">Munkakör</string>
@@ -42,4 +43,5 @@
     <string name="workTimeEnd">Munka vége</string>
     <string name="lunchTimeStart">Ebédidő kezdete</string>
     <string name="lunchTimeEnd">Ebédidő vége</string>
+    <string name="remove_worker_alert">Biztos hogy eltávolítja:</string>
 </resources>
