@@ -163,7 +163,7 @@ public class MainUserActivity extends AppCompatActivity {
 
     private void showAddHours() {
         Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.activity_add_hours);
+        dialog.setContentView(R.layout.dialog_add_hours);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.roundedcorners);
         dialog.setCanceledOnTouchOutside(false);
         workHourStart = dialog.findViewById(R.id.hourWorkStart);

@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 public class WorkerData {
     private String userName;
-    private String workerImage;
     private String email;
     private String userAdo;
     private String userDegree;
@@ -19,7 +18,6 @@ public class WorkerData {
 
     public WorkerData(HashMap<String, String> map) {
         this.userName = map.get("userName");
-        this.workerImage = map.get("workerImage");
         this.email = map.get("email");
         this.userAdo = map.get("userAdo");
         this.userDegree = map.get("userDegree");
@@ -32,7 +30,6 @@ public class WorkerData {
 
     public WorkerData(String userName, String workerImage, String email, String userAdo, String userDegree, String userBirthDate, String userId, String userLakcim, String userTAJ, String userMunkakor) {
         this.userName = userName;
-        this.workerImage = workerImage;
         this.email = email;
         this.userAdo = userAdo;
         this.userDegree = userDegree;
@@ -57,14 +54,6 @@ public class WorkerData {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public String getWorkerImage() {
-        return workerImage;
-    }
-
-    public void setWorkerImage(String workerImage) {
-        this.workerImage = workerImage;
     }
 
     public String getEmail() {

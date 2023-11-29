@@ -20,9 +20,6 @@
             android:name=".WorkerAdapter"
             android:exported="false" />
         <activity
-            android:name=".AddWorkerActivity"
-            android:exported="false" />
-        <activity
             android:name=".ManageWorkersActivity"
             android:exported="false" />
         <activity

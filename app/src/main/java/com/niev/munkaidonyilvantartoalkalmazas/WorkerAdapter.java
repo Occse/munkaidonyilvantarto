@@ -27,7 +27,7 @@ public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.viewHolder
     @NonNull
     @Override
     public viewHolderWorker onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new viewHolderWorker(LayoutInflater.from(nContext).inflate(R.layout.workers, parent, false));
+        return new viewHolderWorker(LayoutInflater.from(nContext).inflate(R.layout.list_workers, parent, false));
     }
 
     @Override
@@ -50,7 +50,6 @@ public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.viewHolder
 
     static class viewHolderWorker extends RecyclerView.ViewHolder {
         private final TextView mUserName;
-        private TextView mWorkerImage;
         private final TextView mEmail;
         private final TextView mUserAdo;
         private final TextView mUserDegree;
