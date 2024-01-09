@@ -64,19 +64,21 @@ public class MainUserActivity extends AppCompatActivity {
         companyNameText = findViewById(R.id.companyNameText);
         mFirestore = FirebaseFirestore.getInstance();
         DocumentReference docRef = mFirestore.collection("UserPreferences").document(email);
-        docRef.get().addOnCompleteListener(userPreferencesTask -> {
-            if (userPreferencesTask.isSuccessful()) {
-                DocumentSnapshot document = userPreferencesTask.getResult();
-                if (document.exists()) {
-                    isEmployer = String.valueOf(document.get("accountType")).equals("Munkáltató");
-                    isUnemployed = String.valueOf(document.get("companyName")).equals("Munkanélküli");
+        if(!isEmployer) {
+            docRef.get().addOnCompleteListener(userPreferencesTask -> {
+                if (userPreferencesTask.isSuccessful()) {
+                    DocumentSnapshot document = userPreferencesTask.getResult();
+                    if (document.exists()) {
+                        isEmployer = String.valueOf(document.get("accountType")).equals("Munkáltató");
+                        isUnemployed = String.valueOf(document.get("companyName")).equals("Munkanélküli");
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
                 } else {
-                    Log.d(TAG, "No such document");
+                    Log.d(TAG, "get failed with ", userPreferencesTask.getException());
                 }
-            } else {
-                Log.d(TAG, "get failed with ", userPreferencesTask.getException());
-            }
-        });
+            });
+        }
         docRef.addSnapshotListener((documentSnapshot, error) -> {
             if (error != null) {
                 Log.w(TAG, "Listen failed.", error);
@@ -96,7 +98,7 @@ public class MainUserActivity extends AppCompatActivity {
             }
         });
 
-        if (isEmployer) {
+        if (!isEmployer) {
 
         }
     }

@@ -30,7 +30,7 @@ public class WorkerData {
         this.userMunkakor = map.get("userMunkakor");
     }
 
-    public WorkerData(String id, String userName, String workerImage, String email, String userAdo, String userDegree, String userBirthDate, String userId, String userLakcim, String userTAJ, String userMunkakor) {
+    public WorkerData(String id, String userName, String email, String userAdo, String userDegree, String userBirthDate, String userId, String userLakcim, String userTAJ, String userMunkakor) {
         this.id = id;
         this.userName = userName;
         this.email = email;
