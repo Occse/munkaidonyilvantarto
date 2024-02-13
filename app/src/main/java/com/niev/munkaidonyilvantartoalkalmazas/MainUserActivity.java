@@ -39,6 +39,7 @@ public class MainUserActivity extends AppCompatActivity {
     private boolean isEmployer;
     private boolean isUnemployed;
     private String companyName;
+    private String workerId;
     private Menu menuList;
     private TextView welcomeText;
     private TextView companyNameText;
@@ -69,6 +70,7 @@ public class MainUserActivity extends AppCompatActivity {
                 if (userPreferencesTask.isSuccessful()) {
                     DocumentSnapshot document = userPreferencesTask.getResult();
                     if (document.exists()) {
+                        workerId = String.valueOf(document.get("userId"));
                         isEmployer = String.valueOf(document.get("accountType")).equals("Munkáltató");
                         isUnemployed = String.valueOf(document.get("companyName")).equals("Munkanélküli");
                     } else {
@@ -120,10 +122,12 @@ public class MainUserActivity extends AppCompatActivity {
     public void supportInvalidateOptionsMenu() {
         if (!isUnemployed) {
             this.menuList.findItem(R.id.manageWorkers).setVisible(isEmployer);
-            this.menuList.findItem(R.id.addWorkHours).setVisible(!isEmployer);
+//            this.menuList.findItem(R.id.addWorkHours).setVisible(!isEmployer);
+//            this.menuList.findItem(R.id.showWorkHours).setVisible(!isEmployer);
         } else {
             this.menuList.findItem(R.id.manageWorkers).setVisible(false);
-            this.menuList.findItem(R.id.addWorkHours).setVisible(false);
+//            this.menuList.findItem(R.id.addWorkHours).setVisible(false);
+//            this.menuList.findItem(R.id.showWorkHours).setVisible(false);
         }
         super.supportInvalidateOptionsMenu();
     }
@@ -138,14 +142,18 @@ public class MainUserActivity extends AppCompatActivity {
             Log.d(TAG, "addWorkHours clicked!");
             showAddHours();
             return true;
-        } else if (item.getItemId() == R.id.logout) {
-            Log.d(TAG, "Logout clicked!");
-            FirebaseAuth.getInstance().signOut();
-            finish();
+        } else if (item.getItemId() == R.id.showWorkHours) {
+            Log.d(TAG, "showWorkHours clicked!");
+            showShowHours();
             return true;
         } else if (item.getItemId() == R.id.profile) {
             Log.d(TAG, "Profile clicked!");
             showProfile();
+            return true;
+        } else if (item.getItemId() == R.id.logout) {
+            Log.d(TAG, "Logout clicked!");
+            FirebaseAuth.getInstance().signOut();
+            finish();
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -185,6 +193,13 @@ public class MainUserActivity extends AppCompatActivity {
         lunchHourEnd.setOnClickListener(view -> showTimePicker(lunchHourEnd));
 
         dialog.show();
+    }
+
+    private void showShowHours() {
+        Intent showHoursIntent = new Intent(this, ShowHoursActivity.class);
+        showHoursIntent.putExtra("companyName", companyNameText.getText().toString().split(" ")[1]);
+        showHoursIntent.putExtra("workerId", workerId);
+        startActivity(showHoursIntent);
     }
 
     private void showTimePicker(EditText editText) {
@@ -230,7 +245,7 @@ public class MainUserActivity extends AppCompatActivity {
                     workHour = calcWorkHour(workStartArray, workEndArray) - calcWorkHour(lunchStartArray, lunchEndArray);
                     workerHourData.put("workedHours", String.valueOf(workHour));
                     HashMap<String, Object> companyWorkerHourData = new HashMap<>();
-                    String userDay = userId + "|" + formattedDate;
+                    String userDay = userId + "-" + formattedDate;
                     companyWorkerHourData.put(userDay, workerHourData);
                     mFirestore.collection("CompaniesWorkHours").document(companyName).set(companyWorkerHourData, SetOptions.merge());
                 } else {
@@ -244,8 +259,8 @@ public class MainUserActivity extends AppCompatActivity {
     }
 
     private double calcWorkHour(String[] shorterTime, String[] longerTime) {
-        int shorterTimeInMinutes = Integer.valueOf(shorterTime[0]) * 60 + Integer.valueOf(shorterTime[1]);
-        int longerTimeInMinutes = Integer.valueOf(longerTime[0]) * 60 + Integer.valueOf(longerTime[1]);
+        int shorterTimeInMinutes = Integer.parseInt(shorterTime[0]) * 60 + Integer.parseInt(shorterTime[1]);
+        int longerTimeInMinutes = Integer.parseInt(longerTime[0]) * 60 + Integer.parseInt(longerTime[1]);
 
         return (longerTimeInMinutes - shorterTimeInMinutes) / 60;
     }

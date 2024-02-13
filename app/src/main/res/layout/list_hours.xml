@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@drawable/roundedcorners"
+    android:elevation="6dp">
+
+    <TextView
+        style="@style/WorkerDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/workDay"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:text="@string/workDay"
+        android:textSize="@dimen/profilePlaceholder" />
+
+    <TextView
+        android:id="@+id/workDay"
+        style="@style/WorkerDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/workerMargin"
+        android:padding="5dp"
+        android:text="@string/workDay" />
+
+    <TextView
+        style="@style/WorkerDetails"
+        android:layout_below="@+id/workDay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/workStart"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:text="@string/workTimeStart"
+        android:textSize="@dimen/profilePlaceholder" />
+
+    <TextView
+        android:id="@+id/workStart"
+        style="@style/WorkerDetails"
+        android:layout_below="@+id/workDay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/workerMargin"
+        android:padding="5dp"
+        android:text="@string/workTimeStart" />
+
+    <TextView
+        style="@style/WorkerDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/workStart"
+        android:layout_alignBottom="@+id/lunchStart"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:text="@string/lunchTimeStart"
+        android:textSize="@dimen/profilePlaceholder" />
+
+    <TextView
+        android:id="@+id/lunchStart"
+        style="@style/WorkerDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/workStart"
+        android:layout_marginStart="@dimen/workerMargin"
+        android:padding="5dp"
+        android:text="@string/lunchTimeStart" />
+
+
+    <TextView
+        style="@style/WorkerDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lunchStart"
+        android:layout_alignBottom="@+id/lunchEnd"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:text="@string/lunchTimeEnd"
+        android:textSize="@dimen/profilePlaceholder" />
+
+    <TextView
+        android:id="@+id/lunchEnd"
+        style="@style/WorkerDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lunchStart"
+        android:layout_marginStart="@dimen/workerMargin"
+        android:padding="5dp"
+        android:text="@string/lunchTimeEnd" />
+
+
+    <TextView
+        style="@style/WorkerDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lunchEnd"
+        android:layout_alignBottom="@+id/workEnd"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:text="@string/workTimeEnd"
+        android:textSize="@dimen/profilePlaceholder" />
+
+    <TextView
+        android:id="@+id/workEnd"
+        style="@style/WorkerDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lunchEnd"
+        android:layout_marginStart="@dimen/workerMargin"
+        android:padding="5dp"
+        android:text="@string/workTimeEnd" />
+
+
+    <TextView
+        style="@style/WorkerDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/workEnd"
+        android:layout_alignBottom="@+id/workHours"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:text="@string/workTime"
+        android:textSize="@dimen/profilePlaceholder" />
+
+    <TextView
+        android:id="@+id/workHours"
+        style="@style/WorkerDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/workEnd"
+        android:layout_marginStart="@dimen/workerMargin"
+        android:padding="5dp"
+        android:text="@string/workTime" />
+
+</RelativeLayout>

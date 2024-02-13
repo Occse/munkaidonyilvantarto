@@ -15,6 +15,12 @@
         app:showAsAction="never"
         />
     <item
+        android:id="@+id/showWorkHours"
+        android:title="@string/showWorkHours"
+        android:icon="@drawable/ic_show_hours"
+        app:showAsAction="never"
+        />
+    <item
         android:id="@+id/profile"
         android:title="@string/edit_profile"
         android:icon="@drawable/ic_edit_profile"

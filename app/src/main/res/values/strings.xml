@@ -44,4 +44,7 @@
     <string name="lunchTimeStart">Ebédidő kezdete</string>
     <string name="lunchTimeEnd">Ebédidő vége</string>
     <string name="remove_worker_alert">Biztos hogy eltávolítja:</string>
+    <string name="showWorkHours">Dolgozott óra megtekintése</string>
+    <string name="workDay">Munkanap</string>
+    <string name="workTime">Munkaidő</string>
 </resources>
