@@ -1,5 +1,6 @@
 package com.niev.munkaidonyilvantartoalkalmazas;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -64,6 +65,7 @@ public class ShowHoursActivity extends AppCompatActivity {
         mItems = mFirestore.collection("CompaniesWorkHours").document(companyName);
         loadMonthPicker();
         monthPicker.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String monthPickerText = monthPicker.getSelectedItem().toString();
@@ -84,6 +86,7 @@ public class ShowHoursActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void loadMonthPicker() {
         mItems.get().addOnCompleteListener(companiesTask -> {
             if (companiesTask.isSuccessful()) {
@@ -126,6 +129,7 @@ public class ShowHoursActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void loadHourData() {
         hours.clear();
 
@@ -152,6 +156,7 @@ public class ShowHoursActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void loadHourData(String yearAndMonth) {
         hours.clear();
 

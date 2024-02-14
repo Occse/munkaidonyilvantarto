@@ -72,6 +72,7 @@ public class ManageWorkersActivity extends AppCompatActivity {
         loadWorkerData();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void loadWorkerData() {
         workers.clear();
 
