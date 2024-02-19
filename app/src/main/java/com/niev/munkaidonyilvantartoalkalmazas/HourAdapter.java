@@ -73,7 +73,7 @@ public class HourAdapter extends RecyclerView.Adapter<HourAdapter.viewHolderWork
             mLunchStart.setText(currentWorkerHour.getLunchStart());
             mLunchEnd.setText(currentWorkerHour.getLunchEnd());
             mWorkEnd.setText(currentWorkerHour.getWorkEnd());
-            mWorkTime.setText(currentWorkerHour.getWorkedHours());
+            mWorkTime.setText(currentWorkerHour.getWorkedHours() + " óra");
         }
     }
 }

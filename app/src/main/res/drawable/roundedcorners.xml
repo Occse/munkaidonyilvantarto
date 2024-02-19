@@ -4,5 +4,8 @@
         android:startColor="@color/miami_pink"
         android:centerColor="@color/miami_purple"
         android:endColor="@color/skyblue"/>
+    <stroke android:color="@color/skyblue"
+        android:width="2dp"
+        />
     <corners android:radius="12dp"/>
 </shape>

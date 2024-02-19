@@ -1,6 +1,7 @@
 package com.niev.munkaidonyilvantartoalkalmazas;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class HourData {
     private String lunchStart;
@@ -9,19 +10,19 @@ public class HourData {
     private String worker;
     private String workStart;
     private String workEnd;
-    private String workedHours;
+    private Object workedHours;
 
-    public HourData(HashMap<String, String> map) {
-        this.lunchStart = map.get("lunchStart");
-        this.lunchEnd = map.get("lunchEnd");
-        this.workDay = map.get("workDay");
-        this.worker = map.get("worker");
-        this.workStart = map.get("workStart");
-        this.workEnd = map.get("workEnd");
+    public HourData(HashMap<String, Object> map) {
+        this.lunchStart = String.valueOf(map.get("lunchStart"));
+        this.lunchEnd = String.valueOf(map.get("lunchEnd"));
+        this.workDay = String.valueOf(map.get("workDay"));
+        this.worker = String.valueOf(map.get("worker"));
+        this.workStart = String.valueOf(map.get("workStart"));
+        this.workEnd = String.valueOf(map.get("workEnd"));
         this.workedHours = map.get("workedHours");
     }
 
-    public HourData(String lunchStart, String lunchEnd, String workDay, String worker, String workStart, String workEnd, String workedHours) {
+    public HourData(String lunchStart, String lunchEnd, String workDay, String worker, String workStart, String workEnd, long workedHours) {
         this.lunchStart = lunchStart;
         this.lunchEnd = lunchEnd;
         this.workDay = workDay;
@@ -89,11 +90,11 @@ public class HourData {
         this.workEnd = workEnd;
     }
 
-    public String getWorkedHours() {
+    public Object getWorkedHours() {
         return workedHours;
     }
 
-    public void setWorkedHours(String workedHours) {
+    public void setWorkedHours(Object workedHours) {
         this.workedHours = workedHours;
     }
 }

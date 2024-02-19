@@ -234,6 +234,8 @@
             android:ems="10"
             android:hint="@string/userdegree"
             android:inputType="number"
+            android:background="@drawable/blue_outline_white_background"
+            android:popupBackground="@drawable/blue_outline_white_background"
             android:spinnerMode="dropdown" />
 
         <TextView

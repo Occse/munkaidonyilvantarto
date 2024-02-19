@@ -23,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -65,7 +66,7 @@ public class MainUserActivity extends AppCompatActivity {
         companyNameText = findViewById(R.id.companyNameText);
         mFirestore = FirebaseFirestore.getInstance();
         DocumentReference docRef = mFirestore.collection("UserPreferences").document(email);
-        if(!isEmployer) {
+        if (!isEmployer) {
             docRef.get().addOnCompleteListener(userPreferencesTask -> {
                 if (userPreferencesTask.isSuccessful()) {
                     DocumentSnapshot document = userPreferencesTask.getResult();
@@ -188,9 +189,9 @@ public class MainUserActivity extends AppCompatActivity {
         addButton.setOnClickListener(view -> addHours(dialog));
 
         workHourStart.setOnClickListener(view -> showTimePicker(workHourStart));
-        workHourEnd.setOnClickListener(view -> showTimePicker(workHourEnd));
         lunchHourStart.setOnClickListener(view -> showTimePicker(lunchHourStart));
         lunchHourEnd.setOnClickListener(view -> showTimePicker(lunchHourEnd));
+        workHourEnd.setOnClickListener(view -> showTimePicker(workHourEnd));
 
         dialog.show();
     }
@@ -227,7 +228,7 @@ public class MainUserActivity extends AppCompatActivity {
                 if (document.exists()) {
                     String userId = String.valueOf(document.get("userId"));
                     mFirestore = FirebaseFirestore.getInstance();
-                    HashMap<String, String> workerHourData = new HashMap<>();
+                    HashMap<String, Object> workerHourData = new HashMap<>();
                     Date todayDate = Calendar.getInstance().getTime();
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
                     String formattedDate = dateFormat.format(todayDate);
@@ -243,7 +244,7 @@ public class MainUserActivity extends AppCompatActivity {
                     String[] lunchStartArray = lunchStart.split(":");
                     String[] lunchEndArray = lunchEnd.split(":");
                     workHour = calcWorkHour(workStartArray, workEndArray) - calcWorkHour(lunchStartArray, lunchEndArray);
-                    workerHourData.put("workedHours", String.valueOf(workHour));
+                    workerHourData.put("workedHours", workHour);
                     HashMap<String, Object> companyWorkerHourData = new HashMap<>();
                     String userDay = userId + "-" + formattedDate;
                     companyWorkerHourData.put(userDay, workerHourData);
@@ -259,9 +260,11 @@ public class MainUserActivity extends AppCompatActivity {
     }
 
     private double calcWorkHour(String[] shorterTime, String[] longerTime) {
-        int shorterTimeInMinutes = Integer.parseInt(shorterTime[0]) * 60 + Integer.parseInt(shorterTime[1]);
-        int longerTimeInMinutes = Integer.parseInt(longerTime[0]) * 60 + Integer.parseInt(longerTime[1]);
-
+        if (Objects.equals(shorterTime[0], "") || Objects.equals(longerTime[0], "")) {
+            return 0;
+        }
+        double shorterTimeInMinutes = Integer.parseInt(shorterTime[0]) * 60 + Integer.parseInt(shorterTime[1]);
+        double longerTimeInMinutes = Integer.parseInt(longerTime[0]) * 60 + Integer.parseInt(longerTime[1]);
         return (longerTimeInMinutes - shorterTimeInMinutes) / 60;
     }
 }

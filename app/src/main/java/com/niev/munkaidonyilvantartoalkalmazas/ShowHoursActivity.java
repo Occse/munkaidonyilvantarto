@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -38,6 +39,7 @@ public class ShowHoursActivity extends AppCompatActivity {
     private String workerId;
     private Spinner monthPicker;
     private ArrayAdapter<String> spinnerAdapter;
+    private TextView monthHoursText;
 
 
     @Override
@@ -59,6 +61,7 @@ public class ShowHoursActivity extends AppCompatActivity {
         montPickerOptions = new ArrayList<>();
         mRecyclerView = findViewById(R.id.recyclerViewHours);
         monthPicker = findViewById(R.id.monthPicker);
+        monthHoursText = findViewById(R.id.monthHoursText);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         hAdapter = new HourAdapter(this, hours);
         mRecyclerView.setAdapter(hAdapter);
@@ -71,9 +74,10 @@ public class ShowHoursActivity extends AppCompatActivity {
                 String monthPickerText = monthPicker.getSelectedItem().toString();
                 if (monthPickerText.equals("Válassz hónapot!")) {
                     hours.clear();
+                    monthHoursText.setText("");
                     hAdapter.notifyDataSetChanged();
                 } else if (monthPickerText.equals("Minden")) {
-                    loadHourData();
+                    loadHourData("");
                 } else {
                     loadHourData(monthPickerText);
                 }
@@ -94,7 +98,7 @@ public class ShowHoursActivity extends AppCompatActivity {
                 if (document.exists()) {
                     Map<String, Object> map = document.getData();
                     for (String key : map.keySet()) {
-                        HashMap<String, String> currentData = (HashMap<String, String>) map.get(key);
+                        HashMap<String, Object> currentData = (HashMap<String, Object>) map.get(key);
                         if (currentData.toString().contains(workerId)) {
                             HourData hourData = new HourData(currentData);
                             montPickerOptions.add(hourData);
@@ -129,49 +133,60 @@ public class ShowHoursActivity extends AppCompatActivity {
         });
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private void loadHourData() {
-        hours.clear();
-
-        mItems.get().addOnCompleteListener(companiesTask -> {
-            if (companiesTask.isSuccessful()) {
-                DocumentSnapshot document = companiesTask.getResult();
-                if (document.exists()) {
-                    Map<String, Object> map = document.getData();
-                    for (String key : map.keySet()) {
-                        HashMap<String, String> currentData = (HashMap<String, String>) map.get(key);
-                        if (currentData.toString().contains(workerId)) {
-                            HourData hourData = new HourData(currentData);
-                            hours.add(hourData);
-                            Collections.sort(hours, new DateComparator());
-                        }
-                    }
-                    hAdapter.notifyDataSetChanged();
-                } else {
-                    Log.d(TAG, "No such document");
-                }
-            } else {
-                Log.d(TAG, "get failed with ", companiesTask.getException());
-            }
-        });
-    }
+//    @SuppressLint("NotifyDataSetChanged")
+//    private void loadHourData() {
+//        hours.clear();
+//        mItems.get().addOnCompleteListener(companiesTask -> {
+//            double hour = 0;
+//            if (companiesTask.isSuccessful()) {
+//                DocumentSnapshot document = companiesTask.getResult();
+//                if (document.exists()) {
+//                    Map<String, Object> map = document.getData();
+//                    for (String key : map.keySet()) {
+//                        HashMap<String, Object> currentData = (HashMap<String, Object>) map.get(key);
+//                        if (currentData.toString().contains(workerId)) {
+//                            HourData hourData = new HourData(currentData);
+//                            hours.add(hourData);
+//                            Collections.sort(hours, new DateComparator());
+//                        }
+//                    }
+//                    for (int i = 0; i < hours.size(); i++) {
+//                        hour += hours.get(i).getWorkedHours() instanceof Long ? ((Long) hours.get(i).getWorkedHours()).doubleValue() : (double) hours.get(i).getWorkedHours();
+//                    }
+//                    monthHoursText.setText(" " + hour + " óra");
+//                    hAdapter.notifyDataSetChanged();
+//                } else {
+//                    Log.d(TAG, "No such document");
+//                }
+//            } else {
+//                Log.d(TAG, "get failed with ", companiesTask.getException());
+//            }
+//        });
+//    }
 
     @SuppressLint("NotifyDataSetChanged")
     private void loadHourData(String yearAndMonth) {
         hours.clear();
 
+
         mItems.get().addOnCompleteListener(companiesTask -> {
+            double hour = 0;
             if (companiesTask.isSuccessful()) {
                 DocumentSnapshot document = companiesTask.getResult();
                 if (document.exists()) {
                     Map<String, Object> map = document.getData();
                     for (String key : map.keySet()) {
-                        HashMap<String, String> currentData = (HashMap<String, String>) map.get(key);
+                        HashMap<String, Object> currentData = (HashMap<String, Object>) map.get(key);
                         if (currentData.toString().contains(workerId) && currentData.toString().contains(yearAndMonth)) {
                             HourData hourData = new HourData(currentData);
                             hours.add(hourData);
+                            Collections.sort(hours, new DateComparator());
                         }
                     }
+                    for (int i = 0; i < hours.size(); i++) {
+                        hour += hours.get(i).getWorkedHours() instanceof Long ? ((Long) hours.get(i).getWorkedHours()).doubleValue() : (double) hours.get(i).getWorkedHours();
+                    }
+                    monthHoursText.setText(" " + hour + " óra");
                     hAdapter.notifyDataSetChanged();
                 } else {
                     Log.d(TAG, "No such document");
@@ -182,8 +197,8 @@ public class ShowHoursActivity extends AppCompatActivity {
         });
     }
 }
-class DateComparator implements Comparator<HourData>
-{
+
+class DateComparator implements Comparator<HourData> {
     @Override
     public int compare(HourData dateFirst, HourData dateSecond) {
         return dateSecond.getWorkDay("full").compareTo(dateFirst.getWorkDay("full"));

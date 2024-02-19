@@ -12,6 +12,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/register_margin_top"
+        android:layout_marginBottom="@dimen/register_margin_top"
         android:text="@string/showWorkHours"
         android:textAlignment="center"
         android:textSize="24sp" />
@@ -21,11 +22,46 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/registrationTextView"
-        android:spinnerMode="dropdown"/>
+        android:layout_marginStart="@dimen/register_margin_top"
+        android:layout_marginEnd="@dimen/register_margin_top"
+        android:background="@drawable/blue_outline_white_background"
+        android:popupBackground="@drawable/blue_outline_white_background"
+        android:spinnerMode="dropdown"
+        />
+
+    <TextView
+        android:id="@+id/monthHours"
+        android:layout_below="@id/monthPicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="@dimen/register_margin_top"
+        android:layout_marginEnd="@dimen/register_margin_top"
+        android:text="@string/monthHours"
+        android:textSize="16sp"
+        android:layout_marginTop="@dimen/small_margin_top"
+        android:layout_marginBottom="@dimen/small_margin_top"/>
+
+    <TextView
+        android:id="@+id/monthHoursText"
+        android:layout_below="@id/monthPicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="@dimen/showMontHourMargin"
+        android:layout_marginEnd="@dimen/register_margin_top"
+        android:text=""
+        android:textSize="16sp"
+        android:layout_marginTop="@dimen/small_margin_top"
+        android:layout_marginBottom="@dimen/small_margin_top"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewHours"
-        android:layout_below="@+id/monthPicker"
+        android:layout_below="@+id/monthHours"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical" />
