@@ -133,37 +133,6 @@ public class ShowHoursActivity extends AppCompatActivity {
         });
     }
 
-//    @SuppressLint("NotifyDataSetChanged")
-//    private void loadHourData() {
-//        hours.clear();
-//        mItems.get().addOnCompleteListener(companiesTask -> {
-//            double hour = 0;
-//            if (companiesTask.isSuccessful()) {
-//                DocumentSnapshot document = companiesTask.getResult();
-//                if (document.exists()) {
-//                    Map<String, Object> map = document.getData();
-//                    for (String key : map.keySet()) {
-//                        HashMap<String, Object> currentData = (HashMap<String, Object>) map.get(key);
-//                        if (currentData.toString().contains(workerId)) {
-//                            HourData hourData = new HourData(currentData);
-//                            hours.add(hourData);
-//                            Collections.sort(hours, new DateComparator());
-//                        }
-//                    }
-//                    for (int i = 0; i < hours.size(); i++) {
-//                        hour += hours.get(i).getWorkedHours() instanceof Long ? ((Long) hours.get(i).getWorkedHours()).doubleValue() : (double) hours.get(i).getWorkedHours();
-//                    }
-//                    monthHoursText.setText(" " + hour + " óra");
-//                    hAdapter.notifyDataSetChanged();
-//                } else {
-//                    Log.d(TAG, "No such document");
-//                }
-//            } else {
-//                Log.d(TAG, "get failed with ", companiesTask.getException());
-//            }
-//        });
-//    }
-
     @SuppressLint("NotifyDataSetChanged")
     private void loadHourData(String yearAndMonth) {
         hours.clear();
