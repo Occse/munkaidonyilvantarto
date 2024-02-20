@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -23,7 +24,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,7 +34,6 @@ import java.util.Objects;
 public class MainUserActivity extends AppCompatActivity {
     private static final String TAG = MainUserActivity.class.getName();
     private final Calendar myCalendar = Calendar.getInstance();
-    private FirebaseUser user;
     private FirebaseFirestore mFirestore;
     private String email;
     private boolean isEmployer;
@@ -54,12 +53,11 @@ public class MainUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_user);
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            Log.d(TAG, "auth success");
             email = user.getEmail();
         } else {
-            Log.d(TAG, "auth failed");
+            Toast.makeText(MainUserActivity.this, "You are not logged in!", Toast.LENGTH_LONG).show();
             finish();
         }
         welcomeText = findViewById(R.id.welcomeText);
@@ -74,8 +72,6 @@ public class MainUserActivity extends AppCompatActivity {
                         workerId = String.valueOf(document.get("userId"));
                         isEmployer = String.valueOf(document.get("accountType")).equals("Munkáltató");
                         isUnemployed = String.valueOf(document.get("companyName")).equals("Munkanélküli");
-                    } else {
-                        Log.d(TAG, "No such document");
                     }
                 } else {
                     Log.d(TAG, "get failed with ", userPreferencesTask.getException());
@@ -90,20 +86,14 @@ public class MainUserActivity extends AppCompatActivity {
 
             if (documentSnapshot != null && documentSnapshot.exists()) {
                 companyNameText.setText("cég: " + Objects.requireNonNull(documentSnapshot.getData()).get("companyName"));
-                Log.d(TAG, "Current data: " + documentSnapshot.getData());
                 isEmployer = String.valueOf(documentSnapshot.getData().get("accountType")).equals("Munkáltató");
                 isUnemployed = String.valueOf(documentSnapshot.get("companyName")).equals("Munkanélküli");
                 companyName = String.valueOf(documentSnapshot.get("companyName"));
                 String welcomeString = documentSnapshot.getData().get("userName") == null ? "Felhasználó" : String.valueOf(documentSnapshot.getData().get("userName"));
                 welcomeText.setText("Üdvözöljük " + welcomeString + "!");
-            } else {
-                Log.d(TAG, "Current data: null");
             }
         });
 
-        if (!isEmployer) {
-
-        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -136,23 +126,18 @@ public class MainUserActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.manageWorkers) {
-            Log.d(TAG, "ManageWorkers clicked!");
             manageWorkers();
             return true;
         } else if (item.getItemId() == R.id.addWorkHours) {
-            Log.d(TAG, "addWorkHours clicked!");
             showAddHours();
             return true;
         } else if (item.getItemId() == R.id.showWorkHours) {
-            Log.d(TAG, "showWorkHours clicked!");
             showShowHours();
             return true;
         } else if (item.getItemId() == R.id.profile) {
-            Log.d(TAG, "Profile clicked!");
             showProfile();
             return true;
         } else if (item.getItemId() == R.id.logout) {
-            Log.d(TAG, "Logout clicked!");
             FirebaseAuth.getInstance().signOut();
             finish();
             return true;
@@ -203,6 +188,7 @@ public class MainUserActivity extends AppCompatActivity {
         startActivity(showHoursIntent);
     }
 
+    @SuppressLint("SetTextI18n")
     private void showTimePicker(EditText editText) {
         int hour = myCalendar.get(Calendar.HOUR_OF_DAY);
         int minute = myCalendar.get(Calendar.MINUTE);
@@ -249,8 +235,6 @@ public class MainUserActivity extends AppCompatActivity {
                     String userDay = userId + "-" + formattedDate;
                     companyWorkerHourData.put(userDay, workerHourData);
                     mFirestore.collection("CompaniesWorkHours").document(companyName).set(companyWorkerHourData, SetOptions.merge());
-                } else {
-                    Log.d(TAG, "No such document");
                 }
             } else {
                 Log.d(TAG, "get failed with ", userPreferencesTask.getException());

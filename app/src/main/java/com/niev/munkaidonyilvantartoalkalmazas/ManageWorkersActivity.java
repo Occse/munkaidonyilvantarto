@@ -34,13 +34,10 @@ import java.util.Objects;
 
 public class ManageWorkersActivity extends AppCompatActivity {
     private static final String TAG = ManageWorkersActivity.class.getName();
-    private RecyclerView mRecyclerView;
     private ArrayList<WorkerData> workers;
     private FirebaseFirestore mFirestore;
     private WorkerAdapter mAdapter;
     private DocumentReference mItems;
-    private FirebaseUser user;
-    private String email;
     private String companyName;
     private int members;
     private int fullCount;
@@ -53,18 +50,15 @@ public class ManageWorkersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_workers);
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            Log.d(TAG, "auth success");
-            email = user.getEmail();
-        } else {
-            Log.d(TAG, "auth failed");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            Toast.makeText(ManageWorkersActivity.this, "You are not logged in!", Toast.LENGTH_LONG).show();
             finish();
         }
         mFirestore = FirebaseFirestore.getInstance();
         companyName = getIntent().getStringExtra("companyName");
         workers = new ArrayList<>();
-        mRecyclerView = findViewById(R.id.recyclerViewWorkers);
+        RecyclerView mRecyclerView = findViewById(R.id.recyclerViewWorkers);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         mAdapter = new WorkerAdapter(this, workers);
         mRecyclerView.setAdapter(mAdapter);
@@ -87,22 +81,14 @@ public class ManageWorkersActivity extends AppCompatActivity {
                             DocumentSnapshot document1 = countWorkersTask.getResult();
                             if (document1.exists()) {
                                 Map<String, Object> map = document1.getData();
-                                Log.d(TAG, "number of fields: " + map.size());
                                 fullCount = map.size();
                                 members = map.size() - 1;
-                                Log.d(TAG, "Count: " + members);
-                                Log.d(TAG, String.valueOf(document1.get("Worker0Data")));
                                 for (int i = 0; i < fullCount; i++) {
-                                    Log.d(TAG, String.valueOf(i));
                                     if (document1.get("Worker" + i + "Data") == null) {
                                         continue;
                                     }
-                                    Log.d(TAG, String.valueOf(document1.get("Worker" + i + "Data")));
                                     HashMap<String, String> currentData = (HashMap<String, String>) document1.get("Worker" + i + "Data");
-                                    Log.d(TAG, "currentData: " + document1.get("Worker" + i + "Data"));
-                                    Log.d(TAG, "typeof: " + currentData.getClass());
                                     WorkerData workerData = new WorkerData(currentData);
-                                    Log.d(TAG, "workerData: " + workerData.getUserName());
                                     workers.add(workerData);
                                     // Notify the adapter of the change
                                     mAdapter.notifyDataSetChanged();
@@ -136,7 +122,6 @@ public class ManageWorkersActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.addWorker) {
-            Log.d(TAG, "AddWorker clicked!");
             addWorkerDialog();
             return true;
         } else {
@@ -172,17 +157,12 @@ public class ManageWorkersActivity extends AppCompatActivity {
                 if (userCardIdTask.isSuccessful()) {
                     DocumentSnapshot document = userCardIdTask.getResult();
                     if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         workerEmail = String.valueOf(document.get("email"));
                         DocumentReference docRef = mFirestore.collection("UserPreferences").document(String.valueOf(document.get("email")));
                         docRef.get().addOnCompleteListener(userPreferencesTask -> {
                             if (userPreferencesTask.isSuccessful()) {
                                 DocumentSnapshot workerDoc = userPreferencesTask.getResult();
                                 if (workerDoc.exists()) {
-                                    Log.d(TAG, "DocumentSnapshot data: " + workerDoc.getData());
-                                    Log.d(TAG, "putting in data");
-                                    Log.d(TAG, "putting in username: " + workerDoc.get("userName"));
-                                    Log.d(TAG, "putting in email: " + workerDoc.get("email"));
                                     workerData.put("userName", String.valueOf(workerDoc.get("userName")));
                                     workerData.put("userId", String.valueOf(workerDoc.get("userId")));
                                     workerData.put("userTAJ", String.valueOf(workerDoc.get("userTAJ")));
@@ -193,11 +173,6 @@ public class ManageWorkersActivity extends AppCompatActivity {
                                     workerData.put("userBirthDate", String.valueOf(workerDoc.get("userBirthDate")));
                                     workerData.put("userMunkakor", workerMunkakorText);
                                     company = String.valueOf(workerDoc.get("companyName"));
-                                    Log.d(TAG, "email: " + workerEmail);
-
-                                    //getting user from email
-
-                                    Log.d(TAG, "worker: " + workerData);
                                     //counting workers
                                     DocumentReference docRef1 = mFirestore.collection("Companies").document(companyName);
                                     docRef1.get().addOnCompleteListener(companyMembersTask -> {
@@ -205,19 +180,15 @@ public class ManageWorkersActivity extends AppCompatActivity {
                                             DocumentSnapshot document1 = companyMembersTask.getResult();
                                             if (document1.exists()) {
                                                 Map<String, Object> map = document1.getData();
-                                                Log.d(TAG, "number of fields: " + map.size());
                                                 members = map.size() - 1;
-                                                Log.d(TAG, "Count: " + members);
                                                 //adding worker
                                                 HashMap<String, Object> companyWorkerData = new HashMap<>();
                                                 workerData.put("id", String.valueOf(members));
                                                 companyWorkerData.put("Worker" + members + "Data", workerData);
-                                                Log.d(TAG, "workermemberdata: " + companyWorkerData);
                                                 mFirestore.collection("Companies").document(companyName).get().addOnCompleteListener(companyAddTask -> {
                                                     if (companyAddTask.isSuccessful()) {
                                                         DocumentSnapshot document11 = companyAddTask.getResult();
                                                         if (document11.exists()) {
-                                                            Log.d(TAG, "DocumentSnapshot data: " + document11.getData());
                                                             if (!document11.toString().contains("userId=" + workerData.get("userId")) && !company.equals(companyName) && company.equals("Munkanélküli")) {
                                                                 mFirestore.collection("Companies").document(companyName).set(companyWorkerData, SetOptions.merge());
                                                                 HashMap<String, String> userData = new HashMap<>();
@@ -270,6 +241,7 @@ public class ManageWorkersActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     public void kickWorkerDialog(WorkerData currentWorker) {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_alert);
@@ -302,18 +274,14 @@ public class ManageWorkersActivity extends AppCompatActivity {
                     HashMap<String, String> workerData = new HashMap<>();
                     workerData.put("companyName", "Munkanélküli");
                     mFirestore.collection("UserPreferences").document(workers.get("email")).set(workerData, SetOptions.merge());
-                    Log.d(TAG, "kickWorker: " + workers.get("email"));
                     HashMap<String, Object> deletable = new HashMap<>();
                     deletable.put("Worker" + currentWorker.getId() + "Data", FieldValue.delete());
                     docRef.update(deletable).addOnCompleteListener(task -> {
-                        Log.d("Activity", "Document successfully deleted!");
                         Intent intent = getIntent();
                         finish();
                         startActivity(intent);
                         overridePendingTransition(0, 0);
                     });
-                } else {
-                    Log.d(TAG, "Current data: null");
                 }
             }
         });

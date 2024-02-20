@@ -46,7 +46,6 @@ public class ProfileActivity extends AppCompatActivity {
     TextView companyNamePlaceholder;
     LinearLayout functionButtons;
     TextView companyNameText;
-    private FirebaseUser user;
     private FirebaseFirestore mFirestore;
     private String email;
     private String lastOptionText;
@@ -56,12 +55,11 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            Log.d(TAG, "auth success");
             email = user.getEmail();
         } else {
-            Log.d(TAG, "auth failed");
+            Toast.makeText(ProfileActivity.this, "You are not logged in!", Toast.LENGTH_LONG).show();
             finish();
         }
         userNameEditText = findViewById(R.id.userNameEditText);
@@ -88,7 +86,6 @@ public class ProfileActivity extends AppCompatActivity {
             if (userPreferencesTask.isSuccessful()) {
                 DocumentSnapshot document = userPreferencesTask.getResult();
                 if (document.exists()) {
-                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                     userNameEditText.setText(String.valueOf(document.get("userName")));
                     userEmailEditText.setText(String.valueOf(document.get("email")));
                     userId.setText(String.valueOf(document.get("userId") == null ? "" : (document.get("userId"))));
@@ -223,8 +220,7 @@ public class ProfileActivity extends AppCompatActivity {
             correctFormat = digits == 6 && chars == 2;
         }
         if (!correctFormat) {
-            makeText(this, "Wrong ID format.", Toast.LENGTH_LONG).show();
-            Log.e(TAG, "ID misformat.");
+            makeText(this, "Wrong ID format! (12345ab)", Toast.LENGTH_LONG).show();
             return;
         }
         mFirestore = FirebaseFirestore.getInstance();
@@ -238,7 +234,6 @@ public class ProfileActivity extends AppCompatActivity {
                 DocumentSnapshot document = userCarsIdTask.getResult();
                 if (document.exists() && userIdText.equals(lastID)) {
                     mFirestore.collection("userCardIDs").document(userIdText).set(userIds, SetOptions.merge());
-                    Log.d(TAG, "Document exists");
                 } else if (!document.exists()) {
                     mFirestore.collection("userCardIDs").document(lastID).delete().addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!"))
                             .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));

@@ -59,10 +59,9 @@ public class MainActivity extends AppCompatActivity {
         if (!userEmail.equals("") && !password.equals("")) {
             mAuth.signInWithEmailAndPassword(userEmail, password).addOnCompleteListener(this, loginTask -> {
                 if (loginTask.isSuccessful()) {
-                    Log.d(TAG, "login successful");
+                    Toast.makeText(MainActivity.this, "Login success!", Toast.LENGTH_SHORT).show();
                     showMainUser();
                 } else {
-                    Log.d(TAG, "login failed");
                     Toast.makeText(MainActivity.this, "Couldn't log in: " + Objects.requireNonNull(loginTask.getException()).getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
@@ -87,10 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d(TAG, "Google sign in success!" + account.getId());
                 String email = account.getEmail();
                 mFirestore = FirebaseFirestore.getInstance();
-                DocumentReference docRef = mFirestore.collection("UserPreferences").document(email);
+                DocumentReference docRef = mFirestore.collection("UserPreferences").document(Objects.requireNonNull(email));
                 docRef.get().addOnCompleteListener(userPreferencesTask -> {
                     if (userPreferencesTask.isSuccessful()) {
                         DocumentSnapshot document = userPreferencesTask.getResult();
@@ -119,12 +117,10 @@ public class MainActivity extends AppCompatActivity {
         mAuth.signInWithCredential(authCredential)
                 .addOnCompleteListener(this, signInWithGoogleTask -> {
                     if (signInWithGoogleTask.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithCredential:success");
+                        Toast.makeText(MainActivity.this, "Google sign in success!", Toast.LENGTH_LONG).show();
                         showMainUser();
                     } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithCredential:failure", signInWithGoogleTask.getException());
+                        Toast.makeText(MainActivity.this, "Google sign in failed!", Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -136,37 +132,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("email", userEmailET.getText().toString());
         editor.putString("password", passwordET.getText().toString());
         editor.apply();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
 }

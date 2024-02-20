@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -27,14 +28,10 @@ import java.util.Map;
 
 public class ShowHoursActivity extends AppCompatActivity {
     private static final String TAG = ShowHoursActivity.class.getName();
-    private RecyclerView mRecyclerView;
     private ArrayList<HourData> montPickerOptions;
     private ArrayList<HourData> hours;
-    private FirebaseFirestore mFirestore;
     private HourAdapter hAdapter;
     private DocumentReference mItems;
-    private FirebaseUser user;
-    private String companyName;
     private String workerId;
     private Spinner monthPicker;
     private ArrayAdapter<String> spinnerAdapter;
@@ -46,19 +43,17 @@ public class ShowHoursActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_hours);
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            Log.d(TAG, "auth success");
-        } else {
-            Log.d(TAG, "auth failed");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            Toast.makeText(ShowHoursActivity.this, "You are not logged in!", Toast.LENGTH_LONG).show();
             finish();
         }
-        mFirestore = FirebaseFirestore.getInstance();
-        companyName = getIntent().getStringExtra("companyName");
+        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+        String companyName = getIntent().getStringExtra("companyName");
         workerId = getIntent().getStringExtra("workerId");
         hours = new ArrayList<>();
         montPickerOptions = new ArrayList<>();
-        mRecyclerView = findViewById(R.id.recyclerViewHours);
+        RecyclerView mRecyclerView = findViewById(R.id.recyclerViewHours);
         monthPicker = findViewById(R.id.monthPicker);
         monthHoursText = findViewById(R.id.monthHoursText);
         monthHoursMain = findViewById(R.id.monthHours);
@@ -138,7 +133,7 @@ public class ShowHoursActivity extends AppCompatActivity {
         });
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
     private void loadHourData(String yearAndMonth) {
         hours.clear();
 
@@ -154,7 +149,7 @@ public class ShowHoursActivity extends AppCompatActivity {
                         if (currentData.toString().contains(workerId) && currentData.toString().contains(yearAndMonth)) {
                             HourData hourData = new HourData(currentData);
                             hours.add(hourData);
-                            Collections.sort(hours, new DateComparator());
+                            hours.sort(new DateComparator());
                         }
                     }
                     for (int i = 0; i < hours.size(); i++) {

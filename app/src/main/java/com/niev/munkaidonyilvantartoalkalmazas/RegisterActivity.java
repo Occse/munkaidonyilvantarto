@@ -5,7 +5,6 @@ import static android.widget.Toast.makeText;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -22,9 +21,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity {
-    private static final String TAG = RegisterActivity.class.getName();
     private static final String PREF_KEY = Objects.requireNonNull(MainActivity.class.getPackage()).toString();
-
     private static final int SECRET_KEY = 99;
     EditText userNameEditText;
     EditText userEmailEditText;
@@ -32,9 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText passwordAgainEditText;
     RadioGroup accountTypeGroup;
     SwitchMaterial agreement;
-    private SharedPreferences preferences;
     private FirebaseAuth mAuth;
-    private FirebaseFirestore mFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
         accountTypeGroup.check(R.id.worker);
 
 
-        preferences = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
-
+        SharedPreferences preferences = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
         String email = preferences.getString("email", "");
         String password = preferences.getString("password", "");
 
@@ -81,16 +75,13 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (!password.equals(passwordConfirm)) {
             makeText(this, "The two passwords didn't match.", Toast.LENGTH_LONG).show();
-            Log.e(TAG, "The two passwords didn't match.");
             return;
         }
         if (!agreementConfirmed) {
             makeText(this, "Nem fogadtad el az adatkezelési nyilatkozatot!", Toast.LENGTH_LONG).show();
-            Log.e(TAG, "Agreement wasn't confirmed.");
             return;
         }
-        Log.i(TAG, "Registered as: " + userName + ", e-mail: " + email + ", accountType: " + accountType);
-        mFirestore = FirebaseFirestore.getInstance();
+        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
         HashMap<String, String> userData = new HashMap<>();
         userData.put("userName", userName);
         userData.put("password", password);
@@ -102,11 +93,11 @@ public class RegisterActivity extends AppCompatActivity {
         mFirestore.collection("UserPreferences").document(email).set(userData);
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, userPreferencesTask -> {
             if (userPreferencesTask.isSuccessful()) {
-                Log.d(TAG, "successful reg");
+                Toast.makeText(RegisterActivity.this, "Registration successful!", Toast.LENGTH_LONG).show();
                 finish();
                 showMainUser();
             } else {
-                Log.d(TAG, "reg failed");
+                Toast.makeText(RegisterActivity.this, "Registration failed!", Toast.LENGTH_LONG).show();
                 makeText(RegisterActivity.this, "Couldn't register user: " + Objects.requireNonNull(userPreferencesTask.getException()).getMessage(), Toast.LENGTH_LONG).show();
             }
         });
