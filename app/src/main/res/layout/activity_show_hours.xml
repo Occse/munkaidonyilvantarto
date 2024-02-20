@@ -39,7 +39,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="@dimen/register_margin_top"
         android:layout_marginEnd="@dimen/register_margin_top"
-        android:text="@string/monthHours"
+        android:text=""
         android:textSize="16sp"
         android:layout_marginTop="@dimen/small_margin_top"
         android:layout_marginBottom="@dimen/small_margin_top"/>

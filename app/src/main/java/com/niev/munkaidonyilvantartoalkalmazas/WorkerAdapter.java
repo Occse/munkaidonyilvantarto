@@ -82,6 +82,8 @@ public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.viewHolder
             mUserDegree.setText(currentWorker.getUserDegree());
             mUserBirthDate.setText(currentWorker.getUserBirthDate());
             mUserMunkakor.setText(currentWorker.getUserMunkakor());
+            itemView.findViewById(R.id.checkWorker)
+                    .setOnClickListener(view -> ((ManageWorkersActivity) nContext).checkWorkerHours(currentWorker));
             itemView.findViewById(R.id.kickWorker)
                     .setOnClickListener(view -> ((ManageWorkersActivity) nContext).kickWorkerDialog(currentWorker));
         }

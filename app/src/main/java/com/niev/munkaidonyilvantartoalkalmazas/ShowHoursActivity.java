@@ -34,12 +34,12 @@ public class ShowHoursActivity extends AppCompatActivity {
     private HourAdapter hAdapter;
     private DocumentReference mItems;
     private FirebaseUser user;
-    private String email;
     private String companyName;
     private String workerId;
     private Spinner monthPicker;
     private ArrayAdapter<String> spinnerAdapter;
     private TextView monthHoursText;
+    private TextView monthHoursMain;
 
 
     @Override
@@ -49,7 +49,6 @@ public class ShowHoursActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             Log.d(TAG, "auth success");
-            email = user.getEmail();
         } else {
             Log.d(TAG, "auth failed");
             finish();
@@ -62,6 +61,7 @@ public class ShowHoursActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recyclerViewHours);
         monthPicker = findViewById(R.id.monthPicker);
         monthHoursText = findViewById(R.id.monthHoursText);
+        monthHoursMain = findViewById(R.id.monthHours);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         hAdapter = new HourAdapter(this, hours);
         mRecyclerView.setAdapter(hAdapter);
@@ -72,8 +72,9 @@ public class ShowHoursActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String monthPickerText = monthPicker.getSelectedItem().toString();
-                if (monthPickerText.equals("Válassz hónapot!")) {
+                if (monthPickerText.equals("Válassz hónapot!") || monthPickerText.equals("Nincs munkaidő megadva!")) {
                     hours.clear();
+                    monthHoursMain.setText("");
                     monthHoursText.setText("");
                     hAdapter.notifyDataSetChanged();
                 } else if (monthPickerText.equals("Minden")) {
@@ -105,10 +106,8 @@ public class ShowHoursActivity extends AppCompatActivity {
                         }
                     }
                     ArrayList<String> spinnerOptions = new ArrayList<>();
-                    spinnerOptions.add("Válassz hónapot!");
-                    spinnerOptions.add("Minden");
                     ArrayList<String> toSort = new ArrayList<>();
-                    for (int i = 0; i < montPickerOptions.toArray().length - 1; i++) {
+                    for (int i = 0; i < montPickerOptions.toArray().length; i++) {
                         String currentMonthAndYear = montPickerOptions.get(i).getWorkDay("year") + "/" + montPickerOptions.get(i).getWorkDay("month");
                         if (!toSort.contains(currentMonthAndYear)) {
                             toSort.add(currentMonthAndYear);
@@ -116,6 +115,12 @@ public class ShowHoursActivity extends AppCompatActivity {
                     }
                     Collections.sort(toSort);
                     Collections.reverse(toSort);
+                    if (toSort.size() > 0) {
+                        spinnerOptions.add("Válassz hónapot!");
+                        spinnerOptions.add("Minden");
+                    } else {
+                        spinnerOptions.add("Nincs munkaidő megadva!");
+                    }
                     spinnerOptions.addAll(toSort);
                     String[] spinnerOptionsArray = new String[spinnerOptions.size()];
                     for (int i = 0; i < spinnerOptions.size(); i++) {
@@ -155,6 +160,7 @@ public class ShowHoursActivity extends AppCompatActivity {
                     for (int i = 0; i < hours.size(); i++) {
                         hour += hours.get(i).getWorkedHours() instanceof Long ? ((Long) hours.get(i).getWorkedHours()).doubleValue() : (double) hours.get(i).getWorkedHours();
                     }
+                    monthHoursMain.setText(R.string.monthHours);
                     monthHoursText.setText(" " + hour + " óra");
                     hAdapter.notifyDataSetChanged();
                 } else {

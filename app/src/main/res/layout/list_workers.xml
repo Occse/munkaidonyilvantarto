@@ -173,10 +173,19 @@
         android:text="@string/BirthDate" />
 
     <Button
-        android:id="@+id/kickWorker"
+        android:id="@+id/checkWorker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/userBirthDate"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/skybluedark"
+        android:text="@string/check_worker_hours" />
+
+    <Button
+        android:id="@+id/kickWorker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/checkWorker"
         android:layout_centerHorizontal="true"
         android:backgroundTint="@color/darkRed"
         android:text="@string/kickWorker" />

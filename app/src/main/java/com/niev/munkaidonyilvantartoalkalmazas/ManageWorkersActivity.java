@@ -318,4 +318,11 @@ public class ManageWorkersActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void checkWorkerHours(WorkerData currentWorker) {
+        Intent showHoursIntent = new Intent(this, ShowHoursActivity.class);
+        showHoursIntent.putExtra("companyName", getIntent().getStringExtra("companyName"));
+        showHoursIntent.putExtra("workerId", currentWorker.getUserId());
+        startActivity(showHoursIntent);
+    }
 }
