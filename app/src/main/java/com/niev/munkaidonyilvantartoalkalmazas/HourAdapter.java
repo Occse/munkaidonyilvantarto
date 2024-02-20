@@ -13,7 +13,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class HourAdapter extends RecyclerView.Adapter<HourAdapter.viewHolderWorker> {
     private final ArrayList<HourData> mHourDataData;
@@ -73,7 +76,17 @@ public class HourAdapter extends RecyclerView.Adapter<HourAdapter.viewHolderWork
             mLunchStart.setText(currentWorkerHour.getLunchStart());
             mLunchEnd.setText(currentWorkerHour.getLunchEnd());
             mWorkEnd.setText(currentWorkerHour.getWorkEnd());
-            mWorkTime.setText(currentWorkerHour.getWorkedHours() + " óra");
+            Object hourObject = currentWorkerHour.getWorkedHours();
+            long hourLong = -1;
+            double hourDouble = -1;
+            if(hourObject instanceof Long){
+                hourLong = (long) hourObject;
+            } else {
+                hourDouble = (double) hourObject;
+            }
+            BigDecimal hourFormat = new BigDecimal(hourLong == -1 ? hourDouble : hourLong);
+            BigDecimal formattedHour = hourFormat.setScale(2, RoundingMode.HALF_UP);
+            mWorkTime.setText(formattedHour + " óra");
         }
     }
 }

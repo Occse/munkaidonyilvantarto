@@ -20,6 +20,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -114,6 +116,9 @@ public class ShowHoursActivity extends AppCompatActivity {
                         spinnerOptions.add("Válassz hónapot!");
                         spinnerOptions.add("Minden");
                     } else {
+                        monthPicker.setEnabled(false);
+                        monthPicker.setClickable(false);
+                        monthPicker.setAdapter(spinnerAdapter);
                         spinnerOptions.add("Nincs munkaidő megadva!");
                     }
                     spinnerOptions.addAll(toSort);
@@ -156,7 +161,9 @@ public class ShowHoursActivity extends AppCompatActivity {
                         hour += hours.get(i).getWorkedHours() instanceof Long ? ((Long) hours.get(i).getWorkedHours()).doubleValue() : (double) hours.get(i).getWorkedHours();
                     }
                     monthHoursMain.setText(R.string.monthHours);
-                    monthHoursText.setText(" " + hour + " óra");
+                    BigDecimal hourFormat = new BigDecimal(hour);
+                    BigDecimal formattedHour = hourFormat.setScale(2, RoundingMode.HALF_UP);
+                    monthHoursText.setText(formattedHour + " óra");
                     hAdapter.notifyDataSetChanged();
                 } else {
                     Log.d(TAG, "No such document");

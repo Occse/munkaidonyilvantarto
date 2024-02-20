@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth.signInWithCredential(authCredential)
                 .addOnCompleteListener(this, signInWithGoogleTask -> {
                     if (signInWithGoogleTask.isSuccessful()) {
-                        Toast.makeText(MainActivity.this, "Google sign in success!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Google sign in success!", Toast.LENGTH_SHORT).show();
                         showMainUser();
                     } else {
                         Toast.makeText(MainActivity.this, "Google sign in failed!", Toast.LENGTH_LONG).show();
