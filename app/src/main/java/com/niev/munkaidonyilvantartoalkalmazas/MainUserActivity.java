@@ -131,12 +131,12 @@ public class MainUserActivity extends BaseActivity {
     public void supportInvalidateOptionsMenu() {
         if (!isUnemployed) {
             this.menuList.findItem(R.id.manageWorkers).setVisible(isEmployer);
-//            this.menuList.findItem(R.id.addWorkHours).setVisible(!isEmployer);
-//            this.menuList.findItem(R.id.showWorkHours).setVisible(!isEmployer);
+            this.menuList.findItem(R.id.addWorkHours).setVisible(!isEmployer);
+            this.menuList.findItem(R.id.showWorkHours).setVisible(!isEmployer);
         } else {
             this.menuList.findItem(R.id.manageWorkers).setVisible(false);
-//            this.menuList.findItem(R.id.addWorkHours).setVisible(false);
-//            this.menuList.findItem(R.id.showWorkHours).setVisible(false);
+            this.menuList.findItem(R.id.addWorkHours).setVisible(false);
+            this.menuList.findItem(R.id.showWorkHours).setVisible(false);
         }
         super.supportInvalidateOptionsMenu();
     }
