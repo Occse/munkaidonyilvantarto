@@ -47,7 +47,7 @@ public class ShowHoursActivity extends BaseActivity {
         setContentView(R.layout.activity_show_hours);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
-            Toast.makeText(ShowHoursActivity.this, "You are not logged in!", Toast.LENGTH_LONG).show();
+            Toast.makeText(ShowHoursActivity.this, "Nem vagy belépve!", Toast.LENGTH_LONG).show();
             finish();
         }
         FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();

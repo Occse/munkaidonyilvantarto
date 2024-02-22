@@ -59,7 +59,7 @@ public class MainUserActivity extends BaseActivity {
         if (user != null) {
             email = user.getEmail();
         } else {
-            Toast.makeText(MainUserActivity.this, "You are not logged in!", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainUserActivity.this, "Nem vagy belépve!", Toast.LENGTH_LONG).show();
             finish();
         }
         welcomeText = findViewById(R.id.welcomeText);

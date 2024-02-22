@@ -51,7 +51,7 @@ public class ManageWorkersActivity extends BaseActivity {
         setContentView(R.layout.activity_manage_workers);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
-            Toast.makeText(ManageWorkersActivity.this, "You are not logged in!", Toast.LENGTH_LONG).show();
+            Toast.makeText(ManageWorkersActivity.this, "Nem vagy belépve!", Toast.LENGTH_LONG).show();
             finish();
         }
         mFirestore = FirebaseFirestore.getInstance();

@@ -57,7 +57,7 @@ public class ProfileActivity extends BaseActivity {
         if (user != null) {
             email = user.getEmail();
         } else {
-            Toast.makeText(ProfileActivity.this, "You are not logged in!", Toast.LENGTH_LONG).show();
+            Toast.makeText(ProfileActivity.this, "Nem vagy belépve!", Toast.LENGTH_LONG).show();
             finish();
         }
         userNameEditText = findViewById(R.id.userNameEditText);

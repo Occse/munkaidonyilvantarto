@@ -5,6 +5,8 @@ import static android.widget.Toast.makeText;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -60,6 +62,10 @@ public class RegisterActivity extends BaseActivity {
 
     }
 
+    public static boolean isValidEmail(CharSequence email) {
+        return (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
+    }
+
     public void registration(View view) {
         String userName = userNameEditText.getText().toString();
         String email = userEmailEditText.getText().toString();
@@ -71,9 +77,16 @@ public class RegisterActivity extends BaseActivity {
         int id = accountTypeGroup.indexOfChild(radioButton);
         String accountType = ((RadioButton) accountTypeGroup.getChildAt(id)).getText().toString();
 
+        if(!isValidEmail(email)){
+            makeText(this, "Nem jó az email cím.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         if (!password.equals(passwordConfirm)) {
-            makeText(this, "The two passwords didn't match.", Toast.LENGTH_LONG).show();
+            makeText(this, "Nem egyezik a két jelszó.", Toast.LENGTH_LONG).show();
+            return;
+        } else if (password.equals("")) {
+            makeText(this, "Nincs megadva az egyik jelszó.", Toast.LENGTH_LONG).show();
             return;
         }
         if (!agreementConfirmed) {
@@ -92,12 +105,12 @@ public class RegisterActivity extends BaseActivity {
         mFirestore.collection("UserPreferences").document(email).set(userData);
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, userPreferencesTask -> {
             if (userPreferencesTask.isSuccessful()) {
-                Toast.makeText(RegisterActivity.this, "Registration successful!", Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, "Sikeres regisztráció!", Toast.LENGTH_LONG).show();
                 finish();
                 showMainUser();
             } else {
-                Toast.makeText(RegisterActivity.this, "Registration failed!", Toast.LENGTH_LONG).show();
-                makeText(RegisterActivity.this, "Couldn't register user: " + Objects.requireNonNull(userPreferencesTask.getException()).getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, "Sikertelen regisztráció!", Toast.LENGTH_LONG).show();
+                makeText(RegisterActivity.this, "Nem sikerült regisztrálni: " + Objects.requireNonNull(userPreferencesTask.getException()).getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

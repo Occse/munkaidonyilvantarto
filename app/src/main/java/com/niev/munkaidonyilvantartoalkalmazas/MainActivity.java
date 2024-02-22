@@ -55,10 +55,10 @@ public class MainActivity extends BaseActivity {
         if (!userEmail.equals("") && !password.equals("")) {
             mAuth.signInWithEmailAndPassword(userEmail, password).addOnCompleteListener(this, loginTask -> {
                 if (loginTask.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Login success!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Sikeres bejelentkezés!", Toast.LENGTH_SHORT).show();
                     showMainUser();
                 } else {
-                    Toast.makeText(MainActivity.this, "Couldn't log in: " + Objects.requireNonNull(loginTask.getException()).getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Nem sikerült belépni: " + Objects.requireNonNull(loginTask.getException()).getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
         }
@@ -113,10 +113,10 @@ public class MainActivity extends BaseActivity {
         mAuth.signInWithCredential(authCredential)
                 .addOnCompleteListener(this, signInWithGoogleTask -> {
                     if (signInWithGoogleTask.isSuccessful()) {
-                        Toast.makeText(MainActivity.this, "Google sign in success!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Sikeres Google bejelentkezés!", Toast.LENGTH_SHORT).show();
                         showMainUser();
                     } else {
-                        Toast.makeText(MainActivity.this, "Google sign in failed!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Sikertelen Google bejelentkezés!", Toast.LENGTH_LONG).show();
                     }
                 });
     }
