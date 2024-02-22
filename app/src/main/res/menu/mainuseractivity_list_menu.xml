@@ -27,6 +27,12 @@
         app:showAsAction="never"
         />
     <item
+        android:id="@+id/themeChanger"
+        android:title="@string/changeTheme"
+        android:icon="@drawable/ic_change_theme"
+        app:showAsAction="never"
+        />
+    <item
         android:id="@+id/logout"
         android:title="@string/log_out"
         android:icon="@drawable/ic_logout"

@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -26,17 +24,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getName();
-    private static final String PREF_KEY = Objects.requireNonNull(MainActivity.class.getPackage()).toString();
     private static final int RC_SIGN_IN = 5437;
     private static final int SECRET_KEY = 99;
     EditText userEmailET;
     EditText passwordET;
     private GoogleSignInClient mGoogleSignInClient;
-    private SharedPreferences preferences;
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore mFirestore;
+    private boolean isMiamiTheme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +41,9 @@ public class MainActivity extends AppCompatActivity {
         userEmailET = findViewById(R.id.editTextUserName);
         passwordET = findViewById(R.id.editTextPassword);
 
-        preferences = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
         mAuth = FirebaseAuth.getInstance();
+
+        isMiamiTheme = preferences.getBoolean("isMiamiTheme", false);
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
@@ -138,6 +134,15 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("email", userEmailET.getText().toString());
         editor.putString("password", passwordET.getText().toString());
         editor.apply();
+    }
+
+    @Override
+    protected void onResume() {
+        if (isMiamiTheme != preferences.getBoolean("isMiamiTheme", false)) {
+            isMiamiTheme = preferences.getBoolean("isMiamiTheme", false);
+            recreate();
+        }
+        super.onResume();
     }
 
 }

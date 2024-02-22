@@ -49,4 +49,5 @@
     <string name="workTime">Munkaidő</string>
     <string name="monthHours">Ebben a hónapban: </string>
     <string name="check_worker_hours">Dolgozó munkaidő</string>
+    <string name="changeTheme">Téma megváltoztatása</string>
 </resources>

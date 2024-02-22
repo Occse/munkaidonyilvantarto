@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:background="@drawable/roundedcornerswhite"
+    android:background="@drawable/roundedcorners"
     android:elevation="6dp">
 
     <TextView
@@ -178,7 +178,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/userBirthDate"
         android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/skyblue"
+        android:backgroundTint="@color/skybluedark"
         android:text="@string/check_worker_hours" />
 
     <Button

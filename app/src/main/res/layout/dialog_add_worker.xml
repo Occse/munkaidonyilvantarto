@@ -63,6 +63,7 @@
             android:id="@+id/addWorkerButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/green"
             android:text="@string/add_worker" />
 
         <Button
@@ -70,6 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
+            android:backgroundTint="@color/silver"
             android:text="@string/cancel" />
     </LinearLayout>
 

@@ -4,16 +4,17 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,8 +24,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,11 +32,9 @@ import java.util.Locale;
 import java.util.Objects;
 
 
-public class MainUserActivity extends AppCompatActivity {
+public class MainUserActivity extends BaseActivity {
     private static final String TAG = MainUserActivity.class.getName();
     private final Calendar myCalendar = Calendar.getInstance();
-    private FirebaseFirestore mFirestore;
-    private String email;
     private boolean isEmployer;
     private boolean isUnemployed;
     private String companyName;
@@ -49,6 +46,9 @@ public class MainUserActivity extends AppCompatActivity {
     private EditText workHourEnd;
     private EditText lunchHourStart;
     private EditText lunchHourEnd;
+    private Button manageWorkers;
+    private Button addWorkHours;
+    private Button showWorkHours;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -74,12 +74,16 @@ public class MainUserActivity extends AppCompatActivity {
                         workerId = String.valueOf(document.get("userId"));
                         isEmployer = String.valueOf(document.get("accountType")).equals("Munkáltató");
                         isUnemployed = String.valueOf(document.get("companyName")).equals("Munkanélküli");
+                        hideButtons();
                     }
                 } else {
                     Log.d(TAG, "get failed with ", userPreferencesTask.getException());
                 }
             });
         }
+        manageWorkers = findViewById(R.id.manageWorkers);
+        addWorkHours = findViewById(R.id.addWorkHours);
+        showWorkHours = findViewById(R.id.showWorkHours);
         docRef.addSnapshotListener((documentSnapshot, error) -> {
             if (error != null) {
                 Log.w(TAG, "Listen failed.", error);
@@ -96,6 +100,18 @@ public class MainUserActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void hideButtons() {
+        if (!isUnemployed) {
+            manageWorkers.setVisibility(View.VISIBLE);
+            addWorkHours.setVisibility(View.GONE);
+            showWorkHours.setVisibility(View.GONE);
+        } else {
+            manageWorkers.setVisibility(View.GONE);
+            addWorkHours.setVisibility(View.VISIBLE);
+            showWorkHours.setVisibility(View.VISIBLE);
+        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -139,6 +155,9 @@ public class MainUserActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.profile) {
             showProfile();
             return true;
+        } else if (item.getItemId() == R.id.themeChanger) {
+            changeTheme();
+            return true;
         } else if (item.getItemId() == R.id.logout) {
             FirebaseAuth.getInstance().signOut();
             finish();
@@ -146,6 +165,14 @@ public class MainUserActivity extends AppCompatActivity {
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void changeTheme() {
+        boolean isMiamiTheme = preferences.getBoolean("isMiamiTheme", false);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("isMiamiTheme", !isMiamiTheme);
+        editor.apply();
+        recreate();
     }
 
     private void manageWorkers() {
@@ -162,7 +189,7 @@ public class MainUserActivity extends AppCompatActivity {
     private void showAddHours() {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_add_hours);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.roundedcorners);
+        setDialogTheme(dialog);
         dialog.setCanceledOnTouchOutside(false);
         workHourStart = dialog.findViewById(R.id.hourWorkStart);
         workHourEnd = dialog.findViewById(R.id.hourWorkEnd);
@@ -252,5 +279,29 @@ public class MainUserActivity extends AppCompatActivity {
         double shorterTimeInMinutes = Integer.parseInt(shorterTime[0]) * 60 + Integer.parseInt(shorterTime[1]);
         double longerTimeInMinutes = Integer.parseInt(longerTime[0]) * 60 + Integer.parseInt(longerTime[1]);
         return (longerTimeInMinutes - shorterTimeInMinutes) / 60;
+    }
+
+    public void manageWorkers(View view) {
+        manageWorkers();
+    }
+
+    public void showAddHours(View view) {
+        showAddHours();
+    }
+
+    public void showWorkHours(View view) {
+        showShowHours();
+    }
+
+    public void changeTheme(View view) {
+        changeTheme();
+    }
+
+    public void showProfile(View view) {
+        showProfile();
+    }
+
+    public void logout(View view) {
+        finish();
     }
 }

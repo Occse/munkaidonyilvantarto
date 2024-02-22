@@ -16,6 +16,8 @@
             android:layout_marginTop="@dimen/register_margin_top"
             android:ems="10"
             android:hint="@string/email_address"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:inputType="text" />
 
         <EditText
@@ -26,6 +28,8 @@
             android:layout_marginTop="@dimen/register_margin_top"
             android:ems="10"
             android:hint="@string/password"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:inputType="textPassword" />
 
         <Button
@@ -35,6 +39,8 @@
             android:layout_below="@id/editTextPassword"
             android:layout_marginTop="@dimen/register_margin_top"
             android:onClick="login"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text="@string/log_in" />
 
         <Button
@@ -44,6 +50,8 @@
             android:layout_below="@id/loginButton"
             android:layout_marginTop="@dimen/register_margin_top"
             android:onClick="loginWithGoogle"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text="@string/loginGoogle" />
 
         <Button
@@ -53,6 +61,8 @@
             android:layout_below="@id/loginWithGoogle"
             android:layout_marginTop="@dimen/register_margin_top"
             android:onClick="register"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text="@string/registration" />
     </RelativeLayout>
 </ScrollView>

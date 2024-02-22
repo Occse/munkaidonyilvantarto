@@ -32,10 +32,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class ManageWorkersActivity extends AppCompatActivity {
+public class ManageWorkersActivity extends BaseActivity {
     private static final String TAG = ManageWorkersActivity.class.getName();
     private ArrayList<WorkerData> workers;
-    private FirebaseFirestore mFirestore;
     private WorkerAdapter mAdapter;
     private DocumentReference mItems;
     private String companyName;
@@ -132,7 +131,7 @@ public class ManageWorkersActivity extends AppCompatActivity {
     private void addWorkerDialog() {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_add_worker);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.roundedcorners);
+        setDialogTheme(dialog);
         dialog.setCanceledOnTouchOutside(false);
         workerID = dialog.findViewById(R.id.workerID);
         workerMunkakor = dialog.findViewById(R.id.userMunkakor);
@@ -245,7 +244,7 @@ public class ManageWorkersActivity extends AppCompatActivity {
     public void kickWorkerDialog(WorkerData currentWorker) {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_alert);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.roundedcorners);
+        setDialogTheme(dialog);
         dialog.setCanceledOnTouchOutside(false);
 
         TextView alertTitle = dialog.findViewById(R.id.alertTextView);

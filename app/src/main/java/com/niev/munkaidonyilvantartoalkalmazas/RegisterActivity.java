@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
     private static final String PREF_KEY = Objects.requireNonNull(MainActivity.class.getPackage()).toString();
     private static final int SECRET_KEY = 99;
     EditText userNameEditText;
@@ -29,7 +29,6 @@ public class RegisterActivity extends AppCompatActivity {
     EditText passwordAgainEditText;
     RadioGroup accountTypeGroup;
     SwitchMaterial agreement;
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

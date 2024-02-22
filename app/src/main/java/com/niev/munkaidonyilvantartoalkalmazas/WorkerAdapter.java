@@ -27,7 +27,12 @@ public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.viewHolder
     @NonNull
     @Override
     public viewHolderWorker onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new viewHolderWorker(LayoutInflater.from(nContext).inflate(R.layout.list_workers, parent, false));
+        boolean isMiamiTheme = BaseActivity.checkTheme();
+        if (isMiamiTheme) {
+            return new viewHolderWorker(LayoutInflater.from(nContext).inflate(R.layout.list_workersmiami, parent, false));
+        } else {
+            return new viewHolderWorker(LayoutInflater.from(nContext).inflate(R.layout.list_workers, parent, false));
+        }
     }
 
     @Override

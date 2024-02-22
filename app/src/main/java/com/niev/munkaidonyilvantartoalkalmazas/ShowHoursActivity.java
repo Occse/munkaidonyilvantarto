@@ -28,7 +28,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ShowHoursActivity extends AppCompatActivity {
+public class ShowHoursActivity extends BaseActivity {
     private static final String TAG = ShowHoursActivity.class.getName();
     private ArrayList<HourData> montPickerOptions;
     private ArrayList<HourData> hours;
@@ -57,6 +57,14 @@ public class ShowHoursActivity extends AppCompatActivity {
         montPickerOptions = new ArrayList<>();
         RecyclerView mRecyclerView = findViewById(R.id.recyclerViewHours);
         monthPicker = findViewById(R.id.monthPicker);
+        boolean isMiamiTheme = checkTheme();
+        if(isMiamiTheme) {
+            monthPicker.setBackgroundResource(R.drawable.roundedcorners);
+            monthPicker.setPopupBackgroundResource(R.drawable.roundedcorners);
+        } else {
+            monthPicker.setBackgroundResource(R.drawable.blue_outline_white_background);
+            monthPicker.setPopupBackgroundResource(R.drawable.blue_outline_white_background);
+        }
         monthHoursText = findViewById(R.id.monthHoursText);
         monthHoursMain = findViewById(R.id.monthHours);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));

@@ -2,7 +2,6 @@ package com.niev.munkaidonyilvantartoalkalmazas;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class HourAdapter extends RecyclerView.Adapter<HourAdapter.viewHolderWorker> {
     private final ArrayList<HourData> mHourDataData;
@@ -31,7 +29,12 @@ public class HourAdapter extends RecyclerView.Adapter<HourAdapter.viewHolderWork
     @NonNull
     @Override
     public viewHolderWorker onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new viewHolderWorker(LayoutInflater.from(nContext).inflate(R.layout.list_hours, parent, false));
+        boolean isMiamiTheme = BaseActivity.checkTheme();
+        if (isMiamiTheme) {
+            return new viewHolderWorker(LayoutInflater.from(nContext).inflate(R.layout.list_hoursmiami, parent, false));
+        } else {
+            return new viewHolderWorker(LayoutInflater.from(nContext).inflate(R.layout.list_hours, parent, false));
+        }
     }
 
     @Override
@@ -79,12 +82,12 @@ public class HourAdapter extends RecyclerView.Adapter<HourAdapter.viewHolderWork
             Object hourObject = currentWorkerHour.getWorkedHours();
             long hourLong = -1;
             double hourDouble = -1;
-            if(hourObject instanceof Long){
+            if (hourObject instanceof Long) {
                 hourLong = (long) hourObject;
             } else {
                 hourDouble = (double) hourObject;
             }
-            BigDecimal hourFormat = new BigDecimal(hourLong == -1 ? hourDouble : hourLong);
+            BigDecimal hourFormat = BigDecimal.valueOf(hourLong == -1 ? hourDouble : hourLong);
             BigDecimal formattedHour = hourFormat.setScale(2, RoundingMode.HALF_UP);
             mWorkTime.setText(formattedHour + " óra");
         }

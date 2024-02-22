@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.niev.munkaidonyilvantartoalkalmazas.MainUserActivity">
 
     <RelativeLayout
@@ -32,6 +33,77 @@
             android:hint="@string/company_name"
             android:textAlignment="center"
             android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/manageWorkers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/companyNameText"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/register_margin_top25"
+            android:layout_marginRight="10dp"
+            android:onClick="manageWorkers"
+            android:text="@string/manageWorkers" />
+
+        <Button
+            android:id="@+id/addWorkHours"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/manageWorkers"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="10dp"
+            android:onClick="showAddHours"
+            android:text="@string/addWorkHours" />
+
+        <Button
+            android:id="@+id/showWorkHours"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addWorkHours"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="10dp"
+            android:onClick="showWorkHours"
+            android:text="@string/showWorkHours" />
+
+        <Button
+            android:id="@+id/editProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/showWorkHours"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="10dp"
+            android:onClick="showProfile"
+            android:text="@string/edit_profile" />
+
+        <Button
+            android:id="@+id/changeTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editProfile"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="10dp"
+            app:backgroundTint="@null"
+            android:background="@drawable/themebuttongradient"
+            android:minHeight="0dp"
+            android:onClick="changeTheme"
+            android:text="@string/changeTheme" />
+
+
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/changeTheme"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@color/darkRed"
+            android:onClick="logout"
+            android:text="@string/log_out" />
 
     </RelativeLayout>
 </ScrollView>

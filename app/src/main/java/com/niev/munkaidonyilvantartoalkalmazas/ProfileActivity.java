@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseActivity {
 
     private static final String TAG = ProfileActivity.class.getName();
     private final Calendar myCalendar = Calendar.getInstance();
@@ -46,8 +46,6 @@ public class ProfileActivity extends AppCompatActivity {
     TextView companyNamePlaceholder;
     LinearLayout functionButtons;
     TextView companyNameText;
-    private FirebaseFirestore mFirestore;
-    private String email;
     private String lastOptionText;
     private String lastID;
 
@@ -69,6 +67,14 @@ public class ProfileActivity extends AppCompatActivity {
         userAdoKartya = findViewById(R.id.userAdoKartya);
         userLakcim = findViewById(R.id.userLakcim);
         userDegree = findViewById(R.id.userDegree);
+        boolean isMiamiTheme = checkTheme();
+        if(isMiamiTheme) {
+            userDegree.setBackgroundResource(R.drawable.roundedcorners);
+            userDegree.setPopupBackgroundResource(R.drawable.roundedcorners);
+        } else {
+            userDegree.setBackgroundResource(R.drawable.blue_outline_white_background);
+            userDegree.setPopupBackgroundResource(R.drawable.blue_outline_white_background);
+        }
         companyName = findViewById(R.id.companyName);
         companyNamePlaceholder = findViewById(R.id.companyNamePlaceholder);
         functionButtons = findViewById(R.id.functionButtons);
