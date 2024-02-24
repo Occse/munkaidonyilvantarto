@@ -104,13 +104,13 @@ public class MainUserActivity extends BaseActivity {
 
     private void hideButtons() {
         if (!isUnemployed) {
-            manageWorkers.setVisibility(View.VISIBLE);
-            addWorkHours.setVisibility(View.GONE);
-            showWorkHours.setVisibility(View.GONE);
+            manageWorkers.setVisibility(isEmployer ? View.VISIBLE : View.GONE);
+            addWorkHours.setVisibility(!isEmployer ? View.VISIBLE : View.GONE);
+            showWorkHours.setVisibility(!isEmployer ? View.VISIBLE : View.GONE);
         } else {
             manageWorkers.setVisibility(View.GONE);
-            addWorkHours.setVisibility(View.VISIBLE);
-            showWorkHours.setVisibility(View.VISIBLE);
+            addWorkHours.setVisibility(View.GONE);
+            showWorkHours.setVisibility(View.GONE);
         }
     }
 

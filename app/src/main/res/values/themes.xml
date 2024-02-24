@@ -1,16 +1,18 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Base.Theme.MunkaidoNyilvantartoAlkalmazas" parent="Theme.MaterialComponents.DayNight.DarkActionBar" />
+    <style name="Base.Theme.MunkaidoNyilvantartoAlkalmazas" parent="Theme.MaterialComponents.Light.DarkActionBar" />
 
     <style name="WorkerDetails" parent="TextAppearance.AppCompat.Subhead" />
     <style name="WorkerName" parent="TextAppearance.AppCompat.Headline" />
     <style name="WorkerDetail" parent="TextAppearance.AppCompat.Headline" />
 
-    <style name="blackText" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/black</item>
+    <style name="optionsDefault" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:popupBackground">@color/whitesmoke</item>
     </style>
 
-
+    <style name="optionsMiami" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:popupBackground">@color/skybluedark</item>
+    </style>
 
     <style name="Theme.MunkaidoNyilvantartoAlkalmazas.Default" parent="Base.Theme.MunkaidoNyilvantartoAlkalmazas">
         <!-- Primary brand color. -->
@@ -19,7 +21,7 @@
         <item name="colorOnPrimary">@color/whitesmoke</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/skyblue</item>
-        <item name="colorSecondaryVariant">@color/teal</item>/
+        <item name="colorSecondaryVariant">@color/teal</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimary</item>
@@ -27,6 +29,9 @@
         <item name="android:windowBackground">#FFFFFF</item>
         <item name="android:windowMinWidthMajor">75%</item>
         <item name="android:windowMinWidthMinor">75%</item>
+
+        <item name="actionOverflowMenuStyle">@style/optionsDefault</item>
+
     </style>
 
     <style name="Theme.MunkaidoNyilvantartoAlkalmazas.Miami" parent="Base.Theme.MunkaidoNyilvantartoAlkalmazas">
@@ -36,7 +41,7 @@
         <item name="colorOnPrimary">@color/whitesmoke</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/skybluedark</item>
-        <item name="colorSecondaryVariant">@color/teal</item>/
+        <item name="colorSecondaryVariant">@color/teal</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimary</item>
@@ -44,5 +49,8 @@
         <item name="android:windowBackground">#3FAEC9</item>
         <item name="android:windowMinWidthMajor">75%</item>
         <item name="android:windowMinWidthMinor">75%</item>
+
+        <item name="actionOverflowMenuStyle">@style/optionsMiami</item>
+
     </style>
 </resources>
