@@ -1,13 +1,16 @@
 <resources>
-    <string name="app_name">Munkaidő nyilvántartó alkalmazás</string>
+    <string name="app_name">Niev Time</string>
     <string name="password">Jelszó</string>
     <string name="password_again">Jelszó újra</string>
     <string name="user_name">Név</string>
     <string name="log_in">Bejelentkezés</string>
+    <string name="resetPassword">Elfelejtette a jelszavát?</string>
     <string name="register">Regisztráció</string>
     <string name="registration">Regisztráció</string>
     <string name="cancel">Mégse</string>
     <string name="email_address">E-mail cím</string>
+    <string name="verified">E-mail cím megerősítve!</string>
+    <string name="not_verified">E-mail cím nincs megerősítve!</string>
     <string name="loginGoogle">Bejelentkezés Google fiókkal</string>
     <string name="worker">Dolgozó</string>
     <string name="employer">Munkáltató</string>
@@ -50,4 +53,6 @@
     <string name="monthHours">Ebben a hónapban: </string>
     <string name="check_worker_hours">Dolgozó munkaidő</string>
     <string name="changeTheme">Téma megváltoztatása</string>
+    <string name="resetEmail">Adja meg az e-mail címét</string>
+    <string name="sendEmail">Elküldés</string>
 </resources>

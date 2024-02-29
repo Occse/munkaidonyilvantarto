@@ -1,7 +1,5 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Base.Theme.MunkaidoNyilvantartoAlkalmazas" parent="Theme.MaterialComponents.Light.DarkActionBar" />
-
     <style name="WorkerDetails" parent="TextAppearance.AppCompat.Subhead" />
     <style name="WorkerName" parent="TextAppearance.AppCompat.Headline" />
     <style name="WorkerDetail" parent="TextAppearance.AppCompat.Headline" />
@@ -14,7 +12,7 @@
         <item name="android:popupBackground">@color/skybluedark</item>
     </style>
 
-    <style name="Theme.MunkaidoNyilvantartoAlkalmazas.Default" parent="Base.Theme.MunkaidoNyilvantartoAlkalmazas">
+    <style name="Theme.MunkaidoNyilvantartoAlkalmazas.Default" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/skyblue</item>
         <item name="colorPrimaryVariant">@color/purple</item>
@@ -34,7 +32,7 @@
 
     </style>
 
-    <style name="Theme.MunkaidoNyilvantartoAlkalmazas.Miami" parent="Base.Theme.MunkaidoNyilvantartoAlkalmazas">
+    <style name="Theme.MunkaidoNyilvantartoAlkalmazas.Miami" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/skybluedark</item>
         <item name="colorPrimaryVariant">@color/purple</item>

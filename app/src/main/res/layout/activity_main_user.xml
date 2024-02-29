@@ -43,6 +43,7 @@
             android:layout_marginTop="@dimen/register_margin_top25"
             android:layout_marginRight="10dp"
             android:onClick="manageWorkers"
+            android:drawableLeft="@drawable/ic_manage_workers"
             android:text="@string/manageWorkers" />
 
         <Button
@@ -54,6 +55,7 @@
             android:layout_marginTop="@dimen/register_margin_top"
             android:layout_marginRight="10dp"
             android:onClick="showAddHours"
+            android:drawableLeft="@drawable/ic_add_hours"
             android:text="@string/addWorkHours" />
 
         <Button
@@ -65,6 +67,7 @@
             android:layout_marginTop="@dimen/register_margin_top"
             android:layout_marginRight="10dp"
             android:onClick="showWorkHours"
+            android:drawableLeft="@drawable/ic_show_hours"
             android:text="@string/showWorkHours" />
 
         <Button
@@ -76,6 +79,8 @@
             android:layout_marginTop="@dimen/register_margin_top"
             android:layout_marginRight="10dp"
             android:onClick="showProfile"
+            android:drawableLeft="@drawable/ic_edit_profile"
+
             android:text="@string/edit_profile" />
 
         <Button
@@ -90,6 +95,7 @@
             android:background="@drawable/themebuttongradient"
             android:minHeight="0dp"
             android:onClick="changeTheme"
+            android:drawableLeft="@drawable/ic_change_theme"
             android:text="@string/changeTheme" />
 
 
@@ -103,6 +109,7 @@
             android:layout_marginRight="10dp"
             android:backgroundTint="@color/darkRed"
             android:onClick="logout"
+            android:drawableLeft="@drawable/ic_logout"
             android:text="@string/log_out" />
 
     </RelativeLayout>

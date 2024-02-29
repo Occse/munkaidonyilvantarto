@@ -3,6 +3,8 @@ package com.niev.munkaidonyilvantartoalkalmazas;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,6 +27,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         preferences = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
         night = preferences.getBoolean("isMiamiTheme", false);
         setTheme(night ? R.style.Theme_MunkaidoNyilvantartoAlkalmazas_Miami : R.style.Theme_MunkaidoNyilvantartoAlkalmazas_Default);
+    }
+
+    protected static boolean isValidEmail(CharSequence email) {
+        return (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
     }
 
     protected void setDialogTheme(Dialog dialog) {

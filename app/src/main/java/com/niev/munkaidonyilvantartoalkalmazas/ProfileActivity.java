@@ -3,6 +3,7 @@ package com.niev.munkaidonyilvantartoalkalmazas;
 import static android.widget.Toast.makeText;
 
 import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,8 +16,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -28,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
 
 public class ProfileActivity extends BaseActivity {
 
@@ -44,6 +44,7 @@ public class ProfileActivity extends BaseActivity {
     RadioGroup accountTypeGroup;
     EditText companyName;
     TextView companyNamePlaceholder;
+    TextView userEmailVerified;
     LinearLayout functionButtons;
     TextView companyNameText;
     private String lastOptionText;
@@ -67,13 +68,21 @@ public class ProfileActivity extends BaseActivity {
         userAdoKartya = findViewById(R.id.userAdoKartya);
         userLakcim = findViewById(R.id.userLakcim);
         userDegree = findViewById(R.id.userDegree);
+        userEmailVerified = findViewById(R.id.userEmailVerified);
         boolean isMiamiTheme = checkTheme();
-        if(isMiamiTheme) {
+        if (isMiamiTheme) {
             userDegree.setBackgroundResource(R.drawable.roundedcorners);
             userDegree.setPopupBackgroundResource(R.drawable.roundedcorners);
         } else {
             userDegree.setBackgroundResource(R.drawable.blue_outline_white_background);
             userDegree.setPopupBackgroundResource(R.drawable.blue_outline_white_background);
+        }
+        if (Objects.requireNonNull(user).isEmailVerified()) {
+            userEmailVerified.setText(R.string.verified);
+            userEmailVerified.setTextColor(Color.GREEN);
+        } else {
+            userEmailVerified.setText(R.string.not_verified);
+            userEmailVerified.setTextColor(Color.RED);
         }
         companyName = findViewById(R.id.companyName);
         companyNamePlaceholder = findViewById(R.id.companyNamePlaceholder);

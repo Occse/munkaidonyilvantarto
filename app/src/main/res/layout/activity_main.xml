@@ -41,17 +41,32 @@
             android:onClick="login"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:drawableLeft="@drawable/ic_login"
             android:text="@string/log_in" />
+
+        <Button
+            android:id="@+id/resetPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/loginButton"
+            android:layout_marginTop="@dimen/register_margin_top"
+            android:onClick="resetPassword"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@color/silver"
+            android:drawableLeft="@drawable/ic_reset_password"
+            android:text="@string/resetPassword" />
 
         <Button
             android:id="@+id/loginWithGoogle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/loginButton"
+            android:layout_below="@id/resetPassword"
             android:layout_marginTop="@dimen/register_margin_top"
             android:onClick="loginWithGoogle"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:drawableLeft="@drawable/ic_google"
             android:text="@string/loginGoogle" />
 
         <Button
@@ -63,6 +78,7 @@
             android:onClick="register"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:drawableLeft="@drawable/ic_register"
             android:text="@string/registration" />
     </RelativeLayout>
 </ScrollView>
