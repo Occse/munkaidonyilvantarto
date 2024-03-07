@@ -21,6 +21,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.text.SimpleDateFormat;
@@ -33,6 +35,7 @@ public class ProfileActivity extends BaseActivity {
 
     private static final String TAG = ProfileActivity.class.getName();
     private final Calendar myCalendar = Calendar.getInstance();
+    FirebaseUser user;
     EditText userNameEditText;
     TextView userEmailEditText;
     EditText userId;
@@ -46,15 +49,18 @@ public class ProfileActivity extends BaseActivity {
     TextView companyNamePlaceholder;
     TextView userEmailVerified;
     LinearLayout functionButtons;
-    TextView companyNameText;
+    TextView workerCompanyName;
+    boolean dataWarning = false;
     private String lastOptionText;
     private String lastID;
+    private String error;
+    private int errorCounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             email = user.getEmail();
         } else {
@@ -87,7 +93,7 @@ public class ProfileActivity extends BaseActivity {
         companyName = findViewById(R.id.companyName);
         companyNamePlaceholder = findViewById(R.id.companyNamePlaceholder);
         functionButtons = findViewById(R.id.functionButtons);
-        companyNameText = findViewById(R.id.companyNameText);
+        workerCompanyName = findViewById(R.id.companyNameText);
         String[] degrees = new String[]{"Nincs képesítés", "6 osztály", "8. osztály", "Középiskola/Gimnázium", "Érettségi", "Diploma"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, degrees);
         userDegree.setAdapter(adapter);
@@ -114,37 +120,28 @@ public class ProfileActivity extends BaseActivity {
                     for (int i = 0; i < accountTypeGroup.getChildCount(); i++) {
                         if (((RadioButton) accountTypeGroup.getChildAt(i)).getText().toString().equals(String.valueOf(document.get("accountType")))) {
                             if (String.valueOf(document.get("accountType")).equals("Dolgozó")) {
-                                companyNameText.setText(document.get("companyName") != null ? String.valueOf(document.get("companyName")) : "Munkanélküli");
+                                workerCompanyName.setText(document.get("companyName") != "" ? String.valueOf(document.get("companyName")) : "Munkanélküli");
                                 accountTypeGroup.check(R.id.worker);
                                 companyName.setVisibility(View.INVISIBLE);
-                                companyNameText.setVisibility(View.VISIBLE);
-                                lastOptionText = String.valueOf(companyName.getText());
-                                companyName.setText(lastOptionText);
+                                workerCompanyName.setVisibility(View.VISIBLE);
                             } else {
                                 accountTypeGroup.check(R.id.employer);
                                 companyName.setText(String.valueOf(document.get("companyName")));
                                 companyName.setVisibility(View.VISIBLE);
-                                companyNameText.setVisibility(View.INVISIBLE);
-                                lastOptionText = String.valueOf(companyNameText.getText());
-                                companyNameText.setText(lastOptionText);
+                                workerCompanyName.setVisibility(View.INVISIBLE);
                             }
                         }
                     }
                     accountTypeGroup.setOnCheckedChangeListener((group, checkedId) -> {
                         if (checkedId == R.id.employer) {
                             companyName.setVisibility(View.VISIBLE);
-                            companyNameText.setVisibility(View.INVISIBLE);
-                            lastOptionText = String.valueOf(companyName.getText());
-                            companyName.setText(lastOptionText);
+                            workerCompanyName.setVisibility(View.INVISIBLE);
                         } else {
-                            if (lastOptionText.equals("")) {
-                                companyNameText.setText(R.string.unemployed);
-                            } else {
-                                lastOptionText = String.valueOf(companyNameText.getText());
-                                companyNameText.setText(lastOptionText);
+                            if (workerCompanyName.getText().equals("")) {
+                                workerCompanyName.setText(R.string.unemployed);
                             }
                             companyName.setVisibility(View.INVISIBLE);
-                            companyNameText.setVisibility(View.VISIBLE);
+                            workerCompanyName.setVisibility(View.VISIBLE);
                         }
                     });
                     DatePickerDialog.OnDateSetListener date = (view, year, month, day) -> {
@@ -174,24 +171,14 @@ public class ProfileActivity extends BaseActivity {
     }
 
     public void save(View view) {
-        boolean correctFormat = true;
+        boolean correctIdFormat = true;
+        boolean correctTAJFormat = true;
+        boolean correctAdoFormat = true;
         String userNameText = userNameEditText.getText().toString();
         String userIdText = userId.getText().toString();
         String userTAJText = userTAJNumber.getText().toString();
         String userAdoText = userAdoKartya.getText().toString();
         String userLakcimText = userLakcim.getText().toString();
-        String userDegreeText = userDegree.getSelectedItem().toString();
-        String birthDateText = birthDateEditText.getText().toString();
-        String companyNameText;
-        int accountTypeId = accountTypeGroup.getCheckedRadioButtonId();
-        View radioButton = accountTypeGroup.findViewById(accountTypeId);
-        int id = accountTypeGroup.indexOfChild(radioButton);
-        String accountTypeText = ((RadioButton) accountTypeGroup.getChildAt(id)).getText().toString();
-        if (accountTypeText.equals("Munkáltató")) {
-            companyNameText = companyName.getText().toString();
-        } else {
-            companyNameText = "Munkanélküli";
-        }
         if (userIdText.length() > 0) {
             int chars = 0;
             int digits = 0;
@@ -202,27 +189,27 @@ public class ProfileActivity extends BaseActivity {
                     chars++;
                 }
             }
-            correctFormat = digits == 6 && chars == 2;
+            correctIdFormat = digits == 6 && chars == 2;
         }
-        if (userTAJText.length() > 0 && correctFormat) {
+        if (userTAJText.length() > 0 && correctIdFormat) {
             int digits = 0;
             for (int i = 0; i < userTAJText.length(); i++) {
                 if (userTAJText.charAt(i) >= 48 && userTAJText.charAt(i) <= 57) {
                     digits++;
                 }
             }
-            correctFormat = digits == 9;
+            correctTAJFormat = digits == 9;
         }
-        if (userAdoText.length() > 0 && correctFormat) {
+        if (userAdoText.length() > 0 && correctIdFormat && correctTAJFormat) {
             int digits = 0;
             for (int i = 0; i < userAdoText.length(); i++) {
                 if (userAdoText.charAt(i) >= 48 && userAdoText.charAt(i) <= 57) {
                     digits++;
                 }
             }
-            correctFormat = digits == 10;
+            correctAdoFormat = digits == 10;
         }
-        if (userLakcimText.length() > 0 && correctFormat) {
+        if (userLakcimText.length() > 0 && correctIdFormat && correctTAJFormat && correctAdoFormat) {
             int chars = 0;
             int digits = 0;
             for (int i = 0; i < userLakcimText.length(); i++) {
@@ -232,34 +219,117 @@ public class ProfileActivity extends BaseActivity {
                     chars++;
                 }
             }
-            correctFormat = digits == 6 && chars == 2;
+            correctIdFormat = digits == 6 && chars == 2;
         }
-        if (!correctFormat) {
-            makeText(this, "Wrong ID format! (12345ab)", Toast.LENGTH_LONG).show();
+        if (!correctIdFormat) {
+            makeText(this, "Rossz személyigazolvány/lakcímkártya szám formátum! (12345ab)", Toast.LENGTH_LONG).show();
+            return;
+        } else if (!correctTAJFormat) {
+            makeText(this, "Rossz TAJ szám formátum! (123456789)", Toast.LENGTH_LONG).show();
+            return;
+        } else if (!correctAdoFormat) {
+            makeText(this, "Rossz adószám formátum! (1234567890)", Toast.LENGTH_LONG).show();
             return;
         }
         mFirestore = FirebaseFirestore.getInstance();
         HashMap<String, String> userIds = new HashMap<>();
         userIds.put("userName", userNameText);
-        userIds.put("userId", userIdText);
         userIds.put("email", email);
-        DocumentReference docRef = mFirestore.collection("userCardIDs").document(userIdText);
-        docRef.get().addOnCompleteListener(userCarsIdTask -> {
-            if (userCarsIdTask.isSuccessful()) {
-                DocumentSnapshot document = userCarsIdTask.getResult();
-                if (document.exists() && userIdText.equals(lastID)) {
-                    mFirestore.collection("userCardIDs").document(userIdText).set(userIds, SetOptions.merge());
-                } else if (!document.exists()) {
-                    mFirestore.collection("userCardIDs").document(lastID).delete().addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!"))
-                            .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
-                    mFirestore.collection("userCardIDs").document(userIdText).set(userIds);
+        userIds.put("userId", userIdText);
+        userIds.put("userTAJ", userTAJText);
+        userIds.put("userAdo", userAdoText);
+        userIds.put("userLakcim", userLakcimText);
+        mFirestore.collection("UserPreferences").get().addOnCompleteListener(userCards -> {
+            if (userCards.isSuccessful()) {
+                QuerySnapshot documentSnapshot = userCards.getResult();
+                error = "";
+                errorCounter = 0;
+                dataWarning = false;
+                for (QueryDocumentSnapshot documentSnapshots : documentSnapshot) {
+                    String documentData = documentSnapshots.getData().toString();
+                    String userIdTextData = String.valueOf(documentSnapshots.getData().get("userId"));
+                    String userTAJTextData = String.valueOf(documentSnapshots.getData().get("userTAJ"));
+                    String userAdoTextData = String.valueOf(documentSnapshots.getData().get("userAdo"));
+                    String userLakcimTextData = String.valueOf(documentSnapshots.getData().get("userLakcim"));
+                    if (userIdTextData.equals(userIdText) && !documentData.contains(email)) {
+                        dataWarning = true;
+                        error = "Személyigazolvány";
+                        errorCounter++;
+                    }
+                    if (userTAJTextData.equals(userTAJText) && !documentData.contains(email)) {
+                        dataWarning = true;
+                        if (errorCounter > 0) {
+                            error += ", TAJ kártya";
+                        } else {
+                            error = "TAJ kártya";
+                        }
+                        errorCounter++;
+                    }
+                    if (userAdoTextData.equals(userAdoText) && !documentData.contains(email)) {
+                        dataWarning = true;
+                        if (errorCounter > 0) {
+                            error += ", Adó kártya";
+                        } else {
+                            error = "Adó kártya";
+                        }
+                        errorCounter++;
+                    }
+                    if (userLakcimTextData.equals(userLakcimText) && !documentData.contains(email)) {
+                        dataWarning = true;
+                        if (errorCounter > 0) {
+                            error += ", Lakcímkártya";
+                        } else {
+                            error = "Lakcímkártya";
+                        }
+                        errorCounter++;
+                    }
                 }
+                if (!dataWarning) {
+                    DocumentReference docRef = mFirestore.collection("userCardIDs").document(userIdText);
+                    docRef.get().addOnCompleteListener(userCardsIdTask -> {
+                        if (userCardsIdTask.isSuccessful()) {
+                            DocumentSnapshot document = userCardsIdTask.getResult();
+                            if (document.get("email") == null || email.equals(document.get("email"))) {
+                                if (document.exists() && userIdText.equals(lastID)) {
+                                    mFirestore.collection("userCardIDs").document(userIdText).set(userIds, SetOptions.merge());
+                                } else if (!document.exists()) {
+                                    mFirestore.collection("userCardIDs").document(lastID).delete().addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!")).addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
+                                    mFirestore.collection("userCardIDs").document(userIdText).set(userIds);
+                                }
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", userCardsIdTask.getException());
+                        }
+                    });
+                    saveData();
+                } else {
+                    Toast.makeText(ProfileActivity.this, "Van már személy rendelve ehhez a " + error + " számhoz!", Toast.LENGTH_SHORT).show();
+                }
+
             } else {
-                Log.d(TAG, "get failed with ", userCarsIdTask.getException());
+                Log.d(TAG, "Error getting documents: ", userCards.getException());
             }
         });
+    }
 
-
+    public void saveData() {
+        String userNameText = userNameEditText.getText().toString();
+        String userIdText = userId.getText().toString();
+        String userTAJText = userTAJNumber.getText().toString();
+        String userAdoText = userAdoKartya.getText().toString();
+        String userLakcimText = userLakcim.getText().toString();
+        String userDegreeText = userDegree.getSelectedItem().toString();
+        String birthDateText = birthDateEditText.getText().toString();
+        String companyNameTextVal;
+        int accountTypeId = accountTypeGroup.getCheckedRadioButtonId();
+        View radioButton = accountTypeGroup.findViewById(accountTypeId);
+        int id = accountTypeGroup.indexOfChild(radioButton);
+        String accountTypeText = ((RadioButton) accountTypeGroup.getChildAt(id)).getText().toString();
+        if (accountTypeText.equals("Munkáltató")) {
+            companyNameTextVal = companyName.getText().toString();
+        } else {
+            companyNameTextVal = workerCompanyName.getText().toString() == null ? "Munkanélküli" : workerCompanyName.getText().toString();
+        }
         HashMap<String, String> userData = new HashMap<>();
         userData.put("userName", userNameText);
         userData.put("userId", userIdText);
@@ -269,15 +339,28 @@ public class ProfileActivity extends BaseActivity {
         userData.put("userDegree", userDegreeText);
         userData.put("userBirthDate", birthDateText);
         userData.put("accountType", accountTypeText);
-        userData.put("companyName", companyNameText);
-        mFirestore.collection("UserPreferences").document(email).set(userData, SetOptions.merge());
-        if (!companyNameText.equals("Munkanélküli")) {
-            userData.remove("accountType");
-            userData.remove("companyName");
+        userData.put("companyName", companyNameTextVal);
+        if (!accountTypeText.equals("Dolgozó")) {
             HashMap<String, Object> companyData = new HashMap<>();
             companyData.put("EmployerData", userData);
-            mFirestore.collection("Companies").document(companyNameText).set(companyData, SetOptions.merge());
+            mFirestore.collection("Companies").document(companyNameTextVal).get().addOnCompleteListener(companyCheck -> {
+                if (companyCheck.isSuccessful()) {
+                    if (String.valueOf(companyCheck.getResult().get("EmployerData")).contains(email)) {
+                        mFirestore.collection("UserPreferences").document(email).set(userData, SetOptions.merge());
+                        mFirestore.collection("Companies").document(companyNameTextVal).set(companyData, SetOptions.merge());
+                        finish();
+                    } else {
+                        Toast.makeText(ProfileActivity.this, "Van már ilyen nevű cég!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    mFirestore.collection("UserPreferences").document(email).set(userData, SetOptions.merge());
+                    mFirestore.collection("Companies").document(companyNameTextVal).set(companyData, SetOptions.merge());
+                    finish();
+                }
+            });
+        } else {
+            mFirestore.collection("UserPreferences").document(email).set(userData, SetOptions.merge());
+            finish();
         }
-        finish();
     }
 }

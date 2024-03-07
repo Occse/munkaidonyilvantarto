@@ -170,7 +170,7 @@ public class ShowHoursActivity extends BaseActivity {
                     }
                     monthHoursMain.setText(R.string.monthHours);
                     BigDecimal hourFormat = new BigDecimal(hour);
-                    BigDecimal formattedHour = hourFormat.setScale(2, RoundingMode.HALF_UP);
+                    BigDecimal formattedHour = hourFormat.setScale(1, RoundingMode.HALF_UP);
                     monthHoursText.setText(formattedHour + " óra");
                     hAdapter.notifyDataSetChanged();
                 } else {

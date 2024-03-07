@@ -88,7 +88,7 @@ public class HourAdapter extends RecyclerView.Adapter<HourAdapter.viewHolderWork
                 hourDouble = (double) hourObject;
             }
             BigDecimal hourFormat = BigDecimal.valueOf(hourLong == -1 ? hourDouble : hourLong);
-            BigDecimal formattedHour = hourFormat.setScale(2, RoundingMode.HALF_UP);
+            BigDecimal formattedHour = hourFormat.setScale(1, RoundingMode.HALF_UP);
             mWorkTime.setText(formattedHour + " óra");
         }
     }
