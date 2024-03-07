@@ -5,20 +5,14 @@ import static android.widget.Toast.makeText;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -78,7 +72,7 @@ public class RegisterActivity extends BaseActivity {
         int id = accountTypeGroup.indexOfChild(radioButton);
         String accountType = ((RadioButton) accountTypeGroup.getChildAt(id)).getText().toString();
 
-        if(!isValidEmail(email)){
+        if (!isValidEmail(email)) {
             makeText(this, "Nem jó az email cím.", Toast.LENGTH_LONG).show();
             return;
         }

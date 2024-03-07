@@ -51,7 +51,6 @@ public class ProfileActivity extends BaseActivity {
     LinearLayout functionButtons;
     TextView workerCompanyName;
     boolean dataWarning = false;
-    private String lastOptionText;
     private String lastID;
     private String error;
     private int errorCounter;

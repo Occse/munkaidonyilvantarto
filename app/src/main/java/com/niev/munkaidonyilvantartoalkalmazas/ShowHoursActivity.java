@@ -10,7 +10,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,7 +57,7 @@ public class ShowHoursActivity extends BaseActivity {
         RecyclerView mRecyclerView = findViewById(R.id.recyclerViewHours);
         monthPicker = findViewById(R.id.monthPicker);
         boolean isMiamiTheme = checkTheme();
-        if(isMiamiTheme) {
+        if (isMiamiTheme) {
             monthPicker.setBackgroundResource(R.drawable.roundedcorners);
             monthPicker.setPopupBackgroundResource(R.drawable.roundedcorners);
         } else {

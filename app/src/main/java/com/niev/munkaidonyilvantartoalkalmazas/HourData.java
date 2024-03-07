@@ -1,7 +1,6 @@
 package com.niev.munkaidonyilvantartoalkalmazas;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 public class HourData {
     private String lunchStart;
@@ -54,9 +53,9 @@ public class HourData {
                 return workDay;
             case "year":
                 return workDay.split("/")[0];
-                case "month":
+            case "month":
                 return workDay.split("/")[1];
-                case "day":
+            case "day":
                 return workDay.split("/")[2];
         }
         return workDay;
