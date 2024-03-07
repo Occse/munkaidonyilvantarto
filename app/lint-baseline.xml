@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 8.0.1" type="baseline" client="gradle" dependencies="false" name="AGP (8.0.1)" variant="all" version="8.0.1">
+<issues format="6" by="lint 8.2.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.2.0)" variant="all" version="8.2.0">
 
     <issue
         id="Instantiatable"
@@ -46,46 +46,35 @@
     </issue>
 
     <issue
-        id="OldTargetApi"
-        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details."
-        errorLine1="        targetSdk 33"
-        errorLine2="        ~~~~~~~~~~~~">
-        <location
-            file="build.gradle"
-            line="13"
-            column="9"/>
-    </issue>
-
-    <issue
         id="GradleDependency"
-        message="A newer version of com.google.firebase:firebase-bom than 32.3.1 is available: 32.7.2"
+        message="A newer version of com.google.firebase:firebase-bom than 32.3.1 is available: 32.7.3"
         errorLine1="    implementation platform(&apos;com.google.firebase:firebase-bom:32.3.1&apos;)"
         errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="build.gradle"
-            line="36"
+            line="35"
             column="29"/>
     </issue>
 
     <issue
         id="GradleDependency"
-        message="A newer version of com.google.android.material:material than 1.8.0 is available: 1.11.0"
-        errorLine1="    implementation &apos;com.google.android.material:material:1.8.0&apos;"
-        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        message="A newer version of com.google.firebase:firebase-firestore than 24.10.2 is available: 24.10.3"
+        errorLine1="    implementation &apos;com.google.firebase:firebase-firestore:24.10.2&apos;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="build.gradle"
-            line="41"
+            line="39"
             column="20"/>
     </issue>
 
     <issue
         id="GradleDependency"
-        message="A newer version of com.google.firebase:firebase-firestore than 24.9.0 is available: 24.10.2"
-        errorLine1="    implementation &apos;com.google.firebase:firebase-firestore:24.9.0&apos;"
-        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        message="A newer version of com.google.firebase:firebase-database than 20.3.0 is available: 20.3.1"
+        errorLine1="    implementation &apos;com.google.firebase:firebase-database:20.3.0&apos;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="build.gradle"
-            line="44"
+            line="42"
             column="20"/>
     </issue>
 
@@ -102,6 +91,17 @@
 
     <issue
         id="UnusedResources"
+        message="The resource `R.drawable.blue_outline` appears to be unused"
+        errorLine1="&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/blue_outline.xml"
+            line="1"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
         message="The resource `R.color.skyblue50` appears to be unused"
         errorLine1="    &lt;color name=&quot;skyblue50&quot;>#8887CEEB&lt;/color>"
         errorLine2="           ~~~~~~~~~~~~~~~~">
@@ -113,34 +113,23 @@
 
     <issue
         id="UnusedResources"
-        message="The resource `R.color.silver` appears to be unused"
-        errorLine1="    &lt;color name=&quot;silver&quot;>#C0C0C0&lt;/color>"
-        errorLine2="           ~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/colors.xml"
-            line="9"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.color.whitesmoke` appears to be unused"
-        errorLine1="    &lt;color name=&quot;whitesmoke&quot;>#F5F5F5&lt;/color>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/colors.xml"
-            line="10"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
         message="The resource `R.color.gray` appears to be unused"
         errorLine1="    &lt;color name=&quot;gray&quot;>#E8E8E8&lt;/color>"
         errorLine2="           ~~~~~~~~~~~">
         <location
             file="src/main/res/values/colors.xml"
-            line="11"
+            line="12"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.white` appears to be unused"
+        errorLine1="    &lt;color name=&quot;white&quot;>#FFFFFFFF&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="13"
             column="12"/>
     </issue>
 
@@ -151,7 +140,7 @@
         errorLine2="           ~~~~~~~~~~">
         <location
             file="src/main/res/values/colors.xml"
-            line="13"
+            line="14"
             column="12"/>
     </issue>
 
@@ -162,7 +151,7 @@
         errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/colors.xml"
-            line="16"
+            line="17"
             column="12"/>
     </issue>
 
@@ -173,7 +162,7 @@
         errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/dimens.xml"
-            line="6"
+            line="8"
             column="12"/>
     </issue>
 
@@ -184,7 +173,7 @@
         errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/dimens.xml"
-            line="7"
+            line="9"
             column="12"/>
     </issue>
 
@@ -195,7 +184,7 @@
         errorLine2="           ~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/dimens.xml"
-            line="8"
+            line="10"
             column="12"/>
     </issue>
 
@@ -217,7 +206,7 @@
         errorLine2="            ~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/strings.xml"
-            line="7"
+            line="8"
             column="13"/>
     </issue>
 
@@ -228,19 +217,8 @@
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/strings.xml"
-            line="38"
+            line="41"
             column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.style.blackText` appears to be unused"
-        errorLine1="    &lt;style name=&quot;blackText&quot; parent=&quot;TextAppearance.AppCompat&quot;>"
-        errorLine2="           ~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/themes.xml"
-            line="18"
-            column="12"/>
     </issue>
 
     <issue
@@ -250,7 +228,7 @@
         errorLine2="           ~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/themes.xml"
-            line="23"
+            line="4"
             column="12"/>
     </issue>
 
@@ -261,7 +239,7 @@
         errorLine2="           ~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/themes.xml"
-            line="25"
+            line="5"
             column="12"/>
     </issue>
 
@@ -272,7 +250,7 @@
         errorLine2="             ~~~~~~">
         <location
             file="src/main/res/layout/activity_profile.xml"
-            line="375"
+            line="391"
             column="14"/>
     </issue>
 
@@ -283,7 +261,7 @@
         errorLine2="             ~~~~~~">
         <location
             file="src/main/res/layout/activity_profile.xml"
-            line="381"
+            line="398"
             column="14"/>
     </issue>
 
@@ -294,7 +272,7 @@
         errorLine2="         ~~~~~~">
         <location
             file="src/main/res/layout/activity_register.xml"
-            line="124"
+            line="126"
             column="10"/>
     </issue>
 
@@ -305,7 +283,7 @@
         errorLine2="         ~~~~~~">
         <location
             file="src/main/res/layout/activity_register.xml"
-            line="130"
+            line="132"
             column="10"/>
     </issue>
 
@@ -327,7 +305,7 @@
         errorLine2="         ~~~~~~">
         <location
             file="src/main/res/layout/dialog_add_hours.xml"
-            line="113"
+            line="114"
             column="10"/>
     </issue>
 
@@ -349,7 +327,7 @@
         errorLine2="         ~~~~~~">
         <location
             file="src/main/res/layout/dialog_add_worker.xml"
-            line="68"
+            line="69"
             column="10"/>
     </issue>
 
@@ -376,6 +354,28 @@
     </issue>
 
     <issue
+        id="ButtonStyle"
+        message="Buttons in button bars should be borderless; use `style=&quot;?android:attr/buttonBarButtonStyle&quot;` (and `?android:attr/buttonBarStyle` on the parent)"
+        errorLine1="        &lt;Button"
+        errorLine2="         ~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_reset_password.xml"
+            line="44"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ButtonStyle"
+        message="Buttons in button bars should be borderless; use `style=&quot;?android:attr/buttonBarButtonStyle&quot;` (and `?android:attr/buttonBarStyle` on the parent)"
+        errorLine1="        &lt;Button"
+        errorLine2="         ~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_reset_password.xml"
+            line="51"
+            column="10"/>
+    </issue>
+
+    <issue
         id="Autofill"
         message="Missing `autofillHints` attribute"
         errorLine1="        &lt;EditText"
@@ -404,7 +404,7 @@
         errorLine2="         ~~~~~~~~">
         <location
             file="src/main/res/layout-land/activity_main.xml"
-            line="21"
+            line="23"
             column="10"/>
     </issue>
 
@@ -415,7 +415,7 @@
         errorLine2="         ~~~~~~~~">
         <location
             file="src/main/res/layout/activity_main.xml"
-            line="21"
+            line="23"
             column="10"/>
     </issue>
 
@@ -437,7 +437,7 @@
         errorLine2="         ~~~~~~~~">
         <location
             file="src/main/res/layout/activity_profile.xml"
-            line="100"
+            line="114"
             column="10"/>
     </issue>
 
@@ -448,7 +448,7 @@
         errorLine2="         ~~~~~~~~">
         <location
             file="src/main/res/layout/activity_profile.xml"
-            line="131"
+            line="145"
             column="10"/>
     </issue>
 
@@ -459,7 +459,7 @@
         errorLine2="         ~~~~~~~~">
         <location
             file="src/main/res/layout/activity_profile.xml"
-            line="162"
+            line="176"
             column="10"/>
     </issue>
 
@@ -470,7 +470,7 @@
         errorLine2="         ~~~~~~~~">
         <location
             file="src/main/res/layout/activity_profile.xml"
-            line="193"
+            line="207"
             column="10"/>
     </issue>
 
@@ -481,7 +481,7 @@
         errorLine2="         ~~~~~~~~">
         <location
             file="src/main/res/layout/activity_profile.xml"
-            line="255"
+            line="271"
             column="10"/>
     </issue>
 
@@ -492,7 +492,7 @@
         errorLine2="         ~~~~~~~~">
         <location
             file="src/main/res/layout/activity_profile.xml"
-            line="332"
+            line="348"
             column="10"/>
     </issue>
 
@@ -503,7 +503,7 @@
         errorLine2="     ~~~~~~~~">
         <location
             file="src/main/res/layout/activity_register.xml"
-            line="19"
+            line="20"
             column="6"/>
     </issue>
 
@@ -514,7 +514,7 @@
         errorLine2="     ~~~~~~~~">
         <location
             file="src/main/res/layout/activity_register.xml"
-            line="33"
+            line="34"
             column="6"/>
     </issue>
 
@@ -525,7 +525,7 @@
         errorLine2="     ~~~~~~~~">
         <location
             file="src/main/res/layout/activity_register.xml"
-            line="47"
+            line="48"
             column="6"/>
     </issue>
 
@@ -536,7 +536,7 @@
         errorLine2="     ~~~~~~~~">
         <location
             file="src/main/res/layout/activity_register.xml"
-            line="61"
+            line="62"
             column="6"/>
     </issue>
 
@@ -607,25 +607,190 @@
     </issue>
 
     <issue
-        id="SetTextI18n"
-        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
-        errorLine1="        mTimePicker = new TimePickerDialog(MainUserActivity.this, (timePicker, selectedHour, selectedMinute) -> editText.setText(selectedHour + &quot;:&quot; + convertMinute(selectedMinute)), hour, minute, true);"
-        errorLine2="                                                                                                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="    &lt;EditText"
+        errorLine2="     ~~~~~~~~">
         <location
-            file="src/main/java/com/niev/munkaidonyilvantartoalkalmazas/MainUserActivity.java"
-            line="209"
-            column="130"/>
+            file="src/main/res/layout/dialog_reset_password.xml"
+            line="19"
+            column="6"/>
     </issue>
 
     <issue
         id="SetTextI18n"
         message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
-        errorLine1="        alertTitle.setText(alertTitle.getText() + &quot; \n&quot; + currentWorker.getUserName() + &quot;?&quot;);"
-        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        errorLine1="            mWorkTime.setText(formattedHour + &quot; óra&quot;);"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/niev/munkaidonyilvantartoalkalmazas/ManageWorkersActivity.java"
-            line="280"
-            column="28"/>
+            file="src/main/java/com/niev/munkaidonyilvantartoalkalmazas/HourAdapter.java"
+            line="92"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="String literal in `setText` can not be translated. Use Android resources instead."
+        errorLine1="            mWorkTime.setText(formattedHour + &quot; óra&quot;);"
+        errorLine2="                                              ~~~~~~">
+        <location
+            file="src/main/java/com/niev/munkaidonyilvantartoalkalmazas/HourAdapter.java"
+            line="92"
+            column="47"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:drawableLeft` with `android:drawableStart=&quot;@drawable/ic_login&quot;` to better support right-to-left layouts"
+        errorLine1="            android:drawableLeft=&quot;@drawable/ic_login&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_main.xml"
+            line="44"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:drawableLeft` with `android:drawableStart=&quot;@drawable/ic_login&quot;` to better support right-to-left layouts"
+        errorLine1="            android:drawableLeft=&quot;@drawable/ic_login&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="44"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:drawableLeft` with `android:drawableStart=&quot;@drawable/ic_reset_password&quot;` to better support right-to-left layouts"
+        errorLine1="            android:drawableLeft=&quot;@drawable/ic_reset_password&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_main.xml"
+            line="57"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:drawableLeft` with `android:drawableStart=&quot;@drawable/ic_reset_password&quot;` to better support right-to-left layouts"
+        errorLine1="            android:drawableLeft=&quot;@drawable/ic_reset_password&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="57"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:drawableLeft` with `android:drawableStart=&quot;@drawable/ic_google&quot;` to better support right-to-left layouts"
+        errorLine1="            android:drawableLeft=&quot;@drawable/ic_google&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_main.xml"
+            line="69"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:drawableLeft` with `android:drawableStart=&quot;@drawable/ic_google&quot;` to better support right-to-left layouts"
+        errorLine1="            android:drawableLeft=&quot;@drawable/ic_google&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="69"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:drawableLeft` with `android:drawableStart=&quot;@drawable/ic_register&quot;` to better support right-to-left layouts"
+        errorLine1="            android:drawableLeft=&quot;@drawable/ic_register&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_main.xml"
+            line="81"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:drawableLeft` with `android:drawableStart=&quot;@drawable/ic_register&quot;` to better support right-to-left layouts"
+        errorLine1="            android:drawableLeft=&quot;@drawable/ic_register&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="81"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:drawableLeft` with `android:drawableStart=&quot;@drawable/ic_manage_workers&quot;` to better support right-to-left layouts"
+        errorLine1="            android:drawableLeft=&quot;@drawable/ic_manage_workers&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main_user.xml"
+            line="46"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:drawableLeft` with `android:drawableStart=&quot;@drawable/ic_add_hours&quot;` to better support right-to-left layouts"
+        errorLine1="            android:drawableLeft=&quot;@drawable/ic_add_hours&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main_user.xml"
+            line="58"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:drawableLeft` with `android:drawableStart=&quot;@drawable/ic_show_hours&quot;` to better support right-to-left layouts"
+        errorLine1="            android:drawableLeft=&quot;@drawable/ic_show_hours&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main_user.xml"
+            line="70"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:drawableLeft` with `android:drawableStart=&quot;@drawable/ic_edit_profile&quot;` to better support right-to-left layouts"
+        errorLine1="            android:drawableLeft=&quot;@drawable/ic_edit_profile&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main_user.xml"
+            line="82"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:drawableLeft` with `android:drawableStart=&quot;@drawable/ic_change_theme&quot;` to better support right-to-left layouts"
+        errorLine1="            android:drawableLeft=&quot;@drawable/ic_change_theme&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main_user.xml"
+            line="98"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:drawableLeft` with `android:drawableStart=&quot;@drawable/ic_logout&quot;` to better support right-to-left layouts"
+        errorLine1="            android:drawableLeft=&quot;@drawable/ic_logout&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main_user.xml"
+            line="112"
+            column="13"/>
     </issue>
 
 </issues>
